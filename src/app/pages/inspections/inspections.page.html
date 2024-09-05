@@ -18,11 +18,8 @@
 
     <div *ngFor="let outlet of filteredOutlets" class="outlet-card">
       <div *ngIf="outlet.action == 'Complete Inspection Report' || outlet.action == 'Complete Report'">
-        <ion-card [ngClass]="{'not-clickable': outlet.status === 'Complete'}">
-          <ion-grid 
-            class="" 
-            [routerLink]="outlet.status !== 'Complete' ? ['/complete-inspection', outlet.caseId] : null"
-            [ngClass]="{'clickable': outlet.status !== 'Complete'}">
+        <ion-card>
+          <ion-grid [routerLink]="['/complete-inspection', outlet.caseId]">
             <ion-row>
               <ion-col size="8">
                 <!--Header-->
@@ -40,5 +37,5 @@
         </ion-card>
       </div>
     </div>
-    </div>
+  </div>
 </ion-content>
