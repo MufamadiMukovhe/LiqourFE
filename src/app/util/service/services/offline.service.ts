@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Network } from '@capacitor/network';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from './alert.service';
+import { environment } from 'src/environments/environment.prod';
 
 
 
@@ -93,7 +94,7 @@ export class OfflineService {
         console.log(`${key}:`, value);
       });
 
-      this.http.post(`http://localhost:8081/api/general/complete-inspection-report/${caseNo}`, formData).subscribe(
+      this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseNo}`, formData).subscribe(
         response => {
           console.log('Report sent successfully', response);
           this.alertService.showAlert('Success', 'Inspection Complete.');

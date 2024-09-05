@@ -45,6 +45,9 @@ export class MyTasksPage implements OnInit {
       console.log(this.role);
       
     
+
+      console.log(environment.eclbDomain+"api/general/get-inbox");
+      
     
     this.http.get<any[]>(environment.eclbDomain+"api/general/get-inbox", { headers: newHeader }).subscribe(
       response => {

@@ -135,14 +135,37 @@ export class CompleteInspectionPage implements OnInit {
   
   }
 
+  ecp:string | null=""
+  ecpCut:any
+  
+
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
       console.log(this.caseNo);
+      this.ecp=param.get('ecp');
+      console.log(this.ecp);
+      
     });
 
-    this.getCurrentPosition();
+    this.ecpCut=this.ecp?.slice(-2)
 
+    if(this.ecpCut=="SP")
+    {
+      this.communityConsult();
+    }
+    
+    this.getCurrentPosition();
+  }
+
+  communityConsult()
+  {
+    this.completeReportForm.patchValue({
+      complianceSectionA:'N/A',
+      complianceSectionB:'N/A',
+      complianceSectionC:'N/A'
+
+    })
   }
 
  

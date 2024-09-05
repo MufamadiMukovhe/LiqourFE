@@ -1221,16 +1221,16 @@
                     </ion-item>
    
      
-      <ion-label position="floating">Community Consultation</ion-label>
+      <ion-label *ngIf="ecpCut!=='SP'" position="floating">Community Consultation</ion-label>
       <ion-item>
-      <ion-input placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
+      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
       </ion-item>
      
       <ion-item>
-      <ion-input placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
+      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
     </ion-item>
 
-    <ion-item class="last-input">
+    <ion-item *ngIf="ecpCut!=='SP'" class="last-input">
       <ion-input placeholder="Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionC"></ion-input>
     </ion-item>
 

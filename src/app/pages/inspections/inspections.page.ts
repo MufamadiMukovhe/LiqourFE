@@ -43,6 +43,9 @@ export class InspectionsPage implements OnInit {
         this.collect = response;
         this.filteredOutlets = this.collect; 
 
+        console.log(this.collect);
+        
+
        
         localStorage.setItem('inspectionsData', JSON.stringify(this.collect));
       },
