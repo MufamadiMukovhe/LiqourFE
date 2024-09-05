@@ -1023,6 +1023,7 @@
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
         <span>(j) If objections were received, were they served to the applicant for response?</span>
         <ion-card-title class="general-name">
           <ion-grid>
@@ -1087,6 +1088,7 @@
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
+        </div>
     </ion-card>
 
     <button class="next-button" (click)="toggleForms('photos')" [disabled]="!isCommunityFormValid()">Next</button>
