@@ -228,7 +228,9 @@ export class CompleteInspectionPage implements OnInit {
            this.isRecommendationFormValid() &&
            this.isInspectionReport() &&
            this.isPhotoAvailable ==true;
-          
+
+           if(ecpCut===true)
+           
   }
     
 
