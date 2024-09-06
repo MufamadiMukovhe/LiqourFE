@@ -7,7 +7,8 @@
     </div>
     <ion-card>
       <div class="header-content">
-        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+      <!-- <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>--> 
+        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title
           (click)="toggleForms('reports')"
@@ -20,7 +21,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('general')"
         [class.red-text]="isGeneralFormValid()">
@@ -31,7 +32,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('applicant')"
         [class.red-text]="isApplicantFormValid()">
@@ -42,7 +43,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isDocumentationFormValid() " src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('document')"
@@ -55,7 +56,7 @@
 
 
       <div class="header-content">
-        <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('comments')"
@@ -67,7 +68,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('community')"
         [class.red-text]="isCommunityFormValid()">
@@ -78,7 +79,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
       
       <div class="header-content">
-        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('photos')"
         [class.red-text]="isPhotoAvailable">
@@ -89,7 +90,7 @@
       </div>
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
       <div class="header-content">
-        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
         <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationFormValid()">
@@ -1081,7 +1082,7 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          
+
           
         </ion-card-title>
         <div class="recommend-comments1" *ngIf="completeReportForm.get('formApplicantRespondedToObjections')?.value === '2'">
