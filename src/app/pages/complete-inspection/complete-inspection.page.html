@@ -7,8 +7,7 @@
     </div>
     <ion-card>
       <div class="header-content">
-      <!-- <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>--> 
-        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title
           (click)="toggleForms('reports')"
@@ -21,7 +20,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('general')"
         [class.red-text]="isGeneralFormValid()">
@@ -32,7 +31,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
       <div class="header-content">
-        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('applicant')"
         [class.red-text]="isApplicantFormValid()">
@@ -40,10 +39,10 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
-      <div class="header-content">
-        <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+      <div class="header-content" *ngIf="ecpCut!=='SP'">
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
+        <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isDocumentationFormValid() " src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('document')"
@@ -52,11 +51,11 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
 
-      <div class="header-content">
-        <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+      <div class="header-content" *ngIf="ecpCut!=='SP'">
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
+        <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('comments')"
@@ -67,8 +66,8 @@
       </div>
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
-      <div class="header-content">
-        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+      <div class="header-content" >
+        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('community')"
         [class.red-text]="isCommunityFormValid()">
@@ -79,7 +78,7 @@
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
       
       <div class="header-content">
-        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
         <ion-card-title (click)="toggleForms('photos')"
         [class.red-text]="isPhotoAvailable">
@@ -90,7 +89,7 @@
       </div>
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
       <div class="header-content">
-        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/SymbolTick2.svg" class="size"></ion-img>
+        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationFormValid()">
@@ -184,6 +183,11 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
+                  <!--Making it on line-->
+                  <ion-col>
+                    <div class="radios">
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -216,6 +220,11 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
+
+                  <ion-col>
+                    <div class="radios">
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -237,21 +246,32 @@
         <ion-row class="horizontal-radios">
           <ion-col >
             <ion-radio-group formControlName="applicantIndicatedPersonAtPremises">
-              <ion-row class="horizontal-radios">
+              <ion-row class="horizontal-radios" >
+                
                 <ion-col >
+                  
                   <div class="radios">
                     <ion-radio id="yes_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="1"></ion-radio>
                     <label for="yes_appt">Yes</label>
                   </div>
+               
                 </ion-col>
                 <ion-col >
-                  <div class="radios">
+                  
+                  <div class="radios" >
                     <ion-radio id="no_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="2"></ion-radio>
                     <label for="no_appt">No</label>
                   </div>
-                </ion-col>
                 
+                </ion-col>
+                <ion-col >
+                <div class="radios" >
+                  <ion-radio id="no_appt" class="move-radios" name="applicantIndicatedPersonAtPremises" value="3"></ion-radio>
+                  <label for="no_appt">N/A</label>
+                </div>
+              </ion-col>
               </ion-row>
+            
             </ion-radio-group>
           </ion-col>
         </ion-row>
@@ -283,7 +303,12 @@
                     <label for="no_appt">No</label>
                   </div>
                 </ion-col>
-               
+                <ion-col >
+                  <div class="radios">
+                    <ion-radio id="no_appt" class="move-radio" name="canPersonBeFound" value="3"></ion-radio>
+                    <label for="no_appt">N/A</label>
+                  </div>
+                </ion-col>
               </ion-row>
             </ion-radio-group>
           </ion-col>
@@ -315,6 +340,11 @@
                   <div class="radios">
                     <ion-radio id="no_appt" class="move-radio" name="interestInLiquorTrade" value="2"></ion-radio>
                     <label for="no_appt">No</label>
+                  </div>
+                </ion-col>
+
+                <ion-col >
+                  <div class="radios">
                   </div>
                 </ion-col>
                
@@ -351,7 +381,12 @@
                     <label for="no_appt">No</label>
                   </div>
                 </ion-col>
-               
+                <ion-col >
+                  <div class="radios">
+                    <ion-radio id="no_appt" class="move-radio" name="issuedComplience" value="3"></ion-radio>
+                    <label for="no_appt">N/A</label>
+                  </div>
+                </ion-col>
               </ion-row>
             </ion-radio-group>
           </ion-col>
@@ -385,7 +420,12 @@
                     <label for="no_appt">No</label>
                   </div>
                 </ion-col>
-               
+                <ion-col >
+                  <div class="radios">
+                    <ion-radio id="no_appt" class="move-radio" name="complaintsReceived" value="3"></ion-radio>
+                    <label for="no_appt">N/A</label>
+                  </div>
+                </ion-col>
               </ion-row>
             </ion-radio-group>
           </ion-col>
@@ -398,9 +438,16 @@
           id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
   </div>
     <hr>
-     
     </ion-card>
-    <button class="next-button" (click)="toggleForms('document')" [disabled]="!isApplicantFormValid()">Next</button>
+
+    <div *ngIf="ecpCut">
+    <button class="next-button" 
+            (click)="ecpCut ? toggleForms('community') : toggleForms('document')" 
+            [disabled]="!isApplicantFormValid()">
+        Next
+    </button>
+</div>
+
 
   </div>
   
@@ -411,7 +458,7 @@
       <h1 class="header-text">Coodinates Capture</h1>
     </div>
     
-        <ion-label>Person Contact</ion-label>
+        <ion-label>Person Contacted</ion-label>
         <ion-item>
         <ion-input placeholder="Enter Person Name" formControlName="contactPerson"></ion-input>
         </ion-item>
@@ -474,7 +521,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="rightToOccupy" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -508,7 +560,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="leaseAttached" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -542,7 +599,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="situatedInRightAddress" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -575,7 +637,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                 
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="inLineWithSubmittedApplication" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -609,7 +676,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="premisesSuitable" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -643,6 +715,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="ablutionFacilityInOrder" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                  
                 </ion-row>
               </ion-radio-group>
@@ -674,6 +752,12 @@
                     <div class="radios">
                       <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="2"></ion-radio>
                       <label for="no_appt">No</label>
+                    </div>
+                  </ion-col>
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
                     </div>
                   </ion-col>
                   
@@ -725,7 +809,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -761,7 +850,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="confirmedByCouncillor" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -797,7 +891,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-               
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="wardCommiteeReport" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -833,7 +932,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="communityConsultation" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -869,7 +973,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                 
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="educationalInstitution" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -905,7 +1014,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -941,7 +1055,12 @@
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="placeOfWorship" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
                 </ion-row>
               </ion-radio-group>
             </ion-col>
@@ -979,7 +1098,12 @@
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
-                   
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
                   </ion-row>
                 </ion-radio-group>
               </ion-col>
@@ -1011,7 +1135,12 @@
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
-                    
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsInspection" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
                   </ion-row>
                 </ion-radio-group>
               </ion-col>
@@ -1042,6 +1171,12 @@
                       <div class="radios">
                         <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="2"></ion-radio>
                         <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
                     
@@ -1076,13 +1211,17 @@
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
-                   
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formApplicantRespondedToObjections" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
                   </ion-row>
                 </ion-radio-group>
               </ion-col>
             </ion-row>
           </ion-grid>
-
           
         </ion-card-title>
         <div class="recommend-comments1" *ngIf="completeReportForm.get('formApplicantRespondedToObjections')?.value === '2'">
@@ -1188,7 +1327,7 @@
     
 </div>
 
-<div *ngIf="currentForm ==='comments'">
+<div  *ngIf="currentForm ==='comments'">
 
   <div class="header-container">
     <img src="assets/Images/Back Icon.svg"  class="back-Arrow"(click)="toggleForms('landing')">
