@@ -30,6 +30,7 @@ export class CompleteInspectionPage implements OnInit {
   dateFormatPlaceholder: string = "YYYY-MM-DD";
   isPhotoAvailable:boolean=false;
   test: String = '';
+  isHidden: boolean = true;
 
   imageSources: { src: string, description: string }[] = [];
   dropdownVisible: { [index: string]: boolean } = {};
@@ -167,6 +168,7 @@ export class CompleteInspectionPage implements OnInit {
     })
   }
 
+ 
   
   //General Valid
   isGeneralFormValid(): boolean {
@@ -192,6 +194,7 @@ export class CompleteInspectionPage implements OnInit {
   //Documentation Valid
   isCommunityFormValid(): boolean {
     const communityFields = ['formServedToCorrectWardCommittee', 'confirmedByCouncillor', 'wardCommiteeReport', 'communityConsultation', 'educationalInstitution','formServedAtEducationInstitution', 'placeOfWorship', 'formServedAtPlaceOfWorship'];
+    const formObjectionsInspection = this.completeReportForm.get('formObjectionsInspection');  
     return communityFields.every(field => this.completeReportForm.get(field)?.valid);
   }
 
