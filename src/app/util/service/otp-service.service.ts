@@ -5,6 +5,7 @@ import { Auth } from './Auth';
 import { headers } from './const';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +15,7 @@ export class OtpServiceService {
   constructor(private httpClient: HttpClient, private auth: Auth) { }
 
   public getOneTimePin(auth2: any): Observable<any> {
-    return this.httpClient.post<any>("http://localhost:8081/api/auth/get-otp", auth2, { headers: headers }).pipe(
+    return this.httpClient.post<any>(environment.eclbDomain+"api/auth/get-otp", auth2, { headers: headers }).pipe(
       catchError((error) => {
         console.error('Error occurred while getting OTP:', JSON.stringify(error)); 
         return throwError(() => error);
@@ -23,7 +24,7 @@ export class OtpServiceService {
   }
 
   public validateOTP(auth2:any): Observable<any> {
-    return this.httpClient.post<any>("http://localhost:8081/api/auth/validate-otp", auth2, { headers: headers }).pipe(
+    return this.httpClient.post<any>(environment.eclbDomain+"api/auth/validate-otp", auth2, { headers: headers }).pipe(
      catchError((error) => {
         console.error('Error occurred while validating OTP:', error); 
         return throwError(() => error);

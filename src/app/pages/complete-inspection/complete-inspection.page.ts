@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { StorageService } from 'src/app/util/service/storage.service';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ViewImagePage } from '../view-image/view-image.page';
 import { environment } from 'src/environments/environment.prod';
@@ -13,6 +13,12 @@ import { Geolocation } from '@capacitor/geolocation';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
+
+
+
+
 
 @Component({
   selector: 'app-complete-inspection',
@@ -42,6 +48,9 @@ export class CompleteInspectionPage implements OnInit {
   caseId: any;
   caseNo: any;
 
+
+
+
   private geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?key=${environment.googleMapsApiKey}";
 
   inspectionReport: any;
@@ -62,7 +71,8 @@ export class CompleteInspectionPage implements OnInit {
     private spinner: NgxSpinnerService,
     private offlineService: OfflineService,
     private popoverController: PopoverController,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private imageStorageService: StorageService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -163,7 +173,16 @@ export class CompleteInspectionPage implements OnInit {
     this.completeReportForm.patchValue({
       complianceSectionA:'N/A',
       complianceSectionB:'N/A',
-      complianceSectionC:'N/A'
+      complianceSectionC:'N/A',
+      ablutionFacilities:'N/A',
+      storageRoom:'N/A',
+      demarcatedDrinkingArea:'N/A',
+      displayAreaShelves:'N/A',
+      counterPointOfSake:'N/A',
+      buildingStructureAndMeansOfCommunication:'N/A',
+      rightToOccupyPremises:'N/A',
+      applicant:'N/A'
+
 
     })
   }
@@ -487,34 +506,89 @@ export class CompleteInspectionPage implements OnInit {
     await actionSheet.present();
   }
 
+  
   async selectImage(source: CameraSource) {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: source
-    });
-   // console.log('Image Data:', image);
-   const description = await this.promptForDescription();
-   const isDuplicate = this.imageSources.some(img => img.description.toLowerCase() === description?.toLowerCase());
-    if (image.dataUrl) {
-      if (!isDuplicate && description) {
-        this.imageSources.push({ src: image.dataUrl, description });
-        if (this.imageSources.length==0) {
-          this.isPhotoAvailable=false; 
-        }else{
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: source,
+        width: 4000,
+        height: 3000,
+        correctOrientation: true
+      });
 
-          this.isPhotoAvailable=true;
-        }
-        console.log(this.imageSources);
-        
-        //console.log('Image Source Added:', { src: image.dataUrl, description });
-      }else{
-        //this.presentDuplicateDescriptionAlert();
-        return
+      if (!image.webPath) {
+        console.error('Error: Image webPath is undefined.');
+        return;
       }
+
+      
+      const response = await fetch(image.webPath);
+      const blob = await response.blob();
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        const base64data = reader.result as string;
+
+        
+        const fileName = new Date().getTime() + '.jpg';
+
+        
+        await Filesystem.writeFile({
+          path: fileName,
+          data: base64data,
+          directory: Directory.Documents, 
+          encoding: Encoding.UTF8,
+        });
+
+        const description = await this.promptForDescription();
+        const isDuplicate = this.imageSources.some(
+          (img) => img.description.toLowerCase() === description?.toLowerCase()
+        );
+
+        if (!isDuplicate && description) {
+          this.imageSources.push({ src: fileName, description });
+          this.isPhotoAvailable = this.imageSources.length > 0;
+          console.log(this.imageSources);
+        } else {
+          return;
+        }
+      };
+
+      reader.readAsDataURL(blob);
+
+    } catch (error) {
+      console.error('Error capturing or saving image:', error);
     }
   }
+
+  async openImage(fileName: string) {
+    try {
+      // Read the file from the Documents directory
+      const result = await Filesystem.readFile({
+        path: fileName,
+        directory: Directory.Documents, // Use the same directory where it was saved
+      });
+  
+      // Convert base64 to data URL for displaying
+      const imageSrc = `data:image/jpeg;base64,${result.data}`;
+  
+      // Check if the element exists before setting the src attribute
+      const imageElement = document.getElementById('imagePreview');
+      if (imageElement) {
+        imageElement.setAttribute('src', imageSrc);
+      } else {
+        console.error('Image element not found! Ensure the HTML has the image element.');
+      }
+    } catch (error) {
+      console.error('Error reading the image from storage:', error);
+    }
+  }
+  
+
+
 
   convertSrcToFile(dataURL: string, filename: string): File {
     const arr = dataURL.split(',');
