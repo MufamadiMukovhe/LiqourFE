@@ -20,6 +20,7 @@ ion-card-title {
 .red-text {
   color: #822B23;
   font-weight: 600;
+
 }
 
 .header-content {
@@ -523,7 +524,7 @@ ion-item:hover, ion-item:hover ion-label, ion-item:hover ion-radio {
 .radios ion-item {
   display: flex; /* Use flexbox to align items */
   align-items: center; /* Align items vertically */
-  margin-bottom: 10px; /* Adjust vertical spacing between items */
+  margin-bottom: -10px; /* Adjust vertical spacing between items */
 }
 
 .radios ion-radio {
