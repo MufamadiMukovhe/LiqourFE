@@ -247,7 +247,11 @@ const routes: Routes = [
   {
     path: 'summons/:caseId',
     loadChildren: () => import('./pages/summons/summons.module').then( m => m.SummonsPageModule)
+  },  {
+    path: 'section',
+    loadChildren: () => import('./pages/section/section.module').then( m => m.SectionPageModule)
   },
+
 
 
  
