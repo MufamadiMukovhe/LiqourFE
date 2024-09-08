@@ -1,6 +1,6 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 
 
 
