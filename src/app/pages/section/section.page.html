@@ -1,7 +1,7 @@
 <ion-content>
  
   <div class="header-container">
-    <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" routerLink="/my-task"></a>
+    <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="navigatoToBack()"></a>
     <h1 class="header-text" style="color: black;">Received by</h1>
   </div>
 
@@ -11,9 +11,9 @@
       <ion-input class="custom-input" type="text" formControlName="receivedBy" placeholder="Name of the recipient"></ion-input>
     </ion-item>
 
-    <ion-label>(b) Inspection Date</ion-label>
+    <ion-label>(b) Receiving Date</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="date" formControlName="inspectionDate"></ion-input>
+      <ion-input class="custom-input" type="date" formControlName="receivingDate"></ion-input>
     </ion-item>
 
     <!-- Signature Pad -->

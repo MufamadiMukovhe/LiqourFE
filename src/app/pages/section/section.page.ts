@@ -4,6 +4,7 @@ import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import SignaturePad from 'signature_pad';
+import { Route } from '@angular/router';
 import { headers, headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
 
@@ -25,11 +26,11 @@ export class SectionPage implements OnInit {
     private router: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private http: HttpClient,
-    private aRoute: Router
+    private aRoute: Router,
   ) {
     this.sectionForm = this.fb.group({
       receivedBy: ['', Validators.required],
-      inspectionDate: ['', Validators.required],
+      receivingDate: ['', Validators.required],
     });
   }
 
@@ -81,9 +82,12 @@ export class SectionPage implements OnInit {
   async savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
-
-    
     this.showAlertMessage('error', 'Signature Served');
-    
   }
+
+  navigatoToBack()
+  {
+    this.aRoute.navigate(['my-task'])
+  }
+
 }
