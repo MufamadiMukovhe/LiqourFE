@@ -220,18 +220,29 @@ export class CompleteInspectionPage implements OnInit {
     return areNoticeFilesPresent;
   }
   isFormValid(): boolean {
-    return this.isGeneralFormValid() &&
-           this.isApplicantFormValid() &&
-           this.isCommunityFormValid() &&
-           this.isDocumentationFormValid() &&
-           this.isCommunityFormValid() &&
-           this.isRecommendationFormValid() &&
-           this.isInspectionReport() &&
-           this.isPhotoAvailable ==true;
-
-           if(ecpCut===true)
-           
+    // Check if it's a special event
+    if (this.ecpCut=="SP") {
+      // For special event, skip 'documents' and 'comments' validation
+      return this.isGeneralFormValid() &&
+             this.isApplicantFormValid() &&
+             this.isCommunityFormValid() &&
+             this.isRecommendationFormValid() &&
+             this.isInspectionReport() &&
+             this.isPhotoAvailable == true;
+    } else {
+      // For normal event, include all validations
+      return this.isGeneralFormValid() &&
+             this.isApplicantFormValid() &&
+             this.isCommunityFormValid() &&
+             this.isDocumentationFormValid() && // Ensure this is checked when not a special event
+             this.isRecommendationFormValid() &&
+             this.isInspectionReport() &&
+             this.isPhotoAvailable == true;
+    }
   }
+  
+
+  
     
 
   async onSubmit() {
