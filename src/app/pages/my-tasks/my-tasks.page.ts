@@ -56,7 +56,7 @@ export class MyTasksPage implements OnInit {
         if(this.role==='INSPECTOR')
           {
             //this.collect = response;
-            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons');
+            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report');
           }
           else{
             this.collect = response;
@@ -77,7 +77,7 @@ export class MyTasksPage implements OnInit {
     this.route.navigate(['dashboard']);
   }
 
-  navigateToTask(action: any, caseId:any)
+  navigateToTask(action: any, caseId:any, appType:any)
     {
       
       switch (action) {
@@ -88,7 +88,8 @@ export class MyTasksPage implements OnInit {
           this.route.navigate(['']);
           break;
         case 'Complete Report':
-          this.route.navigate([`/complete-inspection/${caseId}`]);
+          case 'Complete Supplementary Report':
+          this.route.navigate([`/complete-inspection/${caseId}/${appType}`]);
           break;
         case 'Verify Application':
           this.route.navigate(['']);
@@ -97,10 +98,16 @@ export class MyTasksPage implements OnInit {
           this.route.navigate([`/complete-gis-report/${caseId}`])
           break;
         case 'Complete Inspection Report':
-          this.route.navigate([`/complete-inspection/${caseId}`]);
+          this.route.navigate([`/complete-inspection/${caseId}/${appType}`]);
           break;
         case 'Inspector Serve Summons':
           this.route.navigate([`/summons/${caseId}`])
+          break;
+        case 'Inspector Serve Section 22(5) Notice':
+          this.route.navigate([`/section/${caseId}/`])
+          break;
+        
+       
 
       }
     }

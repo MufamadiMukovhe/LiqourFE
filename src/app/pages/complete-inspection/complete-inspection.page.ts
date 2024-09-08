@@ -146,21 +146,21 @@ export class CompleteInspectionPage implements OnInit {
   }
 
   ecp:string | null=""
-  ecpCut:any
+  appType:any
   
 
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
       console.log(this.caseNo);
-      this.ecp=param.get('ecp');
-      console.log(this.ecp);
+      this.appType=param.get('appType');
+      console.log(this.appType);
       
     });
 
-    this.ecpCut=this.ecp?.slice(-2)
+    
 
-    if(this.ecpCut=="SP")
+    if(this.appType=="ApplicationForSpecialEvent")
     {
       this.communityConsult();
     }
@@ -240,7 +240,7 @@ export class CompleteInspectionPage implements OnInit {
   }
   isFormValid(): boolean {
     // Check if it's a special event
-    if (this.ecpCut=="SP") {
+    if (this.appType=="ApplicationForSpecialEvent") {
       // For special event, skip 'documents' and 'comments' validation
       return this.isGeneralFormValid() &&
              this.isApplicantFormValid() &&
@@ -521,84 +521,34 @@ export class CompleteInspectionPage implements OnInit {
 
   
   async selectImage(source: CameraSource) {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 100,
-        allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: source,
-        width: 4000,
-        height: 3000,
-        correctOrientation: true
-      });
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: source
+    });
+   // console.log('Image Data:', image);
+   const description = await this.promptForDescription();
+   const isDuplicate = this.imageSources.some(img => img.description.toLowerCase() === description?.toLowerCase());
+    if (image.dataUrl) {
+      if (!isDuplicate && description) {
+        this.imageSources.push({ src: image.dataUrl, description });
+        if (this.imageSources.length==0) {
+          this.isPhotoAvailable=false; 
+        }else{
 
-      if (!image.webPath) {
-        console.error('Error: Image webPath is undefined.');
-        return;
-      }
-
-      
-      const response = await fetch(image.webPath);
-      const blob = await response.blob();
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const base64data = reader.result as string;
-
-        
-        const fileName = new Date().getTime() + '.jpg';
-
-        
-        await Filesystem.writeFile({
-          path: fileName,
-          data: base64data,
-          directory: Directory.Documents, 
-          encoding: Encoding.UTF8,
-        });
-
-        const description = await this.promptForDescription();
-        const isDuplicate = this.imageSources.some(
-          (img) => img.description.toLowerCase() === description?.toLowerCase()
-        );
-
-        if (!isDuplicate && description) {
-          this.imageSources.push({ src: fileName, description });
-          this.isPhotoAvailable = this.imageSources.length > 0;
-          console.log(this.imageSources);
-        } else {
-          return;
+          this.isPhotoAvailable=true;
         }
-      };
-
-      reader.readAsDataURL(blob);
-
-    } catch (error) {
-      console.error('Error capturing or saving image:', error);
-    }
-  }
-
-  async openImage(fileName: string) {
-    try {
-      // Read the file from the Documents directory
-      const result = await Filesystem.readFile({
-        path: fileName,
-        directory: Directory.Documents, // Use the same directory where it was saved
-      });
-  
-      // Convert base64 to data URL for displaying
-      const imageSrc = `data:image/jpeg;base64,${result.data}`;
-  
-      // Check if the element exists before setting the src attribute
-      const imageElement = document.getElementById('imagePreview');
-      if (imageElement) {
-        imageElement.setAttribute('src', imageSrc);
-      } else {
-        console.error('Image element not found! Ensure the HTML has the image element.');
+        console.log(this.imageSources);
+        
+        //console.log('Image Source Added:', { src: image.dataUrl, description });
+      }else{
+        //this.presentDuplicateDescriptionAlert();
+        return
       }
-    } catch (error) {
-      console.error('Error reading the image from storage:', error);
     }
   }
+
   
 
 

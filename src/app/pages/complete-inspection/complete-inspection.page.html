@@ -40,7 +40,7 @@
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
 
-      <div class="header-content" *ngIf="ecpCut!=='SP'">
+      <div class="header-content" *ngIf="appType!=='ApplicationForSpecialEvent'">
         <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
         <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isDocumentationFormValid() " src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -53,7 +53,7 @@
       </div>
 
 
-      <div class="header-content" *ngIf="ecpCut!=='SP'">
+      <div class="header-content" *ngIf="appType!=='ApplicationForSpecialEvent'">
         <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
         <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -440,10 +440,8 @@
     <hr>
     </ion-card>
 
-    <div *ngIf="ecpCut">
-    <button class="next-button" 
-            (click)="ecpCut ? toggleForms('community') : toggleForms('document')" 
-            [disabled]="!isApplicantFormValid()">
+    <div *ngIf="appType">
+    <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
         Next
     </button>
 </div>
@@ -774,7 +772,7 @@
     </div>
       <hr>
     </ion-card>
-    <ng-container *ngIf="ecpCut == 'SP'; else spButton">
+    <ng-container *ngIf="appType == 'ApplicationForSpecialEvent'; else spButton">
       <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
     </ng-container>
 
@@ -1346,44 +1344,44 @@
     <h1 class="header-text">Comments</h1>
   </div>
   
-      <ion-label>Applicant</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'">Applicant</ion-label>
       <ion-item>
-      <ion-input placeholder="Applicant" formControlName="applicant"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Applicant" formControlName="applicant"></ion-input>
       </ion-item>
-      <ion-label position="floating">Premises</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Premises</ion-label>
       <ion-item>
-        <ion-input placeholder="Right to Occupy Premises" formControlName="rightToOccupyPremises"></ion-input>
+        <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Right to Occupy Premises" formControlName="rightToOccupyPremises"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input placeholder="Building structure and means of communication" formControlName="buildingStructureAndMeansOfCommunication"></ion-input>
+          <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Building structure and means of communication" formControlName="buildingStructureAndMeansOfCommunication"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Counter/Point of Sake" formControlName="counterPointOfSake"></ion-input>
+            <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Counter/Point of Sake" formControlName="counterPointOfSake"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input placeholder="Display Area/Shelves" formControlName="displayAreaShelves"></ion-input>
+              <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Display Area/Shelves" formControlName="displayAreaShelves"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-input placeholder="Demarcated Drinking Area" formControlName="demarcatedDrinkingArea"></ion-input>
+                <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Demarcated Drinking Area" formControlName="demarcatedDrinkingArea"></ion-input>
                 </ion-item>
                 <ion-item>
-                  <ion-input placeholder="Storage Room" formControlName="storageRoom"></ion-input>
+                  <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Storage Room" formControlName="storageRoom"></ion-input>
                   </ion-item>
                   <ion-item>
-                    <ion-input placeholder="Ablution facilities" formControlName="ablutionFacilities"></ion-input>
+                    <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Ablution facilities" formControlName="ablutionFacilities"></ion-input>
                     </ion-item>
    
      
-      <ion-label *ngIf="ecpCut!=='SP'" position="floating">Community Consultation</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Community Consultation</ion-label>
       <ion-item>
-      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
       </ion-item>
      
       <ion-item>
-      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="ecpCut!=='SP'" class="last-input">
+    <ion-item *ngIf="appType!=='ApplicationForSpecialEvent'" class="last-input">
       <ion-input placeholder="Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionC"></ion-input>
     </ion-item>
 
@@ -1405,25 +1403,21 @@
     <ng-container *ngIf="imageSources.length > 0; else noPhoto">
       <div class="scrollable-container">
         <div *ngFor="let image of imageSources.slice().reverse(); let i = index">
-          
-          <button class="image-description-button" (click)="openImage(image.src)">
-            {{ image.description }}
-          </button>
-          
+          <img [src]="image.src" alt="Uploaded Photo" class="single-uploaded-photo" (click)="toggleDropdown($event, i)">
+          <p class="image-description">{{ image.description }}</p>
           <div class="dropdown-content" [class.show]="dropdownVisible[i]">
+            <ion-item (click)="viewImage(image.src)">View</ion-item>
             <ion-item (click)="deleteImage(image.src)">Delete</ion-item>
           </div>
         </div>
       </div>
     </ng-container>
-    
-    
-    <img id="imagePreview" alt="Selected Image" style="width: 100%; height: auto;" />
-    
     <ng-template #noPhoto>
-      <p>No photos available.</p>
+      <p class="no-photo-text">No photo uploaded yet</p>
     </ng-template>
-    
+    <div class="add-ticket-container">
+     
+    </div>
   </ion-card>
   <ion-buttons slot="end">
     <ion-img src="assets/Images/Vector.svg" (click)="presentActionSheet()" class="add-ticket-icon"></ion-img>
