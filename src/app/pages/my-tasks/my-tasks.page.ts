@@ -79,6 +79,9 @@ export class MyTasksPage implements OnInit {
 
   navigateToTask(action: any, caseId:any, appType:any)
     {
+
+      console.log(appType);
+      
       
       switch (action) {
         case 'Attach and / or Verify WC Report':

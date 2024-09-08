@@ -181,8 +181,14 @@ export class CompleteInspectionPage implements OnInit {
       counterPointOfSake:'N/A',
       buildingStructureAndMeansOfCommunication:'N/A',
       rightToOccupyPremises:'N/A',
-      applicant:'N/A'
-
+      applicant:'N/A',
+      rightToOccupy:'3',
+      leaseAttached:'3',
+      situatedInRightAddress:'3',
+      inLineWithSubmittedApplication:'3',
+      premisesSuitable:'3',
+      ablutionFacilityInOrder:'3',
+      readyForBusiness:'3',
 
     })
   }

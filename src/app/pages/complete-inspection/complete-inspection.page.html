@@ -45,7 +45,7 @@
         <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
         <ion-img *ngIf="!isDocumentationFormValid() " src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
-        <ion-card-title (click)="toggleForms('document')"
+        <ion-card-title  (click)="toggleForms('document')"
         [class.red-text]="isDocumentationFormValid()">
           Verification of the Premises Against Submitted Documentation
         </ion-card-title>

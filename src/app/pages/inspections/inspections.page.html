@@ -21,7 +21,7 @@
         <ion-card [ngClass]="{'not-clickable': outlet.status === 'Complete'}">
           <ion-grid 
             class="" 
-            [routerLink]="outlet.status !== 'Complete' ? ['/complete-inspection', outlet.caseId, outlet.ecpNumber] : null"
+            [routerLink]="outlet.status !== 'Complete' ? ['/complete-inspection', outlet.caseId, outlet.caseName] : null"
             [ngClass]="{'clickable': outlet.status !== 'Complete'}">
             <ion-row>
               <ion-col size="8">

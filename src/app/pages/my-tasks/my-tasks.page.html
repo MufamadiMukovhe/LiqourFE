@@ -14,8 +14,7 @@
       <p class="quick-action">My Tasks</p>
       <p class="new">New</p>
 
-      <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName
-)">
+      <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName)">
         <div *ngIf="task.status!=='Complete'">
         <ion-row>
           <ion-col class="center-content" offset="0.2">   
