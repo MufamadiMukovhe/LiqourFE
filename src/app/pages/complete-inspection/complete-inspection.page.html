@@ -40,8 +40,8 @@
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
 
-   <!-- This block shows when ecpCut is NOT 'SP' -->
-<div *ngIf="ecpCut !== 'SP'">
+   
+<div *ngIf="appType!=='ApplicationForSpecialEvent'">
   <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
   <div class="header-content">
@@ -59,7 +59,7 @@
 
 
 
-<div *ngIf="ecpCut !== 'SP'">
+<div *ngIf="appType!=='ApplicationForSpecialEvent'">
   <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
   <div class="header-content">

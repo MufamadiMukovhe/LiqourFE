@@ -41,11 +41,6 @@ export class SectionPage implements OnInit {
     this.alertMessage = message;
     this.showAlert = true;
 
-    setTimeout(() => {
-      this.showAlert = false;
-    }, 3000); 
-
-
 
     this.router.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
@@ -79,7 +74,7 @@ export class SectionPage implements OnInit {
 
     this.http.put(url, formData).subscribe(response => {
 
-      this.aRoute.navigate([`/summons/${this.caseNo}`])
+      this.aRoute.navigate([`/my-tasks`])
       this.spinner.hide();
       
     }, error => {
@@ -90,9 +85,7 @@ export class SectionPage implements OnInit {
 
   
 
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 2000);
+    this.spinner.hide();
   }
   
   signaturePad!: SignaturePad;

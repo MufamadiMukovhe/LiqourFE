@@ -526,35 +526,71 @@ export class CompleteInspectionPage implements OnInit {
     await actionSheet.present();
   }
 
-  
   async selectImage(source: CameraSource) {
     const image = await Camera.getPhoto({
-      quality: 100,
+      quality: 50,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
-      source: source
+      source: source,
+      width: 4000,
+      height: 3000,
     });
-   // console.log('Image Data:', image);
-   const description = await this.promptForDescription();
-   const isDuplicate = this.imageSources.some(img => img.description.toLowerCase() === description?.toLowerCase());
+  
     if (image.dataUrl) {
+      // Resize the image before prompting for the description
+      const resizedImage = await this.resizeImage(image.dataUrl, 4000, 3000); // Adjust width and height as needed
+  
+      // Prompt for the description after resizing
+      const description = await this.promptForDescription();
+      const isDuplicate = this.imageSources.some(
+        (img) => img.description.toLowerCase() === description?.toLowerCase()
+      );
+  
       if (!isDuplicate && description) {
-        this.imageSources.push({ src: image.dataUrl, description });
-        if (this.imageSources.length==0) {
-          this.isPhotoAvailable=false; 
-        }else{
-
-          this.isPhotoAvailable=true;
-        }
+        this.imageSources.push({ src: resizedImage, description });
+        this.isPhotoAvailable = this.imageSources.length > 0;
+  
         console.log(this.imageSources);
-        
-        //console.log('Image Source Added:', { src: image.dataUrl, description });
-      }else{
-        //this.presentDuplicateDescriptionAlert();
-        return
+      } else {
+        // Handle duplicate description
+        return;
       }
     }
   }
+  
+  resizeImage(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = dataUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+  
+        let { width, height } = img;
+  
+        // Calculate aspect ratio to maintain the image proportions
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+  
+        ctx?.drawImage(img, 0, 0, width, height);
+  
+        resolve(canvas.toDataURL('image/jpeg', 0.5)); // Adjust the quality as needed
+      };
+    });
+  }
+  
 
   
 
