@@ -500,7 +500,6 @@ export class CompleteInspectionPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image Source',
       buttons: [
-
         //Commented Out the Photos
         /*{
           text: 'Photos',
@@ -526,7 +525,6 @@ export class CompleteInspectionPage implements OnInit {
     await actionSheet.present();
   }
 
-  
   async selectImage(source: CameraSource) {
     const image = await Camera.getPhoto({
       quality: 100,

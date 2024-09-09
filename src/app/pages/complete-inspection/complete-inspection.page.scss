@@ -15,6 +15,10 @@ ion-card-title {
   margin-left: 1% !important;
   margin-top: -5px !important;
   margin-bottom: -5px !important;
+  
+}
+.green-trail {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(800%) hue-rotate(70deg) brightness(90%) contrast(100%);
 }
 
 .red-text {
