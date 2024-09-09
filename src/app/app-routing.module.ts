@@ -68,7 +68,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/inspections/inspections.module').then( m => m.InspectionsPageModule)
   },
   {
-    path: 'complete-inspection/:caseId/:ecp',
+    path: 'complete-inspection/:caseId/:appType',
     loadChildren: () => import('./pages/complete-inspection/complete-inspection.module').then( m => m.CompleteInspectionPageModule)
   },
   {
@@ -247,8 +247,9 @@ const routes: Routes = [
   {
     path: 'summons/:caseId',
     loadChildren: () => import('./pages/summons/summons.module').then( m => m.SummonsPageModule)
-  },  {
-    path: 'section',
+  },
+  {
+    path: 'section/:caseId',
     loadChildren: () => import('./pages/section/section.module').then( m => m.SectionPageModule)
   },
 

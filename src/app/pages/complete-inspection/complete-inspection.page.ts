@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { StorageService } from 'src/app/util/service/storage.service';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ViewImagePage } from '../view-image/view-image.page';
 import { environment } from 'src/environments/environment.prod';
@@ -13,6 +13,12 @@ import { Geolocation } from '@capacitor/geolocation';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
+
+
+
+
 
 
 @Component({
@@ -43,6 +49,9 @@ export class CompleteInspectionPage implements OnInit {
   caseId: any;
   caseNo: any;
 
+
+
+
   private geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?key=${environment.googleMapsApiKey}";
 
   inspectionReport: any;
@@ -63,7 +72,8 @@ export class CompleteInspectionPage implements OnInit {
     private spinner: NgxSpinnerService,
     private offlineService: OfflineService,
     private popoverController: PopoverController,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private imageStorageService: StorageService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -137,21 +147,21 @@ export class CompleteInspectionPage implements OnInit {
   }
 
   ecp:string | null=""
-  ecpCut:any
+  appType:any
   
 
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
       console.log(this.caseNo);
-      this.ecp=param.get('ecp');
-      console.log(this.ecp);
+      this.appType=param.get('appType');
+      console.log(this.appType);
       
     });
 
-    this.ecpCut=this.ecp?.slice(-2)
+    
 
-    if(this.ecpCut=="SP")
+    if(this.appType=="ApplicationForSpecialEvent")
     {
       this.communityConsult();
     }
@@ -164,7 +174,22 @@ export class CompleteInspectionPage implements OnInit {
     this.completeReportForm.patchValue({
       complianceSectionA:'N/A',
       complianceSectionB:'N/A',
-      complianceSectionC:'N/A'
+      complianceSectionC:'N/A',
+      ablutionFacilities:'N/A',
+      storageRoom:'N/A',
+      demarcatedDrinkingArea:'N/A',
+      displayAreaShelves:'N/A',
+      counterPointOfSake:'N/A',
+      buildingStructureAndMeansOfCommunication:'N/A',
+      rightToOccupyPremises:'N/A',
+      applicant:'N/A',
+      rightToOccupy:'3',
+      leaseAttached:'3',
+      situatedInRightAddress:'3',
+      inLineWithSubmittedApplication:'3',
+      premisesSuitable:'3',
+      ablutionFacilityInOrder:'3',
+      readyForBusiness:'3',
 
     })
   }
@@ -222,7 +247,7 @@ export class CompleteInspectionPage implements OnInit {
   }
   isFormValid(): boolean {
     // Check if it's a special event
-    if (this.ecpCut=="SP") {
+    if (this.appType=="ApplicationForSpecialEvent") {
       // For special event, skip 'documents' and 'comments' validation
       return this.isGeneralFormValid() &&
              this.isApplicantFormValid() &&
@@ -501,6 +526,7 @@ export class CompleteInspectionPage implements OnInit {
     await actionSheet.present();
   }
 
+  
   async selectImage(source: CameraSource) {
     const image = await Camera.getPhoto({
       quality: 100,
@@ -529,6 +555,10 @@ export class CompleteInspectionPage implements OnInit {
       }
     }
   }
+
+  
+
+
 
   convertSrcToFile(dataURL: string, filename: string): File {
     const arr = dataURL.split(',');
