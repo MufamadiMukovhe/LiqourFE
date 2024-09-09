@@ -28,8 +28,7 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGeneralFormValid()"></ion-img>
-
+      <ion-img [src]="isGeneralFormValid() ? '../../../assets/Images/Green Step trail.svg' : '../../../assets/Images/Step Trail.svg'" class="step"></ion-img>
       <div class="header-content">
         <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -40,7 +39,6 @@
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
 
-   <!-- This block shows when ecpCut is NOT 'SP' -->
 <div *ngIf="ecpCut !== 'SP'">
   <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
 
