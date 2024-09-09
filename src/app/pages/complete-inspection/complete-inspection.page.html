@@ -4,101 +4,84 @@
     <div class="header-container">
       <a [routerLink]="['/inspections']" class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
       <h1 class="header-text">Complete Inspection</h1>
-    </div>
-    <ion-card>
+    </div><ion-card>
       <div class="header-content">
         <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title
-          (click)="toggleForms('reports')"
-          [class.red-text]="isInspectionReport()">
+        <ion-card-title (click)="toggleForms('reports')" [class.red-text]="isInspectionReport()">
           Inspection report
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isInspectionReport()"></ion-img>
+    
       <div class="header-content">
         <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('general')"
-        [class.red-text]="isGeneralFormValid()">
-          Coodinates Capture
+        <ion-card-title (click)="toggleForms('general')" [class.red-text]="isGeneralFormValid()">
+          Coordinates Capture
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGeneralFormValid()"></ion-img>
-
+    
       <div class="header-content">
         <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('applicant')"
-        [class.red-text]="isApplicantFormValid()">
+        <ion-card-title (click)="toggleForms('applicant')" [class.red-text]="isApplicantFormValid()">
           Verification of the applicant
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isApplicantFormValid()"></ion-img>
+    
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+        <div class="header-content">
+          <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('document')" [class.red-text]="isDocumentationFormValid()">
+            Verification of the Premises Against Submitted Documentation
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
 
-   
-<div *ngIf="appType!=='ApplicationForSpecialEvent'">
-  <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
-  <div class="header-content">
-    <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-    <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
-    <ion-card-title (click)="toggleForms('document')" [class.red-text]="isDocumentationFormValid()">
-      Verification of the Premises Against Submitted Documentation
-    </ion-card-title>
-
-    <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-  </div>
-</div>
-
-
-
-
-<div *ngIf="appType!=='ApplicationForSpecialEvent'">
-  <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
-  <div class="header-content">
-    <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-    <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
-    <ion-card-title (click)="toggleForms('comments')"
-        [class.red-text]="isCommentForm()">
-        Comments on Applicant, Premises, Community Consultation and Objections
-        </ion-card-title>
-
-    <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-  </div>
-</div>
-   
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
-      <div class="header-content" >
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
+      </div>
+    
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+        <div class="header-content">
+          <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('comments')" [class.red-text]="isCommentForm()">
+            Comments on Applicant, Premises, Community Consultation and Objections
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
+      </div>
+    
+      <div class="header-content">
         <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('community')"
-        [class.red-text]="isCommunityFormValid()">
+        <ion-card-title (click)="toggleForms('community')" [class.red-text]="isCommunityFormValid()">
           Verification of the Community Consultation Process
-        </ion-card-title >
+        </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-      
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
+
       <div class="header-content">
         <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('photos')"
-        [class.red-text]="isPhotoAvailable">
+        <ion-card-title (click)="toggleForms('photos')" [class.red-text]="isPhotoAvailable">
           Photos
-        </ion-card-title >
+        </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-        
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
+
       <div class="header-content">
         <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -113,8 +96,6 @@
       <ion-button class="buttonClass2" (click)="onSubmit()" [disabled]="!isFormValid()">
         Submit
       </ion-button>
-
-      
     </ion-card>
   </div>
 
@@ -452,7 +433,7 @@
     <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
         Next
     </button>
-</div>
+    </div>
 
 
   </div>
