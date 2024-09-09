@@ -35,8 +35,7 @@
       </div>
       <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isApplicantFormValid()"></ion-img>
     
-      <div *ngIf="appType !== 'SP'">
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
         <div class="header-content">
           <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
           <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -45,10 +44,11 @@
           </ion-card-title>
           <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
         </div>
+
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
       </div>
     
-      <div *ngIf="appType !== 'SP'">
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
         <div class="header-content">
           <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
           <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -57,9 +57,9 @@
           </ion-card-title>
           <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
         </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
       </div>
     
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
       <div class="header-content">
         <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -68,8 +68,9 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-    
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
+
       <div class="header-content">
         <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -78,7 +79,9 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-    
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
+
       <div class="header-content">
         <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -430,7 +433,7 @@
     <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
         Next
     </button>
-</div>
+    </div>
 
 
   </div>
