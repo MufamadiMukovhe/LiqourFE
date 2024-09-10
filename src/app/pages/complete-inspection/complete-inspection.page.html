@@ -4,92 +4,86 @@
     <div class="header-container">
       <a [routerLink]="['/inspections']" class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
       <h1 class="header-text">Complete Inspection</h1>
-    </div>
-    <ion-card>
+    </div><ion-card>
       <div class="header-content">
-        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title
-          (click)="toggleForms('reports')"
-          [class.red-text]="isInspectionReport()">
+        <ion-card-title (click)="toggleForms('reports')" [class.red-text]="isInspectionReport()">
           Inspection report
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isInspectionReport()"></ion-img>
+    
       <div class="header-content">
-        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('general')"
-        [class.red-text]="isGeneralFormValid()">
-          Coodinates Capture
+        <ion-card-title (click)="toggleForms('general')" [class.red-text]="isGeneralFormValid()">
+          Coordinates Capture
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGeneralFormValid()"></ion-img>
+    
       <div class="header-content">
-        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('applicant')"
-        [class.red-text]="isApplicantFormValid()">
+        <ion-card-title (click)="toggleForms('applicant')" [class.red-text]="isApplicantFormValid()">
           Verification of the applicant
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isApplicantFormValid()"></ion-img>
+    
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+        <div class="header-content">
+          <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('document')" [class.red-text]="isDocumentationFormValid()">
+            Verification of the Premises Against Submitted Documentation
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
 
-      <div class="header-content" *ngIf="ecpCut!=='SP'">
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-        <ion-img *ngIf="isDocumentationFormValid() " src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isDocumentationFormValid() " src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
-        <ion-card-title (click)="toggleForms('document')"
-        [class.red-text]="isDocumentationFormValid()">
-          Verification of the Premises Against Submitted Documentation
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
       </div>
-
-
-      <div class="header-content" *ngIf="ecpCut!=='SP'">
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-        <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
-        <ion-card-title (click)="toggleForms('comments')"
-        [class.red-text]="isCommentForm()">
-        Comments on Applicant, Premises, Community Consultation and Objections
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+    
+      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+        <div class="header-content">
+          <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('comments')" [class.red-text]="isCommentForm()">
+            Comments on Applicant, Premises, Community Consultation and Objections
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-
-      <div class="header-content" >
-        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+    
+      <div class="header-content">
+        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('community')"
-        [class.red-text]="isCommunityFormValid()">
+        <ion-card-title (click)="toggleForms('community')" [class.red-text]="isCommunityFormValid()">
           Verification of the Community Consultation Process
-        </ion-card-title >
+        </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
-      
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
+
       <div class="header-content">
-        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('photos')"
-        [class.red-text]="isPhotoAvailable">
+        <ion-card-title (click)="toggleForms('photos')" [class.red-text]="isPhotoAvailable">
           Photos
-        </ion-card-title >
+        </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-        
       </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step"></ion-img>
+
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
+
       <div class="header-content">
-        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
         <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationFormValid()">
@@ -102,8 +96,6 @@
       <ion-button class="buttonClass2" (click)="onSubmit()" [disabled]="!isFormValid()">
         Submit
       </ion-button>
-
-      
     </ion-card>
   </div>
 
@@ -237,9 +229,6 @@
     </div>
       <hr>
   
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-  
-    <!-- Repeat similar blocks for other questions with appropriate formControlName -->
     <span>(c) Has the applicant indicated that this particular person will be at the premises?</span>
     <ion-card-title class="general-name">
       <ion-grid>
@@ -440,13 +429,11 @@
     <hr>
     </ion-card>
 
-    <div *ngIf="ecpCut">
-    <button class="next-button" 
-            (click)="ecpCut ? toggleForms('community') : toggleForms('document')" 
-            [disabled]="!isApplicantFormValid()">
+    <div *ngIf="appType">
+    <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
         Next
     </button>
-</div>
+    </div>
 
 
   </div>
@@ -774,7 +761,13 @@
     </div>
       <hr>
     </ion-card>
-    <button class="next-button" (click)="toggleForms('comments')" [disabled]="!isDocumentationFormValid()">Next</button>
+    <ng-container *ngIf="appType == 'ApplicationForSpecialEvent'; else spButton">
+      <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
+    </ng-container>
+
+    <ng-template #spButton>
+      <button class="next-button" (click)="toggleForms('comments')" [disabled]="!isDocumentationFormValid()">Next</button>
+  </ng-template>
 
   </div>
   
@@ -1179,6 +1172,12 @@
                         <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
                     
                   </ion-row>
                 </ion-radio-group>
@@ -1334,44 +1333,44 @@
     <h1 class="header-text">Comments</h1>
   </div>
   
-      <ion-label>Applicant</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'">Applicant</ion-label>
       <ion-item>
-      <ion-input placeholder="Applicant" formControlName="applicant"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Applicant" formControlName="applicant"></ion-input>
       </ion-item>
-      <ion-label position="floating">Premises</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Premises</ion-label>
       <ion-item>
-        <ion-input placeholder="Right to Occupy Premises" formControlName="rightToOccupyPremises"></ion-input>
+        <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Right to Occupy Premises" formControlName="rightToOccupyPremises"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input placeholder="Building structure and means of communication" formControlName="buildingStructureAndMeansOfCommunication"></ion-input>
+          <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Building structure and means of communication" formControlName="buildingStructureAndMeansOfCommunication"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Counter/Point of Sake" formControlName="counterPointOfSake"></ion-input>
+            <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Counter/Point of Sake" formControlName="counterPointOfSake"></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input placeholder="Display Area/Shelves" formControlName="displayAreaShelves"></ion-input>
+              <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Display Area/Shelves" formControlName="displayAreaShelves"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-input placeholder="Demarcated Drinking Area" formControlName="demarcatedDrinkingArea"></ion-input>
+                <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Demarcated Drinking Area" formControlName="demarcatedDrinkingArea"></ion-input>
                 </ion-item>
                 <ion-item>
-                  <ion-input placeholder="Storage Room" formControlName="storageRoom"></ion-input>
+                  <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Storage Room" formControlName="storageRoom"></ion-input>
                   </ion-item>
                   <ion-item>
-                    <ion-input placeholder="Ablution facilities" formControlName="ablutionFacilities"></ion-input>
+                    <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Ablution facilities" formControlName="ablutionFacilities"></ion-input>
                     </ion-item>
    
      
-      <ion-label *ngIf="ecpCut!=='SP'" position="floating">Community Consultation</ion-label>
+      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Community Consultation</ion-label>
       <ion-item>
-      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
       </ion-item>
      
       <ion-item>
-      <ion-input *ngIf="ecpCut!=='SP'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
+      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
     </ion-item>
 
-    <ion-item *ngIf="ecpCut!=='SP'" class="last-input">
+    <ion-item *ngIf="appType!=='ApplicationForSpecialEvent'" class="last-input">
       <ion-input placeholder="Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionC"></ion-input>
     </ion-item>
 

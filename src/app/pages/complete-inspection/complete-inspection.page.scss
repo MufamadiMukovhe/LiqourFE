@@ -6,19 +6,23 @@ ion-card-title {
     font-family: 'Inter', sans-serif;
 }
 
-
 .vector {
     width: 12px;
     height: 12px;
 }
-.step{
-  width: 45px;
-  margin-left: 1%;
-  margin-top: -5px;
-  margin-bottom: -5px;
+.step {
+  width: 45px !important;
+  margin-left: 1% !important;
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+  
 }
+.green-trail {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(800%) hue-rotate(70deg) brightness(90%) contrast(100%);
+}
+
 .red-text {
-  color: #822B23;
+  color: green;
   font-weight: 600;
 
 }

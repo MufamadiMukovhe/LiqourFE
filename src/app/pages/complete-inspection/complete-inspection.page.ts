@@ -1,11 +1,11 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { StorageService } from 'src/app/util/service/storage.service';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ViewImagePage } from '../view-image/view-image.page';
 import { environment } from 'src/environments/environment.prod';
@@ -13,6 +13,13 @@ import { Geolocation } from '@capacitor/geolocation';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
+
+
+
+
+
 
 @Component({
   selector: 'app-complete-inspection',
@@ -42,6 +49,9 @@ export class CompleteInspectionPage implements OnInit {
   caseId: any;
   caseNo: any;
 
+
+
+
   private geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?key=${environment.googleMapsApiKey}";
 
   inspectionReport: any;
@@ -62,7 +72,8 @@ export class CompleteInspectionPage implements OnInit {
     private spinner: NgxSpinnerService,
     private offlineService: OfflineService,
     private popoverController: PopoverController,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private imageStorageService: StorageService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -136,21 +147,21 @@ export class CompleteInspectionPage implements OnInit {
   }
 
   ecp:string | null=""
-  ecpCut:any
+  appType:any
   
 
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
       console.log(this.caseNo);
-      this.ecp=param.get('ecp');
-      console.log(this.ecp);
+      this.appType=param.get('appType');
+      console.log(this.appType);
       
     });
 
-    this.ecpCut=this.ecp?.slice(-2)
+    
 
-    if(this.ecpCut=="SP")
+    if(this.appType=="ApplicationForSpecialEvent")
     {
       this.communityConsult();
     }
@@ -163,7 +174,22 @@ export class CompleteInspectionPage implements OnInit {
     this.completeReportForm.patchValue({
       complianceSectionA:'N/A',
       complianceSectionB:'N/A',
-      complianceSectionC:'N/A'
+      complianceSectionC:'N/A',
+      ablutionFacilities:'N/A',
+      storageRoom:'N/A',
+      demarcatedDrinkingArea:'N/A',
+      displayAreaShelves:'N/A',
+      counterPointOfSake:'N/A',
+      buildingStructureAndMeansOfCommunication:'N/A',
+      rightToOccupyPremises:'N/A',
+      applicant:'N/A',
+      rightToOccupy:'3',
+      leaseAttached:'3',
+      situatedInRightAddress:'3',
+      inLineWithSubmittedApplication:'3',
+      premisesSuitable:'3',
+      ablutionFacilityInOrder:'3',
+      readyForBusiness:'3',
 
     })
   }
@@ -221,7 +247,7 @@ export class CompleteInspectionPage implements OnInit {
   }
   isFormValid(): boolean {
     // Check if it's a special event
-    if (this.ecpCut=="SP") {
+    if (this.appType=="ApplicationForSpecialEvent") {
       // For special event, skip 'documents' and 'comments' validation
       return this.isGeneralFormValid() &&
              this.isApplicantFormValid() &&
@@ -474,7 +500,6 @@ export class CompleteInspectionPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image Source',
       buttons: [
-
         //Commented Out the Photos
         /*{
           text: 'Photos',
@@ -502,32 +527,73 @@ export class CompleteInspectionPage implements OnInit {
 
   async selectImage(source: CameraSource) {
     const image = await Camera.getPhoto({
-      quality: 100,
+      quality: 50,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
-      source: source
+      source: source,
+      width: 4000,
+      height: 3000,
     });
-   // console.log('Image Data:', image);
-   const description = await this.promptForDescription();
-   const isDuplicate = this.imageSources.some(img => img.description.toLowerCase() === description?.toLowerCase());
+  
     if (image.dataUrl) {
+      // Resize the image before prompting for the description
+      const resizedImage = await this.resizeImage(image.dataUrl, 4000, 3000); // Adjust width and height as needed
+  
+      // Prompt for the description after resizing
+      const description = await this.promptForDescription();
+      const isDuplicate = this.imageSources.some(
+        (img) => img.description.toLowerCase() === description?.toLowerCase()
+      );
+  
       if (!isDuplicate && description) {
-        this.imageSources.push({ src: image.dataUrl, description });
-        if (this.imageSources.length==0) {
-          this.isPhotoAvailable=false; 
-        }else{
-
-          this.isPhotoAvailable=true;
-        }
+        this.imageSources.push({ src: resizedImage, description });
+        this.isPhotoAvailable = this.imageSources.length > 0;
+  
         console.log(this.imageSources);
-        
-        //console.log('Image Source Added:', { src: image.dataUrl, description });
-      }else{
-        //this.presentDuplicateDescriptionAlert();
-        return
+      } else {
+        // Handle duplicate description
+        return;
       }
     }
   }
+  
+  resizeImage(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = dataUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+  
+        let { width, height } = img;
+  
+        // Calculate aspect ratio to maintain the image proportions
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+  
+        ctx?.drawImage(img, 0, 0, width, height);
+  
+        resolve(canvas.toDataURL('image/jpeg', 0.5)); // Adjust the quality as needed
+      };
+    });
+  }
+  
+
+  
+
+
 
   convertSrcToFile(dataURL: string, filename: string): File {
     const arr = dataURL.split(',');
