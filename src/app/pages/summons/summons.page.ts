@@ -40,13 +40,17 @@ public getSummons(caseId:any)
 {
   let urlSummons =environment.eclbDomain+"api/general/get-summons/"+caseId
 
+  this.spinner.show();
 
   this.http.get<any>(urlSummons, {headers: headersSecure}).subscribe(response=>
   {
 
+    
+
     console.log(response);
 
     this.collectSummons=response;
+    this.spinner.hide();
     
  })
 
@@ -55,11 +59,11 @@ public getSummons(caseId:any)
   public onSubmit(summon:any): void {
     this.spinner.show();
   
-    setTimeout(() => {
-
-      this.route.navigate([`/page-2/${this.caseNo}/${summon}`]);
-      this.spinner.hide();
-    }, 2000);
+    
+    this.spinner.hide();
+    this.route.navigate([`/page-2/${this.caseNo}/${summon}`]);
+      
+    
   }
 
 }

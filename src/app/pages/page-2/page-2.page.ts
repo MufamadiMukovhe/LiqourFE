@@ -71,20 +71,22 @@ export class Page2Page implements OnInit {
 
     this.http.put(url, formData).subscribe(response => {
 
-      this.aRoute.navigate([`/summons/${this.caseNo}`])
+
       this.spinner.hide();
+      alert("Complete")
+      this.aRoute.navigate([`/summons/${this.caseNo}`])
+      
       
     }, error => {
 
       console.log(error);
       this.spinner.hide();
+      alert("Something went wrong")
+      
     })
 
   
 
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 2000);
   }
   
   signaturePad!: SignaturePad;
