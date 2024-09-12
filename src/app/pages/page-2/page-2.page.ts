@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import SignaturePad from 'signature_pad';
 import { headers, headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
-
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-page-2',
@@ -19,41 +18,41 @@ export class Page2Page implements OnInit {
   page2Form: FormGroup;
   alertType!: string;
   alertMessage!: string;
-  showAlert!: boolean;
-  caseid:any
+  caseid: any;
   summons: any;
-  summon:any;
-  constructor(private fb: FormBuilder,private router: ActivatedRoute, private spinner: NgxSpinnerService, private http: HttpClient, private aRoute: Router,) {
+  summon: any;
+  constructor(
+    private fb: FormBuilder,
+    private router: ActivatedRoute,
+    private alertController: AlertController,
+    private spinner: NgxSpinnerService,
+    private http: HttpClient,
+    private aRoute: Router,
+  ) {
     this.page2Form = this.fb.group({
-      //trueCopyTo: ['', Validators.required],
-      receivedBy:['', Validators.required],
-      toBeServedTo:['', Validators.required],
-      time:['', Validators.required],
-      //inspector: ['', Validators.required],
-     //fullNames:['', Validators.required],
-      //clientSignature:['', Validators.required]
-    })
-   }
+      receivedBy: ['', Validators.required],
+      toBeServedTo: ['', Validators.required],
+      time: ['', Validators.required],
+    });
+  }
 
-   caseNo:any
-   
+  caseNo: any;
+
   ngOnInit() {
-
     this.router.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
 
       this.router.paramMap.subscribe(param => {
         this.summon = param.get('summon');
-      })
+      });
+    });
+  }
 
-  })
-}
-
-
-  public onSubmit(): void {
+  public async onSubmit(): Promise<void> {
     this.spinner.show();
-    if(!this.signatureImg && this.page2Form.invalid){
-      this.showAlertMessage('error', 'please enter all fields');
+    if (!this.signatureImg && this.page2Form.invalid) {
+      await this.showAlert('Error', 'Please enter all fields');
+      this.spinner.hide();
       return;
     }
     this.summons = this.summons || {};
@@ -62,38 +61,26 @@ export class Page2Page implements OnInit {
     const formData = new FormData();
     formData.append('update', new Blob([JSON.stringify(this.summons)], { type: 'application/json' }));
 
-    const imgFile= this.convertSrcToFile(this.signatureImg, `signature.jpg`);
+    const imgFile = this.convertSrcToFile(this.signatureImg, `signature.jpg`);
     formData.append('signature', imgFile);
 
-    
+    const url = environment.eclbDomain + "api/general/update-summons/" + this.caseNo + "/" + this.summon;
 
-    let url = environment.eclbDomain+"api/general/update-summons/"+this.caseNo+"/"+this.summon;
-
-    this.http.put(url, formData).subscribe(response => {
-
-
+    this.http.put(url, formData).subscribe(async response => {
       this.spinner.hide();
-      alert("Complete")
-      this.aRoute.navigate([`/summons/${this.caseNo}`])
-      
-      
-    }, error => {
-
+      await this.showAlert('Complete', 'Summon served');
+      this.aRoute.navigate([`/summons/${this.caseNo}`]);
+    }, async error => {
       console.log(error);
       this.spinner.hide();
-      alert("Something went wrong")
-      
-    })
-
-  
-
+      await this.showAlert('Error', 'Something went wrong');
+    });
   }
-  
+
   signaturePad!: SignaturePad;
   @ViewChild('canvas')
   canvasEl!: ElementRef;
   signatureImg!: string;
-
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
@@ -102,7 +89,6 @@ export class Page2Page implements OnInit {
   startDrawing(event: Event) {
     console.log(event);
     // works in device not in browser
-
   }
 
   moved(event: Event) {
@@ -116,10 +102,7 @@ export class Page2Page implements OnInit {
   async savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
-
-    
-    this.showAlertMessage('error', 'Signature Served');
-    
+    await this.showAlert('Success', 'Signature saved');
   }
 
   convertSrcToFile(dataURL: string, filename: string): File {
@@ -127,35 +110,30 @@ export class Page2Page implements OnInit {
     if (arr.length < 2) {
       throw new Error('Invalid data URL');
     }
-    
+
     const mimeMatch = arr[0].match(/:(.*?);/);
     if (!mimeMatch || mimeMatch.length < 2) {
       throw new Error('Unable to extract MIME type');
     }
-    
+
     const mime = mimeMatch[1];
-    
+
     const bstr = atob(arr[1]);
     const n = bstr.length;
     const u8arr = new Uint8Array(n);
     for (let i = 0; i < n; i++) {
       u8arr[i] = bstr.charCodeAt(i);
     }
-    
-    return new File([u8arr], filename, { type: mime });
+
+    return new File([u8arr], filename, { type: mime });
   }
 
-
-   showAlertMessage(type: string, message: string) {
-    this.alertType = type;
-    this.alertMessage = message;
-    this.showAlert = true;
-
-    setTimeout(() => {
-      this.showAlert = false;
-    }, 3000); 
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
-  }
-
-
-
+}

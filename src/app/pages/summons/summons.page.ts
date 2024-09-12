@@ -21,7 +21,6 @@ export class SummonsPage implements OnInit {
    collectSummons:any[]=[]
 
   ngOnInit() {
-
     
     this.router.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
@@ -45,8 +44,6 @@ public getSummons(caseId:any)
   this.http.get<any>(urlSummons, {headers: headersSecure}).subscribe(response=>
   {
 
-    
-
     console.log(response);
 
     this.collectSummons=response;
@@ -58,12 +55,9 @@ public getSummons(caseId:any)
 
   public onSubmit(summon:any): void {
     this.spinner.show();
-  
-    
     this.spinner.hide();
     this.route.navigate([`/page-2/${this.caseNo}/${summon}`]);
-      
-    
+  
   }
 
 }
