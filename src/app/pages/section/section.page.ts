@@ -72,15 +72,21 @@ export class SectionPage implements OnInit {
 
     let url = environment.eclbDomain+"api/general/update-section-notice/"+this.caseNo;
 
+
     this.http.put(url, formData).subscribe(response => {
 
-      this.aRoute.navigate([`/my-tasks`])
+      
       this.spinner.hide();
+      alert("Complete");
+      this.aRoute.navigate([`/my-tasks`])
+      
       
     }, error => {
 
       console.log(error);
       this.spinner.hide();
+
+      alert("Something went wrong. Try again");
     })
 
   
