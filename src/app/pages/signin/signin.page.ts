@@ -50,14 +50,20 @@ export class SigninPage implements OnInit {
     this.email = this.loginForm.get('email')?.value;
     this.password = this.loginForm.get('password')?.value;
 
-    if (!this.email) {
+    if (this.email ==null) {
       console.error('Email is undefined or empty');
       return;
     }
     else if(this.email.includes('@'))
     {
-      alert("Not authorized")
-      return;
+      //alert("Not authorized")
+
+      let num=this.email.indexOf("@");
+      console.log(num)
+
+      this.email=this.email.substring(0,num)
+
+      
     }
 
     this.spinner.show();
