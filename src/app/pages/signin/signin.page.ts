@@ -42,6 +42,8 @@ export class SigninPage implements OnInit {
   password: string = '';
 
   public login(): void {
+
+
     if (this.loginForm.invalid) {
       console.error('Form is invalid');
       return;
@@ -50,31 +52,27 @@ export class SigninPage implements OnInit {
     this.email = this.loginForm.get('email')?.value;
     this.password = this.loginForm.get('password')?.value;
 
+
     if (this.email ==null) {
       console.error('Email is undefined or empty');
       return;
     }
     else if(this.email.includes('@'))
     {
-      //alert("Not authorized")
-
+      
       let num=this.email.indexOf("@");
-      console.log(num)
 
       this.email=this.email.substring(0,num)
-
       
     }
 
     this.spinner.show();
     this.auth.username = this.email;
 
-   
-    setTimeout(() => {
-      this.getOpt();
+    this.getOpt();
       
    
-    }, 2000); 
+   
 
 
   }
@@ -94,30 +92,30 @@ export class SigninPage implements OnInit {
           {
             this.router.navigate(['/outlet-dashboard']);
           }
-          else{
-            localStorage.removeItem('isLoggedOut'); // User is now logged in
-           
-          
+          else
+          {
+                  localStorage.removeItem('isLoggedOut'); 
+                
+                
+                  let message = new Message();
+                  message.message = 'We have sent OTP to your email';
+                  this.otp = res.message;
+                  this.getotp = res.message;
 
-        let message = new Message();
-        message.message = 'We have sent OTP to your email';
-        this.otp = res.message;
-        this.getotp = res.message;
+                  this.saveData();
 
-        this.saveData();
+                  localStorage.setItem('username', this.email);
+                  localStorage.setItem('otp', this.getotp);
 
-        localStorage.setItem('username', this.email);
-        localStorage.setItem('otp', this.getotp);
+                  
+                  setTimeout(() => {
 
-        // Hide spinner after OTP retrieval
-        setTimeout(() => {
+                    this.spinner.hide();
+                    this.router.navigateByUrl('/verify');
+                    this.loginForm.reset();
+                  }, 2000); 
 
-          this.spinner.hide();
-          this.router.navigateByUrl('/verify');
-          this.loginForm.reset();
-        }, 2000); 
-
-      }
+          }
       },
       error: (error: any) => {
 
@@ -125,10 +123,13 @@ export class SigninPage implements OnInit {
         
         this.spinner.hide();
 
-        let errorMessage = 'Invalid email.';
+        let errorMessage;
 
         if (error.status === 0) {
           errorMessage = 'Network error. Please check your internet connection.';
+        }
+        else{
+          errorMessage = 'Invalid email.';
         }
         this.showAlertMessage('error', errorMessage);
       }
