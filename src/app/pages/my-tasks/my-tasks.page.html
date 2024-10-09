@@ -14,6 +14,8 @@
       <p class="quick-action">My Tasks</p>
       <p class="new">New</p>
 
+      <p *ngIf="collect.le"></p>
+
       <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName)">
         <div *ngIf="task.status!=='Complete'">
         <ion-row>
