@@ -14,7 +14,14 @@
       <p class="quick-action">My Tasks</p>
       <p class="new">New</p>
 
-      <p *ngIf="collect.le"></p>
+      <ion-card class="no-task-card">
+        <div *ngIf="collect.length == 0" class="center-content">
+          <ion-img src="../../../assets/Images/Verify Email 2.svg" class="no-task-img"></ion-img>
+          <p class="email-center new">No task available at the moment.</p>
+
+        </div>
+      </ion-card>
+      
 
       <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName)">
         <div *ngIf="task.status!=='Complete'">
