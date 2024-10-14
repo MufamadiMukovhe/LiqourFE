@@ -14,7 +14,8 @@
       <p class="quick-action">My Tasks</p>
       <p class="new">New</p>
 
-      <div *ngIf="collect.length==0"> <p>No Task available</p></div>
+      <div *ngIf="collect.length==0">
+        <p class="myTask">Well, this is awkward... Looks like the tasks went on vacation!</p></div>
 
       <div *ngIf="collect">
       <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName)">

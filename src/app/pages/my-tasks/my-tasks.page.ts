@@ -45,22 +45,16 @@ export class MyTasksPage implements OnInit {
       this.role=this.decodedToken.scope;
       console.log(this.role);
       
-    
-
-      console.log(environment.eclbDomain+"api/general/get-inbox");
       
     
     this.http.get<any[]>(environment.eclbDomain+"api/general/get-inbox", { headers: newHeader }).subscribe(
       response => {
-        console.log(response);
 
         if(this.role==='INSPECTOR')
           {
             //this.collect = response;
             this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report');
             this.collect = this.collect.filter(item => item.status!=='Complete')
-            
-            console.log(this.collect);
             
           }
           else{
@@ -84,9 +78,6 @@ export class MyTasksPage implements OnInit {
 
   navigateToTask(action: any, caseId:any, appType:any)
     {
-
-      console.log(appType);
-      
       
       switch (action) {
         case 'Attach and / or Verify WC Report':

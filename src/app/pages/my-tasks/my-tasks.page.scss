@@ -143,6 +143,24 @@ ion-col::before {
     z-index: 999; /* Below the loader but above the content */
     pointer-events: none; /* Allow clicks to pass through */
   }
+
+  .myTask
+  {
+
+    text-align: center;
+    margin-top: 5%;
+    font-family: 'Inter', sans-serif;
+    color: #2E3A59;
+    font-weight: 600;
+    font-size: 17px;
+
+  }
+
+  .taskImg
+  {
+    max-width: 20%;
+    max-height: 20%;
+  }
   
   
   
