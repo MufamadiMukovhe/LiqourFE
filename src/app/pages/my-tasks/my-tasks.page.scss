@@ -144,23 +144,30 @@ ion-col::before {
     pointer-events: none; /* Allow clicks to pass through */
   }
 
-  .myTask
-  {
-
-    text-align: center;
-    margin-top: 5%;
-    font-family: 'Inter', sans-serif;
-    color: #2E3A59;
-    font-weight: 600;
-    font-size: 17px;
-
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+  }
+  
+  .no-task {
+    text-align: center; 
+    font-size: 18px;     
+    color: #666;         
+  }
+  .no-task-card{
+    background-color: #fff;
+    border: none;
+    margin-top: 75px;
   }
 
-  .taskImg
-  {
-    max-width: 20%;
-    max-height: 20%;
+  .no-task-img{
+    
+    height: 120px;
+    width: 120px;
   }
+  
   
   
   
