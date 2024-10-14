@@ -65,14 +65,14 @@ ion-col::before {
     clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%); 
 }
 
-.center-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    text-align: left; 
-    height: 100%; 
-  }
+// .center-content {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: left;
+//     align-items: left;
+//     text-align: left; 
+//     height: 100%; 
+//   }
   
   .icon-image {
     width: 25px; 

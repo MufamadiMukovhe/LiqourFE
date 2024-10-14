@@ -55,15 +55,9 @@ export class MyTasksPage implements OnInit {
             //this.collect = response;
             this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report');
             this.collect = this.collect.filter(item => item.status!=='Complete')
-<<<<<<< HEAD
-=======
-            
-<<<<<<< HEAD
-=======
+
             console.log(this.collect);
-            
->>>>>>> 9d595379677ad780424ea21757acd74dd9fc378a
->>>>>>> a7a7156abdcbcd27fbbf28c46f5cb44f8613332c
+ 
           }
           else{
             this.collect = response;
