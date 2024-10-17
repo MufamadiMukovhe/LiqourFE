@@ -25,11 +25,15 @@
 
     
       <ion-button class="buttonClass" type="submit"  (click)="login()">Log In</ion-button>
-
+     
     </form>
+    
     <p class="have-account">Don't have an account, <span class="link" (click)="toRegister()">Sign Up</span></p>
 
+    <div *ngIf="showAlert" [ngClass]="alertType === 'success' ? 'alert alert-success' : 'alert alert-danger'">
+      {{ alertMessage }}
+  </div>
    
   </div>
-  
+ 
 </ion-content>
