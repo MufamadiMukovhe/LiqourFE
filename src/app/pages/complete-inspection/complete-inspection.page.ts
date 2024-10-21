@@ -156,10 +156,8 @@ export class CompleteInspectionPage implements OnInit {
       console.log(this.caseNo);
       this.appType=param.get('appType');
       console.log(this.appType);
-      
     });
 
-    
 
     if(this.appType=="ApplicationForSpecialEvent")
     {
@@ -223,9 +221,7 @@ export class CompleteInspectionPage implements OnInit {
     const formObjectionsInspection = this.completeReportForm.get('formObjectionsInspection');  
     return communityFields.every(field => this.completeReportForm.get(field)?.valid);
   }
-
   
-
    //Recommendation Valid
    isRecommendationFormValid(): boolean { 
     const recommendationFields = ['recommendation','comments'];
