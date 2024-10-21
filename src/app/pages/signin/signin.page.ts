@@ -129,7 +129,7 @@ export class SigninPage implements OnInit {
           errorMessage = 'Network error. Please check your internet connection.';
         }
         else{
-          errorMessage = 'Invalid email.';
+          errorMessage = 'Invalid username. Please enter a valid username.';
         }
         this.showAlertMessage('error', errorMessage);
       }
