@@ -153,20 +153,26 @@ export class CompleteInspectionPage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
-      console.log(this.caseNo);
-      this.appType=param.get('appType');
-      console.log(this.appType);
+      this.appType = param.get('appType');
+  
+      if (this.appType === 'ApplicationForSpecialEvent') {
+        this.communityConsult();
+      }
+      /*
+      const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
+      if (savedForm) {
+        this.completeReportForm.patchValue(JSON.parse(savedForm));
+      }
+  
+      // Auto-save form on value changes, using caseId as the key
+      this.completeReportForm.valueChanges.subscribe(value => {
+        localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
+      });*/
     });
-
-
-    if(this.appType=="ApplicationForSpecialEvent")
-    {
-      this.communityConsult();
-    }
-    
+  
     this.getCurrentPosition();
   }
-
+  
   communityConsult()
   {
     this.completeReportForm.patchValue({
