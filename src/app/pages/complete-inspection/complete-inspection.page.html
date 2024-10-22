@@ -1229,7 +1229,16 @@
         </div>
     </ion-card>
 
-    <button class="next-button" (click)="toggleForms('comments')" [disabled]="!isCommunityFormValid()">Next</button>
+    <div>
+      <button class="next-button"
+              (click)="appType === 'ApplicationForSpecialEvent' ? toggleForms('photos') : toggleForms('comments')"
+              [disabled]="!isCommunityFormValid()">
+        Next
+      </button>
+    </div>
+    
+
+    
 
 
   
@@ -1323,7 +1332,7 @@
 
     
 </div>
-
+<div *ngIf="appType !== 'ApplicationForSpecialEvent'">
 <div  *ngIf="currentForm ==='comments'">
 
   <div class="header-container">
@@ -1351,13 +1360,13 @@
               <ion-row class="horizontal-radios">
                 <ion-col >
                   <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="rightToOccupyPremises" value="1"></ion-radio>
+                    <ion-radio id="yes_appt" class="move-radio" name="rightToOccupyPremises" value="Yes"></ion-radio>
                     <label for="yes_appt">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="rightToOccupyPremises" value="2"></ion-radio>
+                    <ion-radio id="no_appt" class="move-radio" name="rightToOccupyPremises" value="NO"></ion-radio>
                     <label for="no_appt">No</label>
                   </div>
                 </ion-col>
@@ -1385,13 +1394,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_building" name="buildingStructureAndMeansOfCommunication" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_building" name="buildingStructureAndMeansOfCommunication" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_building">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_building" name="buildingStructureAndMeansOfCommunication"  class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_building" name="buildingStructureAndMeansOfCommunication"  class="move-radio" value="NO"></ion-radio>
                     <label for="no_building">No</label>
                   </div>
                 </ion-col>
@@ -1414,13 +1423,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_counter" name="counterPointOfSake" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_counter" name="counterPointOfSake" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_counter">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_counter" name="counterPointOfSake" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_counter" name="counterPointOfSake" class="move-radio" value="NO"></ion-radio>
                     <label for="no_counter">No</label>
                   </div>
                 </ion-col>
@@ -1443,13 +1452,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_display" name="displayAreaShelves" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_display" name="displayAreaShelves" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_display">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_display" name="displayAreaShelves" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_display" name="displayAreaShelves" class="move-radio" value="NO"></ion-radio>
                     <label for="no_display">No</label>
                   </div>
                 </ion-col>
@@ -1474,13 +1483,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_drinking_area">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="NO"></ion-radio>
                     <label for="no_drinking_area">No</label>
                   </div>
                 </ion-col>
@@ -1505,13 +1514,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_storage" name="storageRoom" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_storage" name="storageRoom" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_storage">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_storage" name="storageRoom" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_storage" name="storageRoom" class="move-radio" value="NO"></ion-radio>
                     <label for="no_storage">No</label>
                   </div>
                 </ion-col>
@@ -1536,13 +1545,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_ablution" name="ablutionFacilities" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_ablution" name="ablutionFacilities" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_ablution">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_ablution" name="ablutionFacilities" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_ablution" name="ablutionFacilities" class="move-radio" value="NO"></ion-radio>
                     <label for="no_ablution">No</label>
                   </div>
                 </ion-col>
@@ -1564,13 +1573,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionA" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_ablution" name="complianceSectionA" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_ablution">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_ablution" name="complianceSectionA"class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_ablution" name="complianceSectionA"class="move-radio" value="NO"></ion-radio>
                     <label for="no_ablution">No</label>
                   </div>
                 </ion-col>
@@ -1592,13 +1601,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionB" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_ablution" name="complianceSectionB" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_ablution">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_ablution" name="complianceSectionB" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_ablution" name="complianceSectionB" class="move-radio" value="NO"></ion-radio>
                     <label for="no_ablution">No</label>
                   </div>
                 </ion-col>
@@ -1619,13 +1628,13 @@
               <ion-row>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionC" class="move-radio" value="1"></ion-radio>
+                    <ion-radio id="yes_ablution" name="complianceSectionC" class="move-radio" value="YES"></ion-radio>
                     <label for="yes_ablution">Yes</label>
                   </div>
                 </ion-col>
                 <ion-col>
                   <div class="radios">
-                    <ion-radio id="no_ablution"  name="complianceSectionC" class="move-radio" value="2"></ion-radio>
+                    <ion-radio id="no_ablution"  name="complianceSectionC" class="move-radio" value="NO"></ion-radio>
                     <label for="no_ablution">No</label>
                   </div>
                 </ion-col>
@@ -1646,7 +1655,7 @@
 
     <button class="next-button" (click)="toggleForms('photos')" [disabled]="!isCommentForm()">Next</button>
   </div>
- 
+ </div>
 <!--Photos-->
 
 <div *ngIf="currentForm ==='photos'">

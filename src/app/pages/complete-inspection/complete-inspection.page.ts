@@ -164,8 +164,62 @@ export class CompleteInspectionPage implements OnInit {
       this.communityConsult();
     }
     
+const savedForm=localStorage.getItem(`completeReportForm_${this.caseNo}`);
+this.reportDoc = this.reportFiles[0];
+const savedDoc=localStorage.getItem(this.reportDoc)
+if(savedForm && savedDoc){
+  this.completeReportForm.patchValue(JSON.parse(savedForm));
+  this.reportFiles[0]
+}
+
+this.loadFromLocalStorage();
     this.getCurrentPosition();
   }
+
+  loadFromLocalStorage() {
+  // Retrieve form data
+  const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
+  const savedDoc = localStorage.getItem(`reportDoc_${this.caseNo}`);
+  const savedImages = localStorage.getItem(`imageSources_${this.caseNo}`);
+
+  if (savedForm) {
+    this.completeReportForm.patchValue(JSON.parse(savedForm));
+  }
+
+  if (savedDoc) {
+    // Create a Blob from the Base64 string and set it as the document
+    const byteString = atob(savedDoc.split(',')[1]);
+    const mimeString = savedDoc.split(',')[0].split(':')[1].split(';')[0];
+    const buffer = new ArrayBuffer(byteString.length);
+    const intArray = new Uint8Array(buffer);
+    
+    for (let i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([buffer], { type: mimeString });
+    this.reportFiles = [new File([blob], "report.pdf", { type: mimeString })];
+  }
+
+  if (savedImages) {
+    const imageArray = JSON.parse(savedImages);
+    this.imageSources = imageArray.map((imgObj: any, index: number) => {
+      const byteString = atob(imgObj.src.split(',')[1]);
+      const mimeString = imgObj.src.split(',')[0].split(':')[1].split(';')[0];
+      const buffer = new ArrayBuffer(byteString.length);
+      const intArray = new Uint8Array(buffer);
+      
+      for (let i = 0; i < byteString.length; i++) {
+        intArray[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([buffer], { type: mimeString });
+      return { src: URL.createObjectURL(blob), description: imgObj.description };
+    });
+  }
+}
+
+  
 
   communityConsult()
   {
@@ -294,6 +348,7 @@ export class CompleteInspectionPage implements OnInit {
     });
 
 
+   
     // if(this.latitude>=-31 && this.latitude<=-34 && this.longitude>=24 && this.longitude<=34)
     // {
 
