@@ -155,45 +155,26 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
-      console.log(this.caseNo);
-      this.appType=param.get('appType');
-      console.log(this.appType);
+      this.appType = param.get('appType');
+  
+      if (this.appType === 'ApplicationForSpecialEvent') {
+        this.communityConsult();
+      }
       
+      const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
+      if (savedForm) {
+        this.completeReportForm.patchValue(JSON.parse(savedForm));
+      }
+  
+      // Auto-save form on value changes, using caseId as the key
+      this.completeReportForm.valueChanges.subscribe(value => {
+        localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
+      });
     });
-
-    this.loadSavedFile();
-
-    if(this.appType=="ApplicationForSpecialEvent")
-    {
-      this.communityConsult();
-    }
-
-    const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`)
-
-    if(savedForm)
-    {
-      this.completeReportForm.patchValue(JSON.parse(savedForm))
-    }
-
-    this.completeReportForm.valueChanges.subscribe(value => {
-      localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value))
-    })
-    
+  
     this.getCurrentPosition();
   }
-
-
-  documentId: any;
-  saveFileToIndexedDB(fileName: string, fileData: string): void {
-    this.dbService.add(this.caseNo, { fileName, fileData }).subscribe(
-      (key) => console.log('File saved with key:', key),
-      (error) => console.error('Error saving file to IndexedDB:', error)
-    );
-  }
-    
-
   
-
   communityConsult()
   {
     this.completeReportForm.patchValue({
@@ -253,9 +234,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     const formObjectionsInspection = this.completeReportForm.get('formObjectionsInspection');  
     return communityFields.every(field => this.completeReportForm.get(field)?.valid);
   }
-
   
-
    //Recommendation Valid
    isRecommendationFormValid(): boolean { 
     const recommendationFields = ['recommendation','comments'];
@@ -328,6 +307,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     });
 
 
+   
     // if(this.latitude>=-31 && this.latitude<=-34 && this.longitude>=24 && this.longitude<=34)
     // {
 
@@ -438,7 +418,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
       const base64File = reader.result as string;
 
       
-      this.saveFileToIndexedDB(file.name, base64File);
+      //this.saveFileToIndexedDB(file.name, base64File);
     };
       reader.readAsDataURL(file);
 

@@ -1229,7 +1229,16 @@
         </div>
     </ion-card>
 
-    <button class="next-button" (click)="toggleForms('comments')" [disabled]="!isCommunityFormValid()">Next</button>
+    <div>
+      <button class="next-button"
+              (click)="appType === 'ApplicationForSpecialEvent' ? toggleForms('photos') : toggleForms('comments')"
+              [disabled]="!isCommunityFormValid()">
+        Next
+      </button>
+    </div>
+    
+
+    
 
 
   
@@ -1323,7 +1332,7 @@
 
     
 </div>
-
+<div *ngIf="appType !== 'ApplicationForSpecialEvent'">
 <div  *ngIf="currentForm ==='comments'">
 
   <div class="header-container">
@@ -1335,47 +1344,318 @@
       <ion-item>
       <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Applicant" formControlName="applicant"></ion-input>
       </ion-item>
-      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Premises</ion-label>
-      <ion-item>
-        <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Right to Occupy Premises" formControlName="rightToOccupyPremises"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Building structure and means of communication" formControlName="buildingStructureAndMeansOfCommunication"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Counter/Point of Sake" formControlName="counterPointOfSake"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Display Area/Shelves" formControlName="displayAreaShelves"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Demarcated Drinking Area" formControlName="demarcatedDrinkingArea"></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Storage Room" formControlName="storageRoom"></ion-input>
-                  </ion-item>
-                  <ion-item>
-                    <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Ablution facilities" formControlName="ablutionFacilities"></ion-input>
-                    </ion-item>
-   
+  
      
-      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'" position="floating">Community Consultation</ion-label>
-      <ion-item>
-      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionA"></ion-input>
-      </ion-item>
-     
-      <ion-item>
-      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionB"></ion-input>
-    </ion-item>
 
-    <ion-item *ngIf="appType!=='ApplicationForSpecialEvent'" class="last-input">
-      <ion-input placeholder="Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)"id="specificInput" class="custom-placeholder"  formControlName="complianceSectionC"></ion-input>
-    </ion-item>
+<ion-card class="upload2">
+<!-- Right to Occupy Premises Radio Button Group -->
+
+  <span>(a) Right to Occupy Premises</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col>
+        
+            <ion-radio-group formControlName="rightToOccupyPremises">
+              <ion-row class="horizontal-radios">
+                <ion-col >
+                  <div class="radios">
+                    <ion-radio id="yes_appt" class="move-radio" name="rightToOccupyPremises" value="Yes"></ion-radio>
+                    <label for="yes_appt">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_appt" class="move-radio" name="rightToOccupyPremises" value="NO"></ion-radio>
+                    <label for="no_appt">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      </ion-card-title>
+      
+ <hr>
+
+
+
+<!-- Additional Input Fields with Radio Buttons -->
+
+<!-- Building Structure and Means of Communication -->
+
+  <span>(b) Building structure and means of communication</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col>
+            <ion-radio-group formControlName="buildingStructureAndMeansOfCommunication">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_building" name="buildingStructureAndMeansOfCommunication" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_building">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_building" name="buildingStructureAndMeansOfCommunication"  class="move-radio" value="NO"></ion-radio>
+                    <label for="no_building">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+
+<!-- Counter/Point of Sale -->
+
+  <span>(c) Counter/Point of Sale</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col>
+            <ion-radio-group formControlName="counterPointOfSake">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_counter" name="counterPointOfSake" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_counter">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_counter" name="counterPointOfSake" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_counter">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+ <hr>
+<!-- Display Area/Shelves -->
+
+  <span>(d) Display Area/Shelves</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+            <ion-radio-group formControlName="displayAreaShelves">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_display" name="displayAreaShelves" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_display">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_display" name="displayAreaShelves" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_display">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+          
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+ <hr>
+<!-- Demarcated Drinking Area -->
+
+  <span>(e) Demarcated Drinking Area</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col>
+        
+            <ion-radio-group formControlName="demarcatedDrinkingArea">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_drinking_area">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_drinking_area">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+        
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+<hr>
+
+<!-- Storage Room -->
+
+  <span>(g) Storage Room</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+         
+            <ion-radio-group formControlName="storageRoom">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_storage" name="storageRoom" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_storage">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_storage" name="storageRoom" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_storage">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+          
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+<hr>
+<!-- Ablution Facilities -->
+
+  <span>(h) Ablution Facilities</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+         
+            <ion-radio-group formControlName="ablutionFacilities">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_ablution" name="ablutionFacilities" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_ablution">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_ablution" name="ablutionFacilities" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_ablution">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+     
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+  <span>(i) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper) </span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+         
+            <ion-radio-group formControlName="complianceSectionA">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_ablution" name="complianceSectionA" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_ablution">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_ablution" name="complianceSectionA"class="move-radio" value="NO"></ion-radio>
+                    <label for="no_ablution">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+     
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+  <span>(j) Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+         
+            <ion-radio-group formControlName="complianceSectionB">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_ablution" name="complianceSectionB" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_ablution">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_ablution" name="complianceSectionB" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_ablution">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+     
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+  <span>(k) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)</span>
+  <ion-card-title class="general-name">
+    <ion-grid>
+      <ion-row class="horizontal-radios">
+        <ion-col >
+         
+            <ion-radio-group formControlName="complianceSectionC">
+              <ion-row>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="yes_ablution" name="complianceSectionC" class="move-radio" value="YES"></ion-radio>
+                    <label for="yes_ablution">Yes</label>
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <div class="radios">
+                    <ion-radio id="no_ablution"  name="complianceSectionC" class="move-radio" value="NO"></ion-radio>
+                    <label for="no_ablution">No</label>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-radio-group>
+     
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-title>
+
+</ion-card>
+
+
+
+
+
 
     <button class="next-button" (click)="toggleForms('photos')" [disabled]="!isCommentForm()">Next</button>
-
-   
-</div>
+  </div>
+ </div>
 <!--Photos-->
 
 <div *ngIf="currentForm ==='photos'">
