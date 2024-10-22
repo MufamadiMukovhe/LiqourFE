@@ -17,15 +17,34 @@ import { DatePipe, NgClass } from '@angular/common';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NetworkService } from './util/service/network.service';
 import { NetworkAlertComponent } from './pages/components/network-alert/network-alert.component';
+import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+
+
+
+const dbConfig: DBConfig  = {
+  name: 'MyDb',
+  version: 1,
+  objectStoresMeta: [{
+    store: 'files',
+    storeConfig: { keyPath: 'id', autoIncrement: true },
+    storeSchema: [
+      { name: 'fileName', keypath: 'fileName', options: { unique: false } },
+      { name: 'fileData', keypath: 'fileData', options: { unique: false } }
+    ]
+  }]
+};
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NetworkAlertComponent // Add here
+    NetworkAlertComponent,
+    
   ],
   imports: [
     BrowserModule,
+    NgxIndexedDBModule.forRoot(dbConfig),
     HttpClientModule,
     IonicModule.forRoot({
       animated: false 
@@ -45,6 +64,7 @@ import { NetworkAlertComponent } from './pages/components/network-alert/network-
     ScreenOrientation,
     NetworkService,
     DatePipe,
+    SQLite,
   
     MenuController, { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }, provideAnimationsAsync()
   ],

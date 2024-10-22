@@ -6,5 +6,5 @@ export const environment = {
    //eclbDomain: "https://system.eclb.co.za/eclb2/",
    //eclbDomain:"http://localhost:8081/"
 
-   eclbDomain: "https://system.eclb.co.za/eclb2/"
+     eclbDomain: "https://system.eclb.co.za/eclb2/"
 };

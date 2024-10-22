@@ -1,6 +1,6 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, HostListener, } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
 
 
 
@@ -26,7 +27,7 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
   templateUrl: './complete-inspection.page.html',
   styleUrls: ['./complete-inspection.page.scss'],
 })
-export class CompleteInspectionPage implements OnInit {
+export class CompleteInspectionPage implements OnInit, OnDestroy {
   selectedOption: string = '';
   reportFiles: { name: string, size: number }[] = [];
   noticeFiles: { name: string, size: number }[] = [];
@@ -73,7 +74,8 @@ export class CompleteInspectionPage implements OnInit {
     private offlineService: OfflineService,
     private popoverController: PopoverController,
     private geolocationService: GeolocationService,
-    private imageStorageService: StorageService
+    private imageStorageService: StorageService,
+    private dbService: NgxIndexedDBService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -159,15 +161,38 @@ export class CompleteInspectionPage implements OnInit {
       
     });
 
-    
+    this.loadSavedFile();
 
     if(this.appType=="ApplicationForSpecialEvent")
     {
       this.communityConsult();
     }
+
+    const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`)
+
+    if(savedForm)
+    {
+      this.completeReportForm.patchValue(JSON.parse(savedForm))
+    }
+
+    this.completeReportForm.valueChanges.subscribe(value => {
+      localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value))
+    })
     
     this.getCurrentPosition();
   }
+
+
+  documentId: any;
+  saveFileToIndexedDB(fileName: string, fileData: string): void {
+    this.dbService.add(this.caseNo, { fileName, fileData }).subscribe(
+      (key) => console.log('File saved with key:', key),
+      (error) => console.error('Error saving file to IndexedDB:', error)
+    );
+  }
+    
+
+  
 
   communityConsult()
   {
@@ -192,6 +217,11 @@ export class CompleteInspectionPage implements OnInit {
       readyForBusiness:'3',
 
     })
+  }
+
+  ngOnDestroy()
+  {
+    localStorage.setItem(this.caseNo,this.completeReportForm.value)
   }
 
  
@@ -319,6 +349,7 @@ export class CompleteInspectionPage implements OnInit {
           () => {
             // Handle successful response
             console.log('Report saved successfully');
+            localStorage.removeItem(this.caseNo);
           },
           (error) => {
             // Handle error response
@@ -401,8 +432,53 @@ export class CompleteInspectionPage implements OnInit {
       } else {
         this.reportFiles.push({ name: file.name, size: file.size });
       }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+      const base64File = reader.result as string;
+
+      
+      this.saveFileToIndexedDB(file.name, base64File);
+    };
+      reader.readAsDataURL(file);
+
+
       this.inputVisible = false; 
     }
+  }
+
+
+  fileBase64Data: string | null = null;
+
+  loadSavedFile(): void {
+    this.dbService.getAll(this.caseNo).subscribe(
+      (files) => {
+        if (files.length > 0) {
+          
+          const savedFile = files[0] as { fileName: string; fileData: string }; 
+  
+          
+          this.reportFiles.push({ name: savedFile.fileName, size: this.getFileSizeFromBase64(savedFile.fileData) });
+  
+          
+          this.fileBase64Data = savedFile.fileData;
+  
+          this.inputVisible = false; 
+          console.log('File loaded from IndexedDB:', savedFile);
+        } else {
+          console.log('No file found in IndexedDB.');
+        }
+      },
+      (error) => {
+        console.error('Error loading file from IndexedDB:', error);
+      }
+    );
+  }
+
+  getFileSizeFromBase64(base64: string): number {
+    const padding = (base64.charAt(base64.length - 2) === '=') ? 2 : (base64.charAt(base64.length - 1) === '=') ? 1 : 0;
+    const fileSize = (base64.length * (3 / 4)) - padding;
+    return Math.round(fileSize);
   }
 
   isFileUploaded(fileName: string): boolean {

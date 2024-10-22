@@ -57,7 +57,8 @@ export class MyTasksPage implements OnInit {
             this.collect = this.collect.filter(item => item.status!=='Complete')
 
             console.log(this.collect);
- 
+            
+
           }
           else{
             this.collect = response;

@@ -26,10 +26,10 @@
       <div *ngFor="let task of collect" (click)="navigateToTask(task.action, task.caseId, task.caseName)">
         <div *ngIf="task.status!=='Complete'">
         <ion-row>
-          <ion-col class="center-content" offset="0.2">   
+          <ion-col class="" offset="0.2">   
             <p class="col-header">{{task.outletName}}</p>
             <div class="info">
-              <span>{{task.status}}</span>
+              <span class="">Status: {{task.status}}</span>
               <br>
               <span>CaseID: {{task.caseId}}</span>
             </div>
