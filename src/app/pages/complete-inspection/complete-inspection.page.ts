@@ -13,11 +13,8 @@ import { Geolocation } from '@capacitor/geolocation';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
+import { Location } from '@angular/common';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-
-
-
-
 
 
 
@@ -49,9 +46,7 @@ export class CompleteInspectionPage implements OnInit {
   caseId: any;
   caseNo: any;
 
-
-
-
+  
   private geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?key=${environment.googleMapsApiKey}";
 
   inspectionReport: any;
@@ -73,7 +68,8 @@ export class CompleteInspectionPage implements OnInit {
     private offlineService: OfflineService,
     private popoverController: PopoverController,
     private geolocationService: GeolocationService,
-    private imageStorageService: StorageService
+    private imageStorageService: StorageService,
+    private location: Location
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -158,7 +154,8 @@ export class CompleteInspectionPage implements OnInit {
       if (this.appType === 'ApplicationForSpecialEvent') {
         this.communityConsult();
       }
-      /*
+  
+      /* Restore saved form data using the caseId as the key
       const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
       if (savedForm) {
         this.completeReportForm.patchValue(JSON.parse(savedForm));
@@ -173,6 +170,7 @@ export class CompleteInspectionPage implements OnInit {
     this.getCurrentPosition();
   }
   
+
   communityConsult()
   {
     this.completeReportForm.patchValue({
@@ -861,6 +859,13 @@ export class CompleteInspectionPage implements OnInit {
   closePopover() {
     this.popoverController.dismiss();
   }
+  
+  goBack() {
+    this.location.back(); 
+  }
+  
+  }
 
   
-}
+
+  
