@@ -15,6 +15,7 @@ import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { DatabaseSQLiteService } from 'src/app/util/service/database-sqlite.service';
 
 
 
@@ -28,6 +29,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
   styleUrls: ['./complete-inspection.page.scss'],
 })
 export class CompleteInspectionPage implements OnInit, OnDestroy {
+
   selectedOption: string = '';
   reportFiles: { name: string, size: number }[] = [];
   noticeFiles: { name: string, size: number }[] = [];
@@ -75,7 +77,8 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private geolocationService: GeolocationService,
     private imageStorageService: StorageService,
-    private dbService: NgxIndexedDBService
+    private dbService: NgxIndexedDBService,
+    private dbSql: DatabaseSQLiteService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -173,10 +176,27 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     });
   
     this.getCurrentPosition();
+
+    this.loadFileByCaseId();
   }
+
+
+  async loadFileByCaseId() {
+    const file = await this.dbSql.getFileByCaseId(this.caseNo);
+    if (file) {
+      this.reportFiles.push(file);
+      console.log('Loaded file:', file);
+    } else {
+      console.log('No file found for caseId:', this.caseNo);
+    }
+  }
+
+
+
+
   
-  communityConsult()
-  {
+  communityConsult(){
+
     this.completeReportForm.patchValue({
       complianceSectionA:'N/A',
       complianceSectionB:'N/A',
@@ -406,25 +426,45 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
   async onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.report = file; 
-       if (this.reportFiles.length > 0) {
+      this.report = file;
+  
+      if (this.reportFiles.length > 0) {
         this.reportFiles.splice(0, 1, { name: file.name, size: file.size });
       } else {
         this.reportFiles.push({ name: file.name, size: file.size });
       }
-
+  
       const reader = new FileReader();
-      reader.onload = () => {
-      const base64File = reader.result as string;
-
-      
-      //this.saveFileToIndexedDB(file.name, base64File);
-    };
-      reader.readAsDataURL(file);
-
-
-      this.inputVisible = false; 
+      reader.onload = async () => {
+        const base64File = reader.result as string;
+  
+        // Convert base64 to Blob
+        const blobFile = this.base64ToBlob(base64File.split(',')[1], file.type);
+  
+        // Store the file in the SQLite database
+        try {
+          await this.dbSql.insertFile(this.caseNo, file.name, blobFile);
+          console.log('File stored in the database:', file.name);
+        } catch (error) {
+          console.error('Error storing file in the database:', error);
+        }
+      };
+  
+      reader.readAsDataURL(file); // Read file as Data URL
+      this.inputVisible = false;
     }
+  }
+
+  base64ToBlob(base64Data: string, contentType: string): Blob {
+    const byteCharacters = atob(base64Data); // Decode base64 to binary string
+    const byteNumbers = new Array(byteCharacters.length);
+  
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+  
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
   }
 
 
