@@ -54,10 +54,12 @@
     "ngx-spinner": "^17.0.0",
     "rxjs": "^7.8.1",
     "signature_pad": "^5.0.2",
+    "sql.js": "^1.11.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-devkit/build-angular": "^18.0.0",
     "@angular-eslint/builder": "^18.0.0",
     "@angular-eslint/eslint-plugin": "^18.0.0",
@@ -70,10 +72,12 @@
     "@capacitor/cli": "^6.1.0",
     "@ionic/angular-toolkit": "^11.0.1",
     "@types/jasmine": "~5.1.0",
+    "@types/sql.js": "^1.4.9",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "cordova-plugin-screen-orientation": "^3.0.4",
     "cordova-sqlite-storage": "^6.1.0",
+    "crypto-browserify": "^3.12.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
@@ -88,9 +92,12 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "karma-requirejs": "^0.1.0",
     "node-sass": "^9.0.0",
+    "path-browserify": "^1.0.1",
     "sass": "^1.77.6",
     "sass-loader": "^14.2.1",
-    "typescript": "~5.4.0"
+    "stream-browserify": "^3.0.0",
+    "typescript": "~5.4.0",
+    "vm-browserify": "^1.1.2"
   },
   "description": "An Ionic project",
   "cordova": {
