@@ -16,6 +16,7 @@ import { GeolocationService } from 'src/app/util/service/geolocation.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { DatabaseSQLiteService } from 'src/app/util/service/database-sqlite.service';
+import { Location } from '@angular/common';
 
 
 
@@ -52,9 +53,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
   caseId: any;
   caseNo: any;
 
-
-
-
+  
   private geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?key=${environment.googleMapsApiKey}";
 
   inspectionReport: any;
@@ -77,7 +76,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private geolocationService: GeolocationService,
     private imageStorageService: StorageService,
-    private dbService: NgxIndexedDBService,
+    private location: Location,,
     private dbSql: DatabaseSQLiteService
     
   ) {
@@ -150,6 +149,9 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
 
   
   }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
   ecp:string | null=""
   appType:any
@@ -163,7 +165,8 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
       if (this.appType === 'ApplicationForSpecialEvent') {
         this.communityConsult();
       }
-      
+  
+      /* Restore saved form data using the caseId as the key
       const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
       if (savedForm) {
         this.completeReportForm.patchValue(JSON.parse(savedForm));
@@ -172,7 +175,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
       // Auto-save form on value changes, using caseId as the key
       this.completeReportForm.valueChanges.subscribe(value => {
         localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
-      });
+      });*/
     });
   
     this.getCurrentPosition();
@@ -218,11 +221,6 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
       readyForBusiness:'3',
 
     })
-  }
-
-  ngOnDestroy()
-  {
-    localStorage.setItem(this.caseNo,this.completeReportForm.value)
   }
 
  
@@ -327,7 +325,6 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     });
 
 
-   
     // if(this.latitude>=-31 && this.latitude<=-34 && this.longitude>=24 && this.longitude<=34)
     // {
 
@@ -349,7 +346,6 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
           () => {
             // Handle successful response
             console.log('Report saved successfully');
-            localStorage.removeItem(this.caseNo);
           },
           (error) => {
             // Handle error response
@@ -955,6 +951,11 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
   closePopover() {
     this.popoverController.dismiss();
   }
+
+  goBack() {
+    this.location.back();
+  }
+  
 
   
 }
