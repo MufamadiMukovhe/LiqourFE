@@ -29,7 +29,7 @@ import { Location } from '@angular/common';
   templateUrl: './complete-inspection.page.html',
   styleUrls: ['./complete-inspection.page.scss'],
 })
-export class CompleteInspectionPage implements OnInit, OnDestroy {
+export class CompleteInspectionPage implements OnInit {
 
   selectedOption: string = '';
   reportFiles: { name: string, size: number }[] = [];
@@ -76,8 +76,8 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private geolocationService: GeolocationService,
     private imageStorageService: StorageService,
-    private location: Location,,
-    private dbSql: DatabaseSQLiteService
+    private location: Location,
+    
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -149,9 +149,9 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
 
   
   }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+  // ngOnDestroy(): void {
+  //   throw new Error('Method not implemented.');
+  // }
 
   ecp:string | null=""
   appType:any
@@ -166,7 +166,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
         this.communityConsult();
       }
   
-      /* Restore saved form data using the caseId as the key
+      // Restore saved form data using the caseId as the key
       const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
       if (savedForm) {
         this.completeReportForm.patchValue(JSON.parse(savedForm));
@@ -175,24 +175,24 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
       // Auto-save form on value changes, using caseId as the key
       this.completeReportForm.valueChanges.subscribe(value => {
         localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
-      });*/
+      });
     });
   
     this.getCurrentPosition();
 
-    this.loadFileByCaseId();
+    //this.loadFileByCaseId();
   }
 
 
-  async loadFileByCaseId() {
-    const file = await this.dbSql.getFileByCaseId(this.caseNo);
-    if (file) {
-      this.reportFiles.push(file);
-      console.log('Loaded file:', file);
-    } else {
-      console.log('No file found for caseId:', this.caseNo);
-    }
-  }
+  // async loadFileByCaseId() {
+  //   const file = await this.dbSql.getFileByCaseId(this.caseNo);
+  //   if (file) {
+  //     this.reportFiles.push(file);
+  //     console.log('Loaded file:', file);
+  //   } else {
+  //     console.log('No file found for caseId:', this.caseNo);
+  //   }
+  // }
 
 
 
@@ -439,7 +439,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
   
         // Store the file in the SQLite database
         try {
-          await this.dbSql.insertFile(this.caseNo, file.name, blobFile);
+          //await this.dbSql.insertFile(this.caseNo, file.name, blobFile);
           console.log('File stored in the database:', file.name);
         } catch (error) {
           console.error('Error storing file in the database:', error);
@@ -466,30 +466,7 @@ export class CompleteInspectionPage implements OnInit, OnDestroy {
 
   fileBase64Data: string | null = null;
 
-  loadSavedFile(): void {
-    this.dbService.getAll(this.caseNo).subscribe(
-      (files) => {
-        if (files.length > 0) {
-          
-          const savedFile = files[0] as { fileName: string; fileData: string }; 
   
-          
-          this.reportFiles.push({ name: savedFile.fileName, size: this.getFileSizeFromBase64(savedFile.fileData) });
-  
-          
-          this.fileBase64Data = savedFile.fileData;
-  
-          this.inputVisible = false; 
-          console.log('File loaded from IndexedDB:', savedFile);
-        } else {
-          console.log('No file found in IndexedDB.');
-        }
-      },
-      (error) => {
-        console.error('Error loading file from IndexedDB:', error);
-      }
-    );
-  }
 
   getFileSizeFromBase64(base64: string): number {
     const padding = (base64.charAt(base64.length - 2) === '=') ? 2 : (base64.charAt(base64.length - 1) === '=') ? 1 : 0;
