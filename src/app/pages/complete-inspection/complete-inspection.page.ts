@@ -179,8 +179,16 @@ export class CompleteInspectionPage implements OnInit {
     });
   
     this.getCurrentPosition();
+    this.getCameraPermission;
 
     //this.loadFileByCaseId();
+  }
+
+  async getCameraPermission()
+  {
+    const permissionStatus = await Camera.requestPermissions();
+    console.log(permissionStatus);
+    
   }
 
 
