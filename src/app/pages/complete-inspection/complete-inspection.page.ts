@@ -1,6 +1,6 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy, } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy, Input, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
@@ -43,6 +43,8 @@ export class CompleteInspectionPage implements OnInit {
   test: String = '';
   isHidden: boolean = true;
 
+  selectedSections: any[] = [];
+
   imageSources: { src: string, description: string }[] = [];
   dropdownVisible: { [index: string]: boolean } = {};
 
@@ -82,6 +84,7 @@ export class CompleteInspectionPage implements OnInit {
   ) {
     this.completeReportForm = this.fb.group({
       contactPerson: ['', Validators.required],
+      sections:[[]],
       //inspectionDate: ['', Validators.required],
       appointmentSet: ['', Validators.required],
       consultedOrFound: ['', Validators.required],
@@ -177,6 +180,8 @@ export class CompleteInspectionPage implements OnInit {
         localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
       });
     });
+
+
   
     this.getCurrentPosition();
     this.getCameraPermission;
@@ -189,6 +194,223 @@ export class CompleteInspectionPage implements OnInit {
     const permissionStatus = await Camera.requestPermissions();
     console.log(permissionStatus);
     
+  }
+
+  sections = [
+    {
+      name: 'Section 22 (2) (a)',
+      description: 'An application for registration contemplated in subsection (1) must be made by submitting to the board-',
+      notes: '',
+      show: false,
+      subsections: [
+        {
+          name: '(i) the particulars of the applicant which, in the case of-',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) a natural person, must include his or her full name, identity number and residential address and a statement that he or she is not disqualified for registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(bb) a company or close corporation must include its full name, registration number and the address of its registered office;',
+              checked: false
+            },
+            {
+              name: '(cc) a company, except for a company which is listed on the Johannesburg Stock Exchange, must include the names, identity numbers and residential addresses of all shareholders and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(dd) a close corporation, the names, identity numbers and residential addresses of all its members and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(ee) a trust, must include the names, identity numbers and residential addresses of all its trustees and known beneficiaries, and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(ff) an association or partnership, must include the names, identity numbers and residential addresses of all its members or partners, and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            }
+          ]
+        }
+      ]
+    },
+    /*{
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(ii) the physical address and the erf, street or farm number and a description of the premises from which the applicant intends to sell liquor, including a plan of the premises?',
+
+          show: false,
+          subsubsections: []
+        }
+      ]
+
+    },
+    {
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(iii) the category in respect of which registration is being sought?',
+          show: false,
+          subsubsections: []
+        },
+        {
+          name: '(iii) the category in respect of which registration is being sought?',
+          show: false,
+          subsubsections: []
+        },
+        {
+          name: '(iv) in respect of the premises from which the applicant intends to sell liquor, whether the premises concerned are',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) in existence; or',
+              checked: false
+            },
+            {
+              name: '(bb) the premises concerned are not yet in existence, in which case the applicant must furnish details of the steps to be taken in the event of the application for registration being approved to construct the premises;',
+              checked: false
+            }
+          ]
+        }
+
+      ]
+
+    },
+    {
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(iv) in respect of the premises from which the applicant intends to sell liquor, whether the premises concerned are',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) in existence; or',
+              checked: false
+            },
+            {
+              name: '(bb) the premises concerned are not yet in existence, in which case the applicant must furnish details of the steps to be taken in the event of the application for registration being approved to construct the premises;',
+              checked: false
+            }
+          ]
+        }
+      ]
+    },*/
+    {
+      name: 'Section 22 (2) (b) ',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: 'other information that may be required by the board to enable the board to determine whether or not the applicant meets the requirements of registration?',
+          show: false,
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2) (d)',
+      notes: '',
+      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
+      subsections: [
+        {
+          name: '(i) ward committee which must on receipt of the notice consult the community of the area where the premises are situated and simultaneously submit a report to the board and the relevant municipal council',
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2) (d)',
+      notes: '',
+      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
+      subsections: [
+        {
+          name: '(ii) governing body of every education institution or place of worship within a radius prescribed by the MEC from the premises in respect of which the application is made.',
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2)',
+      notes: '',
+      subsections: [
+        {
+          name: '(1) Not later than 28 days after the application was lodged with the board, any person may lodge-',
+          description: 'Representations or objections',
+          subsubsections: [
+            {
+              name: '(a) written representation in support of; or',
+              checked: false
+            },
+            {
+              name: 'written objection to,',
+              checked: false
+            }
+          ]
+        },
+        {
+          name: '(2) Such representation or objection must be lodged in duplicate, be fully motivated and must',
+          subsubsections: [
+            {
+              name: '(a) clearly indicate the name, identity number, residential and postal address and telephone number or e-mail address, if any, and where applicable, its registration number and address of its registered office, of the person making the representations or the objector; and',
+              checked: false
+            },
+            {
+              name: 'clearly identify the application concerned',
+              checked: false
+            }
+          ]
+        },
+      ]
+    }
+  ];
+
+  
+  getNotes(section: any, event: Event): void {
+    const textarea = event.target as HTMLTextAreaElement;
+
+    const selectedSectionIndex = this.selectedSections.findIndex(selectedSection => selectedSection.name === section.name);
+
+    if (section.show) {
+      this.selectedSections[selectedSectionIndex].notes = textarea.value;
+    } else {
+      if (selectedSectionIndex !== -1) {
+        const selectedSubsectionIndex = this.selectedSections[selectedSectionIndex].notes === textarea.value;
+        if (selectedSubsectionIndex) {
+          this.selectedSections[selectedSectionIndex].subsections.splice(selectedSubsectionIndex, 1);
+        }
+      }
+    }
+
+  }
+
+  
+  toggleSection(section: any) {
+    section.show = !section.show;
+
+    const selectedSectionIndex = this.selectedSections.findIndex(selectedSection => selectedSection.name === section.name);
+
+    if (section.show) {
+      if (selectedSectionIndex === -1) {
+        const selectedSection = {
+          name: section.name,
+          subsections: []
+        };
+        this.selectedSections.push(selectedSection);
+      }
+    } else {
+      if (selectedSectionIndex !== -1) {
+        this.selectedSections.splice(selectedSectionIndex, 1);
+        section.notes = '';
+      }
+    }
   }
 
 
@@ -314,6 +536,36 @@ export class CompleteInspectionPage implements OnInit {
       "Accept": "/"
     };
 
+
+    
+    
+
+
+    if(this.completeReportForm.get('recommendation')?.value ==='2'  || this.completeReportForm.get('recommendation')?.value ==='3' )
+    {
+      this.completeReportForm.get('sections')?.setValue(this.selectedSections)
+
+      this.selectedSections.forEach(section => {
+
+        if (!section.notes) {
+          //Swal.fire({ icon: 'warning', timer: 5000, text: `Ensure that ${section.name} contain Explanatory Notes`, confirmButtonColor: "#87342E", showConfirmButton: true })
+          return;
+        }
+      });
+
+      if (this.selectedSections.length == 0) {
+        //Swal.fire({ icon: 'warning', timer: 5000, text: `Ensure that atleast one Section is Selected`, confirmButtonColor: "#87342E", showConfirmButton: true })
+        return;
+      }
+      
+      console.log(this.selectedSections);
+
+     
+    }
+
+    console.log(this.completeReportForm.value);
+    
+
     this.inspectionReport = this.inspectionReport || {};
     this.inspectionReport = Object.assign(this.inspectionReport, this.completeReportForm.value);
 
@@ -325,6 +577,11 @@ export class CompleteInspectionPage implements OnInit {
 
     this.noticeDoc = this.noticeFiles[0];
     formData.append('notice', this.notice);
+
+
+    
+
+    
 
     this.imageSources.forEach((img, index) => {
       const imgFile= this.convertSrcToFile(img.src, `photo_${index}.jpg`);
