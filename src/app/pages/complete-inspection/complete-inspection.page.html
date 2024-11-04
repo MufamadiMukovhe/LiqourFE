@@ -1295,30 +1295,36 @@
               </ion-radio-group>
             </ion-row>
           </ion-grid>
-
-          <div *ngIf="completeReportForm.get('recommendation')?.value ==='2'  || completeReportForm.get('recommendation')?.value ==='3'">
-            <ion-item>
-              <div *ngFor="let section of sections">
-                <label class="label">
-                    <input class="form-check-input" style="margin-top: 1px;" type="checkbox" [checked]="section.show"
-                        (change)="toggleSection(section)">
-                    {{ section.name }}
-                </label>
-                <div *ngIf="section.show">
-                    <div class="form-floating mb-3">
-                        <textarea style="height: 100px; background-color: #fff;" [(ngModel)]="section.notes"
-                            [ngModelOptions]="{standalone: true}" (change)="getNotes(section, $event)"
-                            id="residentialAddress" class="form-control mb-3  mt-3"></textarea>
-                        <label for="residentialAddress">Please Provide Explanatory Notes</label>
-                    </div>
-                    
-                </div>
-            </div> 
-            </ion-item>
-          </div>
         </ion-card-title>
+        <div *ngIf="completeReportForm.get('recommendation')?.value ==='2'  || completeReportForm.get('recommendation')?.value ==='3'">
+            
+          <p>Section 22(5)</p>
+          
+          <div *ngFor="let section of sections">
+            <div class="flex">
+            <div class="" style="margin-bottom: 10px;">
+              <input 
+                  class="checkmart" 
+                  type="checkbox" 
+                  [checked]="section.show" 
+                  (change)="toggleSection(section)"
+              >
+              <label class="check">{{ section.name }}</label>
+            </div>
+          </div>
+          
+          
 
+          <!--Ion Item for notes-->
+            <div *ngIf="section.show">
+                  <textarea style="height: 50px; background-color: #fff; font-size: 12px; margin-bottom: 10px;" [(ngModel)]="section.notes"
+                      [ngModelOptions]="{standalone: true}" (change)="getNotes(section, $event)"
+                      id="residentialAddress" placeholder="Please Provide Explanatory Notes"></textarea>
+             </div>
+        </div> 
 
+        </div>
+      
 
 
         <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '3'" class="recommend-comments">
