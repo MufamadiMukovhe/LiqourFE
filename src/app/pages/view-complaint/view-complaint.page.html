@@ -5,7 +5,7 @@
     </div>
 
   
-  <div *ngIf="collectObj">
+  <div *ngIf="collectObj ">
   <ion-label class="label">ECP Number</ion-label>
   <p class="info-time">{{collectObj.referenceNumber}}</p>
 
@@ -34,7 +34,26 @@
   
   <ion-label class="label">Date of Complaint Logged</ion-label>
   <p class="info-time">{{collectObj.dateComplaintLogged}}</p>
+  
+
+    <ion-label class="label">Complain Status</ion-label>
+    <p class="info-time" [ngClass]="getStatusMessage(collectObj.status)">
+      {{ getStatusMessage(collectObj.status) }}
+    </p>
+    
+     <!-- Display Comments Section -->
+  <ion-label class="label">History Comments</ion-label>
+  <div *ngIf="complains?.length; else noComments">
+    <div *ngFor="let comment of complains" class="comment">
+    
+      <p class="comment-text">{{ comment }}</p>
     </div>
+  </div>
+  <ng-template #noComments>
+    <p class="info-time">No comments available</p>
+  </ng-template>
+</div>
+
 
 </ion-content>
 <app-menu-footer></app-menu-footer>

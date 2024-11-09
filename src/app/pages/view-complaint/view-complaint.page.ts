@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./view-complaint.page.scss'],
 })
 export class ViewComplaintPage implements OnInit {
+  complains:string="";
 
   constructor(private aRoute: Router, private eRef: ElementRef, private http:HttpClient, private route: ActivatedRoute) {}
 
@@ -40,6 +41,17 @@ export class ViewComplaintPage implements OnInit {
       }, error => {
         console.log(error)
       });
+
+      let url1 = "http://localhost:8081/api/general/get-complain/"+this.referenceNo;
+      this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
+        console.log(response)
+        this.complains =response.comments;
+       
+        console.log(this.complains)
+
+      }, error => {
+        console.log(error)
+      });
     });
 
 
@@ -48,5 +60,24 @@ export class ViewComplaintPage implements OnInit {
   navigateToBack() {
     this.aRoute.navigate(['complaints']);
   }
+
+  getStatusMessage(status: string | number): string {
+    // Convert the status to a number if it’s a string
+    const numericStatus = typeof status === 'string' ? parseInt(status, 10) : status;
+    
+    switch (numericStatus) {
+      case 0:
+        return 'Open';
+      case 1:
+        return 'In Progress';
+      case 2:
+        return 'Cancelled';
+      case 3:
+        return 'Closed';
+      default:
+        return 'Unknown Status';
+    }
+  }
+  
 
 }
