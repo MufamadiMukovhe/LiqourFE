@@ -1,6 +1,6 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, HostListener, } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, HostListener, OnDestroy, Input, } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, PopoverController } from '@ionic/angular';
@@ -14,6 +14,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { DatabaseSQLiteService } from 'src/app/util/service/database-sqlite.service';
 import { Location } from '@angular/common';
 
 
@@ -28,6 +30,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./complete-inspection.page.scss'],
 })
 export class CompleteInspectionPage implements OnInit {
+
   selectedOption: string = '';
   reportFiles: { name: string, size: number }[] = [];
   noticeFiles: { name: string, size: number }[] = [];
@@ -39,6 +42,8 @@ export class CompleteInspectionPage implements OnInit {
   isPhotoAvailable:boolean=false;
   test: String = '';
   isHidden: boolean = true;
+
+  selectedSections: any[] = [];
 
   imageSources: { src: string, description: string }[] = [];
   dropdownVisible: { [index: string]: boolean } = {};
@@ -75,9 +80,11 @@ export class CompleteInspectionPage implements OnInit {
     private imageStorageService: StorageService,
     private location: Location,
     
+    
   ) {
     this.completeReportForm = this.fb.group({
       contactPerson: ['', Validators.required],
+      sections:[[]],
       //inspectionDate: ['', Validators.required],
       appointmentSet: ['', Validators.required],
       consultedOrFound: ['', Validators.required],
@@ -145,6 +152,9 @@ export class CompleteInspectionPage implements OnInit {
 
   
   }
+  // ngOnDestroy(): void {
+  //   throw new Error('Method not implemented.');
+  // }
 
   ecp:string | null=""
   appType:any
@@ -159,7 +169,7 @@ export class CompleteInspectionPage implements OnInit {
         this.communityConsult();
       }
   
-      /* Restore saved form data using the caseId as the key
+      // Restore saved form data using the caseId as the key
       const savedForm = localStorage.getItem(`completeReportForm_${this.caseNo}`);
       if (savedForm) {
         this.completeReportForm.patchValue(JSON.parse(savedForm));
@@ -168,15 +178,258 @@ export class CompleteInspectionPage implements OnInit {
       // Auto-save form on value changes, using caseId as the key
       this.completeReportForm.valueChanges.subscribe(value => {
         localStorage.setItem(`completeReportForm_${this.caseNo}`, JSON.stringify(value));
-      });*/
+      });
     });
+
+
   
     this.getCurrentPosition();
-  }
-  
+    this.getCameraPermission;
 
-  communityConsult()
+    //this.loadFileByCaseId();
+  }
+
+  async getCameraPermission()
   {
+    const permissionStatus = await Camera.requestPermissions();
+    console.log(permissionStatus);
+    
+  }
+
+  sections = [
+    {
+      name: 'Section 22 (2) (a)',
+      description: 'An application for registration contemplated in subsection (1) must be made by submitting to the board-',
+      notes: '',
+      show: false,
+      subsections: [
+        {
+          name: '(i) the particulars of the applicant which, in the case of-',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) a natural person, must include his or her full name, identity number and residential address and a statement that he or she is not disqualified for registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(bb) a company or close corporation must include its full name, registration number and the address of its registered office;',
+              checked: false
+            },
+            {
+              name: '(cc) a company, except for a company which is listed on the Johannesburg Stock Exchange, must include the names, identity numbers and residential addresses of all shareholders and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(dd) a close corporation, the names, identity numbers and residential addresses of all its members and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(ee) a trust, must include the names, identity numbers and residential addresses of all its trustees and known beneficiaries, and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            },
+            {
+              name: '(ff) an association or partnership, must include the names, identity numbers and residential addresses of all its members or partners, and a statement that none of them is disqualified from registration in terms of section 21;',
+              checked: false
+            }
+          ]
+        }
+      ]
+    },
+    /*{
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(ii) the physical address and the erf, street or farm number and a description of the premises from which the applicant intends to sell liquor, including a plan of the premises?',
+
+          show: false,
+          subsubsections: []
+        }
+      ]
+
+    },
+    {
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(iii) the category in respect of which registration is being sought?',
+          show: false,
+          subsubsections: []
+        },
+        {
+          name: '(iii) the category in respect of which registration is being sought?',
+          show: false,
+          subsubsections: []
+        },
+        {
+          name: '(iv) in respect of the premises from which the applicant intends to sell liquor, whether the premises concerned are',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) in existence; or',
+              checked: false
+            },
+            {
+              name: '(bb) the premises concerned are not yet in existence, in which case the applicant must furnish details of the steps to be taken in the event of the application for registration being approved to construct the premises;',
+              checked: false
+            }
+          ]
+        }
+
+      ]
+
+    },
+    {
+      name: 'Section 22 (2) (a)',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: '(iv) in respect of the premises from which the applicant intends to sell liquor, whether the premises concerned are',
+          show: false,
+          subsubsections: [
+            {
+              name: '(aa) in existence; or',
+              checked: false
+            },
+            {
+              name: '(bb) the premises concerned are not yet in existence, in which case the applicant must furnish details of the steps to be taken in the event of the application for registration being approved to construct the premises;',
+              checked: false
+            }
+          ]
+        }
+      ]
+    },*/
+    {
+      name: 'Section 22 (2) (b) ',
+      show: false,
+      notes: '',
+      subsections: [
+        {
+          name: 'other information that may be required by the board to enable the board to determine whether or not the applicant meets the requirements of registration?',
+          show: false,
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2) (d)',
+      notes: '',
+      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
+      subsections: [
+        {
+          name: '(i) ward committee which must on receipt of the notice consult the community of the area where the premises are situated and simultaneously submit a report to the board and the relevant municipal council',
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2) (d)',
+      notes: '',
+      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
+      subsections: [
+        {
+          name: '(ii) governing body of every education institution or place of worship within a radius prescribed by the MEC from the premises in respect of which the application is made.',
+          subsubsections: []
+        },
+      ]
+    },
+    {
+      name: 'Section 22 (2)',
+      notes: '',
+      subsections: [
+        {
+          name: '(1) Not later than 28 days after the application was lodged with the board, any person may lodge-',
+          description: 'Representations or objections',
+          subsubsections: [
+            {
+              name: '(a) written representation in support of; or',
+              checked: false
+            },
+            {
+              name: 'written objection to,',
+              checked: false
+            }
+          ]
+        },
+        {
+          name: '(2) Such representation or objection must be lodged in duplicate, be fully motivated and must',
+          subsubsections: [
+            {
+              name: '(a) clearly indicate the name, identity number, residential and postal address and telephone number or e-mail address, if any, and where applicable, its registration number and address of its registered office, of the person making the representations or the objector; and',
+              checked: false
+            },
+            {
+              name: 'clearly identify the application concerned',
+              checked: false
+            }
+          ]
+        },
+      ]
+    }
+  ];
+
+  
+  getNotes(section: any, event: Event): void {
+    const textarea = event.target as HTMLTextAreaElement;
+
+    const selectedSectionIndex = this.selectedSections.findIndex(selectedSection => selectedSection.name === section.name);
+
+    if (section.show) {
+      this.selectedSections[selectedSectionIndex].notes = textarea.value;
+    } else {
+      if (selectedSectionIndex !== -1) {
+        const selectedSubsectionIndex = this.selectedSections[selectedSectionIndex].notes === textarea.value;
+        if (selectedSubsectionIndex) {
+          this.selectedSections[selectedSectionIndex].subsections.splice(selectedSubsectionIndex, 1);
+        }
+      }
+    }
+
+  }
+
+  
+  toggleSection(section: any) {
+    section.show = !section.show;
+
+    const selectedSectionIndex = this.selectedSections.findIndex(selectedSection => selectedSection.name === section.name);
+
+    if (section.show) {
+      if (selectedSectionIndex === -1) {
+        const selectedSection = {
+          name: section.name,
+          subsections: []
+        };
+        this.selectedSections.push(selectedSection);
+      }
+    } else {
+      if (selectedSectionIndex !== -1) {
+        this.selectedSections.splice(selectedSectionIndex, 1);
+        section.notes = '';
+      }
+    }
+  }
+
+
+  // async loadFileByCaseId() {
+  //   const file = await this.dbSql.getFileByCaseId(this.caseNo);
+  //   if (file) {
+  //     this.reportFiles.push(file);
+  //     console.log('Loaded file:', file);
+  //   } else {
+  //     console.log('No file found for caseId:', this.caseNo);
+  //   }
+  // }
+
+
+
+
+  
+  communityConsult(){
+
     this.completeReportForm.patchValue({
       complianceSectionA:'N/A',
       complianceSectionB:'N/A',
@@ -283,6 +536,36 @@ export class CompleteInspectionPage implements OnInit {
       "Accept": "/"
     };
 
+
+    
+    
+
+
+    if(this.completeReportForm.get('recommendation')?.value ==='2'  || this.completeReportForm.get('recommendation')?.value ==='3' )
+    {
+      this.completeReportForm.get('sections')?.setValue(this.selectedSections)
+
+      this.selectedSections.forEach(section => {
+
+        if (!section.notes) {
+          //Swal.fire({ icon: 'warning', timer: 5000, text: `Ensure that ${section.name} contain Explanatory Notes`, confirmButtonColor: "#87342E", showConfirmButton: true })
+          return;
+        }
+      });
+
+      if (this.selectedSections.length == 0) {
+        //Swal.fire({ icon: 'warning', timer: 5000, text: `Ensure that atleast one Section is Selected`, confirmButtonColor: "#87342E", showConfirmButton: true })
+        return;
+      }
+      
+      console.log(this.selectedSections);
+
+     
+    }
+
+    console.log(this.completeReportForm.value);
+    
+
     this.inspectionReport = this.inspectionReport || {};
     this.inspectionReport = Object.assign(this.inspectionReport, this.completeReportForm.value);
 
@@ -294,6 +577,11 @@ export class CompleteInspectionPage implements OnInit {
 
     this.noticeDoc = this.noticeFiles[0];
     formData.append('notice', this.notice);
+
+
+    
+
+    
 
     this.imageSources.forEach((img, index) => {
       const imgFile= this.convertSrcToFile(img.src, `photo_${index}.jpg`);
@@ -399,14 +687,56 @@ export class CompleteInspectionPage implements OnInit {
   async onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.report = file; 
-       if (this.reportFiles.length > 0) {
+      this.report = file;
+  
+      if (this.reportFiles.length > 0) {
         this.reportFiles.splice(0, 1, { name: file.name, size: file.size });
       } else {
         this.reportFiles.push({ name: file.name, size: file.size });
       }
-      this.inputVisible = false; 
+  
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64File = reader.result as string;
+  
+        // Convert base64 to Blob
+        const blobFile = this.base64ToBlob(base64File.split(',')[1], file.type);
+  
+        // Store the file in the SQLite database
+        try {
+          //await this.dbSql.insertFile(this.caseNo, file.name, blobFile);
+          console.log('File stored in the database:', file.name);
+        } catch (error) {
+          console.error('Error storing file in the database:', error);
+        }
+      };
+  
+      reader.readAsDataURL(file); // Read file as Data URL
+      this.inputVisible = false;
     }
+  }
+
+  base64ToBlob(base64Data: string, contentType: string): Blob {
+    const byteCharacters = atob(base64Data); // Decode base64 to binary string
+    const byteNumbers = new Array(byteCharacters.length);
+  
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+  
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+
+  fileBase64Data: string | null = null;
+
+  
+
+  getFileSizeFromBase64(base64: string): number {
+    const padding = (base64.charAt(base64.length - 2) === '=') ? 2 : (base64.charAt(base64.length - 1) === '=') ? 1 : 0;
+    const fileSize = (base64.length * (3 / 4)) - padding;
+    return Math.round(fileSize);
   }
 
   isFileUploaded(fileName: string): boolean {
