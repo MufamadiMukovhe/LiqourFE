@@ -136,7 +136,10 @@ export class EditComplaintPage implements OnInit {
       "comment": this.comment,
       "status": this.status,
       "comments": []
+      
     };
+
+    
   
     let url = environment.eclbDomain+"api/general/update-complain";
     this.http.put(url, form, { headers: newHeader }).subscribe(

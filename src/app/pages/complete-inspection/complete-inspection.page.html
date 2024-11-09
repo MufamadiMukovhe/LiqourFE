@@ -1295,6 +1295,37 @@
               </ion-radio-group>
             </ion-row>
           </ion-grid>
+<<<<<<< HEAD
+
+          <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3'">
+            <ion-item>
+                <div class="disp" *ngFor="let section of sections">
+                    <label>
+                        <input type="checkbox" [checked]="section.show" (change)="toggleSection(section)">
+                        {{ section.name }}
+                    </label>
+                    <div *ngIf="section.show">
+                        <div>
+                            <textarea
+                                style="height: 100px; background-color: #fff;"
+                                [(ngModel)]="section.notes"
+                                [ngModelOptions]="{ standalone: true }"
+                                (change)="getNotes(section, $event)"
+                                id="residentialAddress">
+                            </textarea>
+                            <label for="residentialAddress">Please Provide Explanatory Notes</label>
+                        </div>
+                        <br />
+                    </div>
+                    
+                </div>
+            </ion-item>
+        </div>
+        
+        <!-- Ensures content following the loop starts on a new line -->
+        
+=======
+>>>>>>> deee5b892dffe92615dfbc7e6145c49dda331076
         </ion-card-title>
         <div *ngIf="completeReportForm.get('recommendation')?.value ==='2'  || completeReportForm.get('recommendation')?.value ==='3'">
             
