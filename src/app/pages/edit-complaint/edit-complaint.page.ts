@@ -24,6 +24,7 @@ export class EditComplaintPage implements OnInit {
   description: string = "";
   strAddress: string = "";
   inspectors: any[] = [];
+  complain: any[] = [];
   offOutlet: string = "";
   districMunicipalty: string = "";
   localMunicipality: string = "";
@@ -33,7 +34,7 @@ export class EditComplaintPage implements OnInit {
   selectedInspector:any;
   status:any;
   ecpNo:any;
-  
+  complains:string="";
   referenceNo:any;
   collectObj:any;
 
@@ -43,7 +44,7 @@ export class EditComplaintPage implements OnInit {
     const newHeader={
       "Authorization":"Bearer "+token, 
       "Accept":"*/*"}
-    let urlForInspectors="https://system.eclb.co.za/eclb2/api/general/get-complaints-info";
+    let urlForInspectors="http://localhost:8081/api/general/get-complaints-info";
 
     this.http.get(urlForInspectors, { headers: newHeader }).subscribe(
       (response: any) => {
@@ -64,7 +65,7 @@ export class EditComplaintPage implements OnInit {
 
       this.referenceNo = param.get('referenceNumber');
 
-      let url = "https://system.eclb.co.za/eclb2/api/general/get-complaint-details/"+this.referenceNo;
+      let url = "http://localhost:8081/api/general/get-complaint-details/"+this.referenceNo;
 
       
     const newHeader={
@@ -93,7 +94,22 @@ export class EditComplaintPage implements OnInit {
       }, error => {
         console.log(error)
       });
+
+      let url1 = "http://localhost:8081/api/general/get-complain/"+this.referenceNo;
+      this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
+        console.log(response)
+        this.complains =response.comments;
+        this.ecpNo=response.ecpNumber;
+          this.status=response.status;
+        console.log(this.complains)
+       
+     this.history=this.complains
+
+      }, error => {
+        console.log(error)
+      });
     });
+
   }
   navigateToBack() {
     this.aRoute.navigate(['complaints']);
@@ -117,7 +133,6 @@ export class EditComplaintPage implements OnInit {
       "town": this.town,
       "inspector": this.selectedInspector,
       "comment": this.comment,
-      "commentHistory": this.history,
       "status": this.status,
       "comments": []
       
@@ -128,6 +143,7 @@ export class EditComplaintPage implements OnInit {
     let url = environment.eclbDomain+"api/general/update-complain";
     this.http.put(url, form, { headers: newHeader }).subscribe(
       async response => {
+        console.log(form);
         console.log(response);
         this.spinner.hide();
         const alert = await this.alertController.create({

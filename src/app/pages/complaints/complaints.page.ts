@@ -19,8 +19,9 @@ export class ComplaintsPage implements OnInit, OnDestroy {
   filteredCollect: any[] = [];
   searchTerm: string = '';
   loading: boolean = true; // Loading flag
+  refNum: string | undefined; // Stores the selected reference number
   private subscription: Subscription;
-
+  referenceNumbers: string[] = []; // Array to hold all reference numbers
   constructor(
     private route: Router,
     private eRef: ElementRef,
@@ -56,9 +57,13 @@ export class ComplaintsPage implements OnInit, OnDestroy {
         console.log(response);
         this.collect = response;
         this.filteredCollect = response;
-      
+        this.referenceNumbers = response.map((item: any) => item.referenceNumber);
+
+        console.log(this.referenceNumbers)
           this.filteredCollect.sort((a, b) => new Date(b.dateComplaintLogged).getTime() - new Date(a.dateComplaintLogged).getTime());
           this.filteredCollect = this.filteredCollect || []
+
+
         this.spinner.hide();
         this.loading = false;
         
@@ -69,6 +74,8 @@ export class ComplaintsPage implements OnInit, OnDestroy {
         this.loading = false;
       }
     );
+
+    
   }
 
   toggleDropdown(event: Event, referenceNumber: string) {
@@ -76,6 +83,7 @@ export class ComplaintsPage implements OnInit, OnDestroy {
     this.dropdownVisible = {};  // Reset all dropdowns
     this.dropdownVisible[referenceNumber] = !this.dropdownVisible[referenceNumber]; // Toggle only the clicked dropdown
   }
+
 
   navigateToView() {
     this.route.navigate(['view-complaint']);
@@ -124,4 +132,6 @@ filterComplaints() {
       this.subscription.unsubscribe();
     }
   }
+
+
 }
