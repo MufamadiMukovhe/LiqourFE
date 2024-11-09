@@ -61,6 +61,7 @@ export class ComplaintsPage implements OnInit, OnDestroy {
           this.filteredCollect = this.filteredCollect || []
         this.spinner.hide();
         this.loading = false;
+        
       },
       error => {
         console.log(error);
