@@ -7,7 +7,7 @@
   <div>
     <ion-label >Reference Number</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" placeholder="Reference Number"[(ngModel)]="reference" readonly></ion-input>
+      <ion-input class="custom-input ref" type="text" placeholder="Reference Number"[(ngModel)]="reference" readonly></ion-input>
     </ion-item>
     <ion-label>Description</ion-label>
     <ion-item>
@@ -20,10 +20,10 @@
     <ion-label >Complaint Status</ion-label>
     <ion-item>
       <ion-select class="custom-input custom-select" placeholder="Complaint Status" [(ngModel)]="status">
-        <ion-select-option value="inspector1">Open</ion-select-option>
-        <ion-select-option value="inspector2">In Progress</ion-select-option>
-        <ion-select-option value="inspector3">Cancelled</ion-select-option>
-        <ion-select-option value="inspector4">Closed</ion-select-option>
+        <ion-select-option value="0">Open</ion-select-option>
+        <ion-select-option value="1">In Progress</ion-select-option>
+        <ion-select-option value="2">Cancelled</ion-select-option>
+        <ion-select-option value="3">Closed</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-label >ECP Number</ion-label>

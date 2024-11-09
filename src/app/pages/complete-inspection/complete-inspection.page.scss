@@ -597,6 +597,47 @@ ion-input::part(placeholder) {
   font-size: 0.5px !important; /* Use !important to ensure it overrides other styles */
 }
 
+.checkmart {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgb(40, 38, 38);
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+  top: 3px;
+  border-radius: 1px;
+
+}
+
+.checkmart:checked {
+  background-color: #CFAA35;
+  border-color: #CFAA35;
+}
+
+.checkmart:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.check{
+  margin-left: 15px; 
+}
+
+.flex{
+  display: flex;
+}
+
+
+
+
 
 
 

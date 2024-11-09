@@ -1295,6 +1295,7 @@
               </ion-radio-group>
             </ion-row>
           </ion-grid>
+<<<<<<< HEAD
 
           <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3'">
             <ion-item>
@@ -1323,9 +1324,38 @@
         
         <!-- Ensures content following the loop starts on a new line -->
         
+=======
+>>>>>>> deee5b892dffe92615dfbc7e6145c49dda331076
         </ion-card-title>
+        <div *ngIf="completeReportForm.get('recommendation')?.value ==='2'  || completeReportForm.get('recommendation')?.value ==='3'">
+            
+          <p>Section 22(5)</p>
+          
+          <div *ngFor="let section of sections">
+            <div class="flex">
+            <div class="" style="margin-bottom: 10px;">
+              <input 
+                  class="checkmart" 
+                  type="checkbox" 
+                  [checked]="section.show" 
+                  (change)="toggleSection(section)"
+              >
+              <label class="check">{{ section.name }}</label>
+            </div>
+          </div>
+          
+          
 
+          <!--Ion Item for notes-->
+            <div *ngIf="section.show">
+                  <textarea style="height: 50px; background-color: #fff; font-size: 12px; margin-bottom: 10px;" [(ngModel)]="section.notes"
+                      [ngModelOptions]="{standalone: true}" (change)="getNotes(section, $event)"
+                      id="residentialAddress" placeholder="Please Provide Explanatory Notes"></textarea>
+             </div>
+        </div> 
 
+        </div>
+      
 
 
         <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '3'" class="recommend-comments">

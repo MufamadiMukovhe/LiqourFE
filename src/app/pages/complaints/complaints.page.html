@@ -26,7 +26,7 @@
     
     <ng-container *ngFor="let user of filteredCollect">
       <div class="header-content">
-        <ion-label class="label">{{ user.referenceNumber }}</ion-label>
+        <ion-label class="label ref">{{ user.referenceNumber }}</ion-label>
         <ion-img src="../../../assets/Images/dots.svg" class="vector" (click)="toggleDropdown($event, user.referenceNumber)"></ion-img>
         <div class="dropdown-content" [class.show]="dropdownVisible[user.referenceNumber]">
           <ion-item><a [routerLink]="['/view-complaint', user.referenceNumber]">View</a></ion-item>

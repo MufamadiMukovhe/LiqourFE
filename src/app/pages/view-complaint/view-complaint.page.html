@@ -5,36 +5,85 @@
     </div>
 
   
-  <div *ngIf="collectObj">
+  <div *ngIf="collectObj ">
+
+    <ion-card class="mt-2">
+    <ion-label class="label">Reference number</ion-label>
+    <p class="info-time ref">{{collectObj.referenceNumber}}</p>
+  </ion-card>
+
+  <ion-card class="mt-2">
   <ion-label class="label">ECP Number</ion-label>
-  <p class="info-time">{{collectObj.referenceNumber}}</p>
+  <p class="">{{collectObj.ecpNumber}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Outlet Name</ion-label>
-  <p class="info-time">{{collectObj.outletName}}</p>
+  <p class="">{{collectObj.outletName}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Address of Outlet</ion-label>
-  <p class="info-time">{{collectObj.addressOfOutlet}}</p>
+  <p class="">{{collectObj.addressOfOutlet}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Region of Outlet</ion-label>
-  <p class="info-time">{{collectObj.regionOfOutlet}}</p>
+  <p class="">{{collectObj.regionOfOutlet}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Area of Outlet</ion-label>
-  <p class="info-time">{{collectObj.areaOfOutlet}}</p>
+  <p class="">{{collectObj.areaOfOutlet}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Description of Complaint</ion-label>
-  <p class="info-time">
+  <p class="">
     {{collectObj.descriptionOfComplaint}} </p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Name of Complaint</ion-label>
-  <p class="info-time">{{collectObj.nameOfComplainant}}</p>
+  <p class="">{{collectObj.nameOfComplainant}}</p>
+  </ion-card>
 
+  <ion-card class="mt-2">
   <ion-label class="label">Contact Number</ion-label>
-  <p class="info-time">
+  <p class="">
    {{collectObj.contactNumber}}</p>
+  </ion-card>
   
+  <ion-card class="mt-2">
   <ion-label class="label">Date of Complaint Logged</ion-label>
-  <p class="info-time">{{collectObj.dateComplaintLogged}}</p>
+  <p class="">{{collectObj.dateComplaintLogged}}</p>
+  </ion-card>
+  
+
+  <ion-card class="mt-2">
+    <ion-label class="label">Complain Status</ion-label>
+    <p class="" [ngClass]="getStatusMessage(collectObj.status)">
+      {{ getStatusMessage(collectObj.status) }}
+    </p>
+  </ion-card>
+    
+     <!-- Display Comments Section -->
+     <ion-card class="mt-2">
+  <ion-label class="label">History Comments</ion-label>
+  <div *ngIf="complains?.length; else noComments">
+    <div *ngFor="let comment of complains" class="comment">
+      <p class="">
+        {{ extractCommentText(comment) }}</p>
+        <p>{{ extractTime(comment) }}  {{ extractDate(comment) }}
+      </p>
     </div>
+  </div>
+  <ng-template #noComments>
+    <p>No comments available.</p>
+  </ng-template>
+     </ion-card>
+</div>
+
 
 </ion-content>
 <app-menu-footer></app-menu-footer>
