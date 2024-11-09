@@ -46,6 +46,8 @@ export class ViewComplaintPage implements OnInit {
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
+        
+        
        
         console.log(this.complains)
 
@@ -56,6 +58,23 @@ export class ViewComplaintPage implements OnInit {
 
 
   }
+  extractCommentText(comment: string): string {
+    const parts = comment.split(' - ');
+    return parts[0] || ''; 
+  }
+  
+  extractTime(comment: string): string {
+    const parts = comment.split(' - ');
+    return parts[1] || ''; 
+  }
+  
+  extractDate(comment: string): string {
+    const parts = comment.split(' - ');
+    return parts[2] || ''; 
+  }
+
+
+  
 
   navigateToBack() {
     this.aRoute.navigate(['complaints']);
