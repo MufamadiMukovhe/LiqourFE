@@ -9,12 +9,16 @@
 
     <ion-card class="mt-2">
     <ion-label class="label">Reference number</ion-label>
-    <p class="info-time ref">{{collectObj.referenceNumber}}</p>
+    <p class="">{{collectObj.referenceNumber}}</p>
   </ion-card>
 
   <ion-card class="mt-2">
   <ion-label class="label">ECP Number</ion-label>
-  <p class="">{{collectObj.ecpNumber}}</p>
+  <div *ngIf="ecpNumber; else noComments">
+    <p class="">
+        {{ ecpNumber }}
+    </p>
+  </div>
   </ion-card>
 
   <ion-card class="mt-2">
