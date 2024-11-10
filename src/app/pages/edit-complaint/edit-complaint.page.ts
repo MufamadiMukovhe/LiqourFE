@@ -99,11 +99,12 @@ export class EditComplaintPage implements OnInit {
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
+        this.localMunicipality=response.localMunicipality;
         this.ecpNo=response.ecpNumber;
           this.status=response.status;
         console.log(this.complains)
        
-     this.history=this.complains
+         this.history=this.complains
 
       }, error => {
         console.log(error)
