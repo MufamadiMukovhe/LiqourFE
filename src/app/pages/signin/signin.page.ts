@@ -7,6 +7,7 @@ import { HelperService } from 'src/app/util/service/helper.service';
 import { Auth } from 'src/app/util/service/Auth';
 import { Message } from 'src/app/util/service/Message';
 import { DataService } from 'src/app/util/service/data.service';
+import { VersionControlService } from 'src/app/util/version-control.service';
 
 @Component({
   selector: 'app-signin',
@@ -28,7 +29,8 @@ export class SigninPage implements OnInit {
     private helper: HelperService,
     private auth: Auth,
     private dataService: DataService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private verControl: VersionControlService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
@@ -36,7 +38,18 @@ export class SigninPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  appVersion:string | undefined;
+
+
+  ngOnInit() {
+    this.verControl.getAppVersion().subscribe(
+      (version) => {
+        this.appVersion = version;
+        console.log('Version:', this.appVersion); 
+      },
+      (error) => console.error('Failed loading the version:', error)
+    );
+  }
 
   email: string = '';
   password: string = '';

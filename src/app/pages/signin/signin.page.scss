@@ -9,6 +9,16 @@
    font-family: 'Inter', sans-serif; 
 
 }
+
+
+.verStyle
+{
+  font-family: 'Inter', sans-serif;
+  text-align: center; 
+  margin-top: 20%; 
+  font-size: 70%; 
+  font-weight: 700;
+}
 .signin{
     color: #000;
     font-size: 20px;
@@ -17,6 +27,7 @@
     margin-left: 15px;
     font-family: 'Inter', sans-serif; 
 }
+
 ion-input, ion-select {
   font-size: 11px;
   --padding-start: 10px !important;
