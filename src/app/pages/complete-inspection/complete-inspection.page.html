@@ -201,7 +201,7 @@
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="consultedOrFound">
+              <ion-radio-group formControlName="consultedOrFound" (ionChange)="applicantForm($event)">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
@@ -231,8 +231,10 @@
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
       <hr>
-  
-    <span>(c) Has the applicant indicated that this particular person will be at the premises?</span>
+
+    <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value !== '2'">
+        
+      <span>(b(i)) Has the applicant indicated that this particular person will be at the premises?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -274,9 +276,9 @@
       <textarea formControlName="applicantIndicatedPersonAtPremisesComment" placeholder="Comments"
           id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
   </div>
-    <hr>
+  <hr>
 
-    <span>(d) If not the applicant, can the person found at the premises confirm the applicant?</span>
+  <span>(b(ii)) If not the applicant, can the person found at the premises confirm the applicant?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -312,10 +314,17 @@
       <textarea formControlName="canPersonBeFoundComment" placeholder="Comments"
           id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
   </div>
+
+    </div>
+  
+    
+    <hr>
+
+    
     <hr>
 
 
-    <span>(e) Does the applicant have any other interests in the liquor trade in the republic?</span>
+    <span>(c) Does the applicant have any other interests in the liquor trade in the republic?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -354,7 +363,7 @@
     <hr>
 
 
-    <span>(f) Has any of the above listed outlets ever been issued with a compliance notice?</span>
+    <span>(d) Has any of the above listed outlets ever been issued with a compliance notice?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -393,7 +402,7 @@
     <hr>
 
 
-    <span>(g) Were any complaints received against any of the outlets mentioned in (f)?</span>
+    <span>(e) Were any complaints received against any of the outlets mentioned in (f)?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -953,7 +962,7 @@
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="educationalInstitution">
+              <ion-radio-group formControlName="educationalInstitution" (ionChange)="communitySchool($event)">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
@@ -985,61 +994,67 @@
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
       <hr>
+
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('educationalInstitution')?.value !== '2'">
+        <span>(e(i)) Was Form 2/8/12 appropriately served at the educational institution?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="formServedAtEducationInstitution">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="formServedAtEducationInstitution" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtEducationInstitution')?.value === '2'">
+          <textarea formControlName="formServedAtEducationInstitutionComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+      </div>
   
   
       <!-- Repeat similar blocks for other questions with appropriate formControlName -->
       <!-- Question (f) -->
-      <span>(f) Was Form 2/8/12 appropriately served at the educational institution?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="formServedAtEducationInstitution">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="formServedAtEducationInstitution" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtEducationInstitution')?.value === '2'">
-        <textarea formControlName="formServedAtEducationInstitutionComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
+      
       <hr>
+
+      
   
   
       <!-- Repeat similar blocks for other questions with appropriate formControlName -->
       <!-- Question (g) -->
-      <span>(g) Is there a place of worship within the prescribed 100m?</span>
+      <span>(f) Is there a place of worship within the prescribed 100m?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="placeOfWorship">
+              <ion-radio-group formControlName="placeOfWorship" (ionChange)="communityChurch($event)">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="aplaceOfWorship" value="1"></ion-radio>
+                      <ion-radio id="yes_appt" class="move-radio" name="placeOfWorship" value="1"></ion-radio>
                       <label for="yes_appt">Yes</label>
                     </div>
                   </ion-col>
@@ -1067,13 +1082,8 @@
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
       <hr>
-  
-  
-     
-    
-       
-
-        <span>(h) Was Form 2/8/12 appropriately served at the place of worship?</span>
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('placeOfWorship')?.value !== '2'">
+        <span>(f(i)) Was Form 2/8/12 appropriately served at the place of worship?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
@@ -1109,8 +1119,12 @@
           <textarea formControlName="formServedAtPlaceOfWorshipComment" placeholder="Comments"
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
+      </div>
+       
+
+        
         <hr>
-        <span>(i) Were any objections received at the time of the inspection</span>
+        <span>(g) Were any objections received at the time of the inspection</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
@@ -1148,7 +1162,7 @@
       </div>
         <hr>
         <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
-        <span>(j) If objections were received, were they served to the applicant for response?</span>
+        <span>(h) If objections were received, were they served to the applicant for response?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
@@ -1187,7 +1201,7 @@
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
-        <span>(k) Has the applicant responded to the objections?</span>
+        <span>(i) Has the applicant responded to the objections?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
