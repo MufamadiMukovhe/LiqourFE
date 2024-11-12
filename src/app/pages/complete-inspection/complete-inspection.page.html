@@ -1269,7 +1269,7 @@
           <ion-card-title class="general-name">
             <ion-grid>
               <ion-row class="vertical-radios">
-                <ion-radio-group formControlName="recommendation">
+                <ion-radio-group formControlName="recommendation" (ionChange)="refusalSectionValidation($event)">
                   <div class="radioss">
                     <ion-radio id="yes_appt" class="move-radio" name="recommendation" value="1"></ion-radio>
                     <label for="yes_appt">Approval</label>
@@ -1277,7 +1277,7 @@
                   <div class="radioss">
                     <ion-radio id="no_appt" class="move-radio" name="recommendation" value="2"></ion-radio>
                     <label for="no_appt">Refusal</label>
-                  </div>
+                  </div>        
                   <div class="radioss">
                     <ion-radio id="na_appt_sec22_5" class="move-radio" name="recommendation" value="3"></ion-radio>
                     <label for="sec22_5">Section 22(5)</label>
@@ -1320,7 +1320,7 @@
                 <label class="check">{{ section.name }}</label>
               </div>
             </div>
-            <p>Useless paragraph</p>
+           
   
   
             <!--Ion Item for notes-->

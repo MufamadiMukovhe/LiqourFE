@@ -537,6 +537,32 @@ export class CompleteInspectionPage implements OnInit {
     }
   }
 
+  refusalSectionValidation(event:any)
+  {
+
+    if(event.detail.value==='2' || event.detail.value==='3')
+    {
+      this.completeReportForm.get('comments')?.clearValidators();
+      this.completeReportForm.get('comments')?.updateValueAndValidity();
+
+      this.completeReportForm.patchValue({
+        comments:'n/a'
+      })
+    }
+    else
+    {
+
+      this.completeReportForm.get('comments')?.setValidators([Validators.required]);
+      this.completeReportForm.get('comments')?.updateValueAndValidity();
+
+
+      this.completeReportForm.patchValue({
+        comments:''
+      })
+    }
+
+  }
+
   communitySchool(event:any)
   {
     if(event.detail.value==='2')
@@ -566,14 +592,14 @@ export class CompleteInspectionPage implements OnInit {
     if(this.completeReportForm.get('educationalInstitution')?.value ==="2")
     {
       this.completeReportForm.patchValue({
-        
+        formServedAtEducationInstitution:"3"
       })
     }
 
     if(this.completeReportForm.get('placeOfWorship')?.value === "2")
     {
       this.completeReportForm.patchValue({
-        
+        formServedAtPlaceOfWorship:"3"
       })
     }
 
