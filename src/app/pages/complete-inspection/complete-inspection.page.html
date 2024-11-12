@@ -232,14 +232,14 @@
     </div>
       <hr>
 
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value !== '2'">
+    <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value !== '1'">
         
       <span>(b(i)) Has the applicant indicated that this particular person will be at the premises?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
           <ion-col >
-            <ion-radio-group formControlName="applicantIndicatedPersonAtPremises">
+            <ion-radio-group formControlName="applicantIndicatedPersonAtPremises" (ionChange)=" applicantForm($event)">
               <ion-row class="horizontal-radios" >
                 
                 <ion-col >

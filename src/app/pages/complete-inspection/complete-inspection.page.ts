@@ -526,7 +526,7 @@ export class CompleteInspectionPage implements OnInit {
 
   applicantForm(event:any)
   {
-    if (event.detail.value === '2')
+    if (event.detail.value === '1')
     
       {
         this.completeReportForm.patchValue({
