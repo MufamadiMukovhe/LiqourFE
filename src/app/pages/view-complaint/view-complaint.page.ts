@@ -47,8 +47,6 @@ export class ViewComplaintPage implements OnInit {
         console.log(response)
         this.complains =response.comments;
         
-        
-       
         console.log(this.complains)
 
       }, error => {
