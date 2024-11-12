@@ -327,17 +327,6 @@ export class CompleteInspectionPage implements OnInit {
       ]
     },
     {
-      name: 'Section 22 (2) (d)',
-      notes: '',
-      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
-      subsections: [
-        {
-          name: '(ii) governing body of every education institution or place of worship within a radius prescribed by the MEC from the premises in respect of which the application is made.',
-          subsubsections: []
-        },
-      ]
-    },
-    {
       name: 'Section 22 (2)',
       notes: '',
       subsections: [
