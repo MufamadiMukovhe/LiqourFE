@@ -9,6 +9,7 @@
   <div class="container">
     <ion-img src="../../../assets/Images/logo (7) 2.svg" alt="Logo" class="image"></ion-img>
 
+
     <p class="welcome">Welcome</p>
     <p class="signin">Sign in</p>
     
@@ -32,6 +33,13 @@
 
     <div *ngIf="showAlert" [ngClass]="alertType === 'success' ? 'alert alert-success' : 'alert alert-danger'" style="font-weight: 600;">
       {{ alertMessage }}
+  </div>
+  
+  <div class="verStyle">
+    
+    <div *ngIf="appVersion">
+      App Version: {{ appVersion }}
+    </div>
   </div>
    
   </div>

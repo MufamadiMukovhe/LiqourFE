@@ -523,6 +523,40 @@ export class CompleteInspectionPage implements OnInit {
              this.isPhotoAvailable == true;
     }
   }
+
+  applicantForm(event:any)
+  {
+    if (event.detail.value === '2')
+    
+      {
+        this.completeReportForm.patchValue({
+          applicantIndicatedPersonAtPremises: '3',
+          canPersonBeFound:'3',
+  
+        })
+      }
+
+  }
+
+  communityChurch(event:any)
+  {
+    if(event.detail.value ==='2')
+    {
+      this.completeReportForm.patchValue({
+        formServedAtEducationInstitution:"3"
+      })
+    }
+  }
+
+  communitySchool(event:any)
+  {
+    if(event.detail.value==='2')
+      {
+        this.completeReportForm.patchValue({
+          formServedAtPlaceOfWorship: "3"
+        })
+      }
+  }
   
 
   
@@ -539,6 +573,20 @@ export class CompleteInspectionPage implements OnInit {
 
     
     
+
+    if(this.completeReportForm.get('educationalInstitution')?.value ==="2")
+    {
+      this.completeReportForm.patchValue({
+        
+      })
+    }
+
+    if(this.completeReportForm.get('placeOfWorship')?.value === "2")
+    {
+      this.completeReportForm.patchValue({
+        
+      })
+    }
 
 
     if(this.completeReportForm.get('recommendation')?.value ==='2'  || this.completeReportForm.get('recommendation')?.value ==='3' )

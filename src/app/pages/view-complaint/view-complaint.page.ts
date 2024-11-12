@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./view-complaint.page.scss'],
 })
 export class ViewComplaintPage implements OnInit {
+  ecpNumber:string="";
   complains:string="";
 
   constructor(private aRoute: Router, private eRef: ElementRef, private http:HttpClient, private route: ActivatedRoute) {}
@@ -46,8 +47,15 @@ export class ViewComplaintPage implements OnInit {
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
+<<<<<<< HEAD
         
+=======
+        this.ecpNumber=response.ecpNumber;
+        
+       
+>>>>>>> b3de7f5a20bca939b5b3527b619570f559c4527b
         console.log(this.complains)
+        console.log(this.ecpNumber);
 
       }, error => {
         console.log(error)
