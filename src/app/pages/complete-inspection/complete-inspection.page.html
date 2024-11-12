@@ -990,7 +990,7 @@
       </div>
         <hr>
     
-    <div *ngIf="this.completeReportForm.get('educationalInstitution')?.value !== 2">
+    <div *ngIf="this.completeReportForm.get('educationalInstitution')?.value !== '2'">
         <!-- Repeat similar blocks for other questions with appropriate formControlName -->
         <!-- Question (f) -->
         <span>(e(i)) Was Form 2/8/12 appropriately served at the educational institution?</span>
@@ -1077,7 +1077,7 @@
     
        
       
-         <div *ngIf="this.completeReportForm.get('placeOfWorship')?.value !==2">
+         <div *ngIf="this.completeReportForm.get('placeOfWorship')?.value !=='2'">
   
           <span>(f(i)) Was Form 2/8/12 appropriately served at the place of worship?</span>
           <ion-card-title class="general-name">
