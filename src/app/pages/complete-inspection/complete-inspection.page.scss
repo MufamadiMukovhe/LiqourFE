@@ -642,3 +642,15 @@ ion-input::part(placeholder) {
 
 
 
+/* Custom CSS for scrollable alert */
+.scrollable-alert .alert-radio-group {
+  max-height: 200px; /* Adjust height as needed */
+  overflow-y: auto;
+}
+
+/* Custom CSS for highlighting selected descriptions in red */
+.selected-description {
+  color: red !important;
+  font-weight: bold;
+}
+

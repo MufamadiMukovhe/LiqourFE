@@ -583,11 +583,7 @@ export class CompleteInspectionPage implements OnInit {
 
     
 
-    this.imageSources.forEach((img, index) => {
-      const imgFile= this.convertSrcToFile(img.src, `photo_${index}.jpg`);
-      formData.append('files', imgFile);
-      formData.append('descriptions', img.description);
-    });
+  
 
 
     // if(this.latitude>=-31 && this.latitude<=-34 && this.longitude>=24 && this.longitude<=34)
@@ -858,153 +854,139 @@ export class CompleteInspectionPage implements OnInit {
     });
     await actionSheet.present();
   }
+  compulsoryPhotosCaptured: boolean[] = new Array(12).fill(false);  // Only 2 compulsory photos
+  availableDescriptions: string[] = ['Front View', 'Front & Left Side View','Front & Right Side View','Back View','Back & Left Side','Back & Right-side','Drinking Area View','Counter View','Shelves Area view','Storage Area View','Toilet Front View','Toilet Inside View', 'Other'];  
 
-  async selectImage(source: CameraSource) {
-    const image = await Camera.getPhoto({
-      quality: 50,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: source,
-      width: 4000,
-      height: 3000,
-    });
-  
-    if (image.dataUrl) {
-      // Resize the image before prompting for the description
-      const resizedImage = await this.resizeImage(image.dataUrl, 4000, 3000); // Adjust width and height as needed
-  
-      // Prompt for the description after resizing
-      const description = await this.promptForDescription();
-      const isDuplicate = this.imageSources.some(
-        (img) => img.description.toLowerCase() === description?.toLowerCase()
-      );
-  
-      if (!isDuplicate && description) {
-        this.imageSources.push({ src: resizedImage, description });
-        this.isPhotoAvailable = this.imageSources.length > 0;
-  
-        console.log(this.imageSources);
-      } else {
-        // Handle duplicate description
+  selectedDescriptions: Set<string> = new Set(); // Use a Set to keep track of selected descriptions
+
+// Function to handle image selection
+async selectImage(source: CameraSource) {
+  const image = await Camera.getPhoto({
+    quality: 50,
+    allowEditing: false,
+    resultType: CameraResultType.DataUrl,
+    source: source,
+    width: 4000,
+    height: 3000,
+  });
+
+  if (image.dataUrl) {
+    const resizedImage = await this.resizeImage(image.dataUrl, 4000, 3000);
+    const description = await this.promptForDescription();
+
+    if (description) {
+      if (this.isDuplicateDescription(description)) {
+        console.log(`The description "${description}" has already been selected.`);
+        await this.showAlert(`"${description}" has already been selected.`);
         return;
       }
+
+      this.imageSources.push({ src: resizedImage, description });
+      this.selectedDescriptions.add(description);
+
+      const compulsoryIndex = this.availableDescriptions.indexOf(description);
+      if (compulsoryIndex >= 0 && compulsoryIndex < 2) {
+        this.compulsoryPhotosCaptured[compulsoryIndex] = true;
+      }
+
+      this.isPhotoAvailable = this.compulsoryPhotosCaptured.every(captured => captured);
+
+      console.log("Compulsory Photos Captured Array:", this.compulsoryPhotosCaptured);
+      console.log("Is Photo Available:", this.isPhotoAvailable);
+    } else {
+      console.log("No description selected.");
     }
   }
-  
-  resizeImage(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = dataUrl;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-  
-        let { width, height } = img;
-  
-        // Calculate aspect ratio to maintain the image proportions
-        if (width > height) {
-          if (width > maxWidth) {
-            height = (height * maxWidth) / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width = (width * maxHeight) / height;
-            height = maxHeight;
-          }
-        }
-  
-        canvas.width = width;
-        canvas.height = height;
-  
-        ctx?.drawImage(img, 0, 0, width, height);
-  
-        resolve(canvas.toDataURL('image/jpeg', 0.5)); // Adjust the quality as needed
-      };
-    });
-  }
-  
+}
 
-  
+// Resize image function (placeholder for resizing logic)
+async resizeImage(dataUrl: string, width: number, height: number): Promise<string> {
+  return dataUrl;
+}
 
-
-
-  convertSrcToFile(dataURL: string, filename: string): File {
-    const arr = dataURL.split(',');
-    if (arr.length < 2) {
-      throw new Error('Invalid data URL');
-    }
-    
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    if (!mimeMatch || mimeMatch.length < 2) {
-      throw new Error('Unable to extract MIME type');
-    }
-    
-    const mime = mimeMatch[1];
-    
-    const bstr = atob(arr[1]);
-    const n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    for (let i = 0; i < n; i++) {
-      u8arr[i] = bstr.charCodeAt(i);
-    }
-    
-    return new File([u8arr], filename, { type: mime });
-  }
-
-  async promptForDescription(): Promise<string | null> {
-    return new Promise<string | null>(async (resolve) => {
-      const alert = await this.alertController.create({
-        header: 'Add Description',
-        inputs: [
-          {
-            name: 'description',
-            type: 'text',
-            placeholder: 'Enter image description'
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-              resolve(null);
-            }
-          },
-          {
-            text: 'Save',
-            handler: async (data) => {
-              const isDuplicate = this.imageSources.some(img => img.description === data.description);
-              if (isDuplicate) {
-                await this.presentDuplicateDescriptionAlert(resolve);
-              } else {
-                resolve(data.description);
-              }
-            }
-          }
-        ]
-      });
-      await alert.present();
-    });
-  }
-  
-  async presentDuplicateDescriptionAlert(resolve: (value: string | null) => void) {
+// Prompt user to select a description, highlighting previously selected items
+async promptForDescription(): Promise<string | null> {
+  return new Promise(async (resolve) => {
     const alert = await this.alertController.create({
-      message: 'Description already exists. Please use a different one.',
+      header: 'Select Description',
+      cssClass: 'scrollable-alert', // Custom CSS class to enable scrolling
+      inputs: this.availableDescriptions.map((description) => ({
+        type: 'radio',
+        label: description,
+        value: description,
+        checked: this.selectedDescriptions.has(description),  // Show checked if already selected
+        cssClass: this.selectedDescriptions.has(description) ? 'selected-description' : ''  // Apply custom styling
+      })),
       buttons: [
         {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => resolve(null)
+        },
+        {
           text: 'OK',
-          handler: async () => {
-            const description = await this.promptForDescription();
-            if (description) {
-              resolve(description);
+          handler: async (selectedDescription) => {
+            if (selectedDescription === 'Other') {
+              const otherDescription = await this.promptForCustomDescription();
+              resolve(otherDescription);
+            } else {
+              resolve(selectedDescription);
             }
           }
         }
       ]
     });
+
     await alert.present();
-  }
+  });
+}
+
+// Prompt user to enter a custom description if they select "Other"
+async promptForCustomDescription(): Promise<string | null> {
+  return new Promise(async (resolve) => {
+    const alert = await this.alertController.create({
+      header: 'Enter Description',
+      inputs: [
+        {
+          name: 'customDescription',
+          type: 'text',
+          placeholder: 'Enter custom description'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => resolve(null)
+        },
+        {
+          text: 'OK',
+          handler: (data) => resolve(data.customDescription || null)
+        }
+      ]
+    });
+
+    await alert.present();
+  });
+}
+
+// Check if the description is a duplicate
+isDuplicateDescription(description: string): boolean {
+  return this.selectedDescriptions.has(description);
+}
+
+// Show alert if a description is selected multiple times
+async showAlert(message: string) {
+  const alert = await this.alertController.create({
+    header: 'Duplicate Selection',
+    message: message,
+    buttons: ['OK']
+  });
+  await alert.present();
+}
+ 
+
+
   
    
   toggleDropdown(event: Event, index: number) {
