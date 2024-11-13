@@ -31,7 +31,7 @@ export class EditComplaintPage implements OnInit {
   town: string = "";
   comment: string = "";
   history: string = "";
-  selectedInspector:any;
+  selectedInspector:string ="";
   status:any;
   ecpNo:any;
   complains:string="";
@@ -44,13 +44,14 @@ export class EditComplaintPage implements OnInit {
     const newHeader={
       "Authorization":"Bearer "+token, 
       "Accept":"*/*"}
-    let urlForInspectors="http://localhost:8081/api/general/get-complaints-info";
+    let urlForInspectors=environment.eclbDomain+"api/general/get-complaints-info";
 
     this.http.get(urlForInspectors, { headers: newHeader }).subscribe(
       (response: any) => {
         if (response && response.inspectors) {
           this.inspectors = response.inspectors;
           console.log(this.inspectors);
+          
           
         }
       },
@@ -65,7 +66,7 @@ export class EditComplaintPage implements OnInit {
 
       this.referenceNo = param.get('referenceNumber');
 
-      let url = "http://localhost:8081/api/general/get-complaint-details/"+this.referenceNo;
+      let url =environment.eclbDomain+"api/general/get-complaint-details/"+this.referenceNo;
 
       
     const newHeader={
@@ -95,13 +96,14 @@ export class EditComplaintPage implements OnInit {
         console.log(error)
       });
 
-      let url1 = "http://localhost:8081/api/general/get-complain/"+this.referenceNo;
+      let url1 = environment.eclbDomain+"api/general/get-complain/"+this.referenceNo;
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
         this.localMunicipality=response.localMunicipality;
         this.ecpNo=response.ecpNumber;
           this.status=response.status;
+          this.selectedInspector=response.inspector;
         console.log(this.complains)
        
          this.history=this.complains
