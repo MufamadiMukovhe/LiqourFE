@@ -327,17 +327,6 @@ export class CompleteInspectionPage implements OnInit {
       ]
     },
     {
-      name: 'Section 22 (2) (d)',
-      notes: '',
-      description: 'proof of service of the notice contemplated in the prescribed manner on the-',
-      subsections: [
-        {
-          name: '(ii) governing body of every education institution or place of worship within a radius prescribed by the MEC from the premises in respect of which the application is made.',
-          subsubsections: []
-        },
-      ]
-    },
-    {
       name: 'Section 22 (2)',
       notes: '',
       subsections: [
@@ -523,6 +512,66 @@ export class CompleteInspectionPage implements OnInit {
              this.isPhotoAvailable == true;
     }
   }
+
+  applicantForm(event:any)
+  {
+    if (event.detail.value === '1')
+    
+      {
+        this.completeReportForm.patchValue({
+          applicantIndicatedPersonAtPremises: '3',
+          canPersonBeFound:'3',
+  
+        })
+      }
+
+  }
+
+  communityChurch(event:any)
+  {
+    if(event.detail.value ==='2')
+    {
+      this.completeReportForm.patchValue({
+        formServedAtEducationInstitution:"3"
+      })
+    }
+  }
+
+  refusalSectionValidation(event:any)
+  {
+
+    if(event.detail.value==='2' || event.detail.value==='3')
+    {
+      this.completeReportForm.get('comments')?.clearValidators();
+      this.completeReportForm.get('comments')?.updateValueAndValidity();
+
+      this.completeReportForm.patchValue({
+        comments:'n/a'
+      })
+    }
+    else
+    {
+
+      this.completeReportForm.get('comments')?.setValidators([Validators.required]);
+      this.completeReportForm.get('comments')?.updateValueAndValidity();
+
+
+      this.completeReportForm.patchValue({
+        comments:''
+      })
+    }
+
+  }
+
+  communitySchool(event:any)
+  {
+    if(event.detail.value==='2')
+      {
+        this.completeReportForm.patchValue({
+          formServedAtPlaceOfWorship: "3"
+        })
+      }
+  }
   
 
   
@@ -539,6 +588,20 @@ export class CompleteInspectionPage implements OnInit {
 
     
     
+
+    if(this.completeReportForm.get('educationalInstitution')?.value ==="2")
+    {
+      this.completeReportForm.patchValue({
+        formServedAtEducationInstitution:"3"
+      })
+    }
+
+    if(this.completeReportForm.get('placeOfWorship')?.value === "2")
+    {
+      this.completeReportForm.patchValue({
+        formServedAtPlaceOfWorship:"3"
+      })
+    }
 
 
     if(this.completeReportForm.get('recommendation')?.value ==='2'  || this.completeReportForm.get('recommendation')?.value ==='3' )

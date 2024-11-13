@@ -8,6 +8,8 @@ import { Auth } from 'src/app/util/service/Auth';
 import { Message } from 'src/app/util/service/Message';
 import { DataService } from 'src/app/util/service/data.service';
 import { VersionControlService } from 'src/app/util/version-control.service';
+import { catchError, timeout } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-signin',
@@ -91,63 +93,51 @@ export class SigninPage implements OnInit {
   }
 
   private getOpt(): void {
-
     const auth2 = {
       username: this.email,
       otp: this.loginForm.get('enteredOtp')?.value,
     };
-
+  
     this.service.getOneTimePin(auth2).subscribe({
       next: (res: any) => {
-
-
-        if(this.auth.username=="financial")
-          {
-            this.router.navigate(['/outlet-dashboard']);
-          }
-          else
-          {
-                  localStorage.removeItem('isLoggedOut'); 
-                
-                
-                  let message = new Message();
-                  message.message = 'We have sent OTP to your email';
-                  this.otp = res.message;
-                  this.getotp = res.message;
-
-                  this.saveData();
-
-                  localStorage.setItem('username', this.email);
-                  localStorage.setItem('otp', this.getotp);
-
-                  
-                  setTimeout(() => {
-
-                    this.spinner.hide();
-                    this.router.navigateByUrl('/verify');
-                    this.loginForm.reset();
-                  }, 2000); 
-
-          }
+        if (this.auth.username == "financial") {
+          this.router.navigate(['/outlet-dashboard']);
+        } else {
+          localStorage.removeItem('isLoggedOut');
+  
+          let message = new Message();
+          message.message = 'We have sent OTP to your email';
+          this.otp = res.message;
+          this.getotp = res.message;
+  
+          this.saveData();
+  
+          localStorage.setItem('username', this.email);
+          localStorage.setItem('otp', this.getotp);
+  
+          setTimeout(() => {
+            this.spinner.hide();
+            this.router.navigateByUrl('/verify');
+            this.loginForm.reset();
+          }, 2000);
+        }
       },
       error: (error: any) => {
-
         console.error('Error fetching OTP:', error);
-        
         this.spinner.hide();
-
+  
         let errorMessage;
-
-        if (error.status === 0) {
+  
+        if (error.message === 'The server took too long to respond.') {
+          errorMessage = 'The server is taking too long to respond. Please try again later.';
+        } else if (error.status === 0) {
           errorMessage = 'Network error. Please check your internet connection.';
-        }
-        else{
+        } else {
           errorMessage = 'Invalid username. Please enter a valid username.';
         }
         this.showAlertMessage('error', errorMessage);
       }
     });
-
   }
 
   saveData() {

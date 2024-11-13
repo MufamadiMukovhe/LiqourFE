@@ -9,12 +9,6 @@
   <div class="container">
     <ion-img src="../../../assets/Images/logo (7) 2.svg" alt="Logo" class="image"></ion-img>
 
-    <div class="verStyle">
-    
-      <div *ngIf="appVersion">
-        App Version: {{ appVersion }}
-      </div>
-    </div>
 
     <p class="welcome">Welcome</p>
     <p class="signin">Sign in</p>
@@ -41,7 +35,12 @@
       {{ alertMessage }}
   </div>
   
- 
+  <div class="verStyle">
+    
+    <div *ngIf="appVersion">
+      App Version: {{ appVersion }}
+    </div>
+  </div>
    
   </div>
  

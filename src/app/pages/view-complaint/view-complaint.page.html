@@ -69,8 +69,8 @@
   </ion-card>
   
   <ion-card class="mt-2">
-  <ion-label class="label">Date of Complaint Logged</ion-label>
-  <p class="">{{collectObj.dateComplaintLogged}}</p>
+    <ion-label class="label">Date of Complaint Logged</ion-label>
+    <p>{{ collectObj.dateComplaintLogged | date: 'yyyy-MM-dd HH:mm' }}</p>
   </ion-card>
   
 
