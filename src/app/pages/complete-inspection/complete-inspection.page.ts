@@ -642,7 +642,11 @@ export class CompleteInspectionPage implements OnInit {
     formData.append('notice', this.notice);
 
 
-    
+    this.imageSources.forEach((img, index) => {
+      const imgFile= this.convertSrcToFile(img.src, `photo_${index}.jpg`);
+      formData.append('files', imgFile);
+      formData.append('descriptions', img.description);
+    });
 
     
 
@@ -686,6 +690,29 @@ export class CompleteInspectionPage implements OnInit {
 
 
 
+  }
+ 
+  convertSrcToFile(dataURL: string, filename: string): File {
+    const arr = dataURL.split(',');
+    if (arr.length < 2) {
+      throw new Error('Invalid data URL');
+    }
+    
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    if (!mimeMatch || mimeMatch.length < 2) {
+      throw new Error('Unable to extract MIME type');
+    }
+    
+    const mime = mimeMatch[1];
+    
+    const bstr = atob(arr[1]);
+    const n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
+    
+    return new File([u8arr], filename, { type: mime });
   }
   
   
@@ -948,7 +975,7 @@ async selectImage(source: CameraSource) {
       this.selectedDescriptions.add(description);
 
       const compulsoryIndex = this.availableDescriptions.indexOf(description);
-      if (compulsoryIndex >= 0 && compulsoryIndex < 2) {
+      if (compulsoryIndex >= 0 && compulsoryIndex < 12) {
         this.compulsoryPhotosCaptured[compulsoryIndex] = true;
       }
 
@@ -963,10 +990,38 @@ async selectImage(source: CameraSource) {
 }
 
 // Resize image function (placeholder for resizing logic)
-async resizeImage(dataUrl: string, width: number, height: number): Promise<string> {
-  return dataUrl;
-}
+resizeImage(dataUrl: string, maxWidth: number, maxHeight: number): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = dataUrl;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
+      let { width, height } = img;
+
+      // Calculate aspect ratio to maintain the image proportions
+      if (width > height) {
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = (width * maxHeight) / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      resolve(canvas.toDataURL('image/jpeg', 0.5)); // Adjust the quality as needed
+    };
+  });
+}
 // Prompt user to select a description, highlighting previously selected items
 async promptForDescription(): Promise<string | null> {
   return new Promise(async (resolve) => {
