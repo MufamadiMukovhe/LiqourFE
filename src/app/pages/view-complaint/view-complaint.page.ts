@@ -47,13 +47,9 @@ export class ViewComplaintPage implements OnInit {
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
-<<<<<<< HEAD
-        
-=======
         this.ecpNumber=response.ecpNumber;
         
        
->>>>>>> b3de7f5a20bca939b5b3527b619570f559c4527b
         console.log(this.complains)
         console.log(this.ecpNumber);
 
