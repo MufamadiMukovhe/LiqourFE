@@ -473,12 +473,25 @@ export class CompleteInspectionPage implements OnInit {
   }
   
    //Recommendation Valid
+
    isRecommendationFormValid(): boolean { 
     const recommendationFields = ['recommendation','comments'];
     const areFieldsValid = recommendationFields.every(field => this.completeReportForm.get(field)?.valid);
-    const areNoticeFilesPresent = this.noticeFiles && this.noticeFiles.length > 0;
-    return areFieldsValid;
+    
+  const recommendationValue = this.completeReportForm.get('recommendation')?.value;
+  const isSectionValid =
+    recommendationValue !== '2' && recommendationValue !== '3'
+      ? true
+      : this.sections.some(section => section.show);
+
+  return areFieldsValid  && isSectionValid;
   }
+  get isAnySectionSelected(): boolean {
+    return this.sections?.some(section => section.show) ?? false;
+  }
+
+  
+  
 
   /*InspectionReport 
   isInspectionReport(){
