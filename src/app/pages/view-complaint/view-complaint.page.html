@@ -14,12 +14,22 @@
 
   <ion-card class="mt-2">
   <ion-label class="label">ECP Number</ion-label>
-  <div *ngIf="ecpNumber; else noComments">
+  <div *ngIf="ecpNumber; else noECP">
     <p class="">
         {{ ecpNumber }}
     </p>
   </div>
   </ion-card>
+
+  <ion-card class="mt-2">
+    <ion-label class="label">Inspector Assigned</ion-label>
+    <div *ngIf="inspector; else noECP">
+      <p class="">
+          {{ inspector }}
+      </p>
+    </div>
+    </ion-card>
+  
 
   <ion-card class="mt-2">
   <ion-label class="label">Outlet Name</ion-label>
@@ -84,6 +94,10 @@
   </div>
   <ng-template #noComments>
     <p>No comments available.</p>
+  </ng-template>
+
+  <ng-template #noECP>
+    <p>No ECP Number available.</p>
   </ng-template>
      </ion-card>
 </div>

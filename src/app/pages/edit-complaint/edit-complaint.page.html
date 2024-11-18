@@ -52,7 +52,7 @@
 
     <ion-item >
       <ion-select class="custom-input custom-select" placeholder="Relevant Inspector" [(ngModel)]="selectedInspector">
-        <ion-select-option *ngFor="let inspector of inspectors" value={{inspector.userId}}>{{inspector.username}}</ion-select-option>
+        <ion-select-option *ngFor="let inspector of inspectors" value={{inspector.username}}>{{inspector.username}}</ion-select-option>
         
         <!-- Add more options as needed -->
       </ion-select>

@@ -1,714 +1,346 @@
 <ion-content >
-  <form [formGroup]="completeReportForm">
-  <div *ngIf="currentForm === 'landing'">
-    <div class="header-container">
-      <a (click)="goBack()" class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
-      <h1 class="header-text">Complete Inspection</h1>
-    </div><ion-card>
-      <div class="header-content">
-        <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('reports')" [class.red-text]="isInspectionReport()">
-          Inspection report
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isInspectionReport()"></ion-img>
-    
-      <div class="header-content">
-        <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('general')" [class.red-text]="isGeneralFormValid()">
-          Coordinates Capture
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGeneralFormValid()"></ion-img>
-    
-      <div class="header-content">
-        <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('applicant')" [class.red-text]="isApplicantFormValid()">
-          Verification of the applicant
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isApplicantFormValid()"></ion-img>
-    
-      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+    <form [formGroup]="completeReportForm">
+    <div *ngIf="currentForm === 'landing'">
+      <div class="header-container">
+        <a (click)="goBack()" class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
+        <h1 class="header-text">Complete Inspection</h1>
+      </div><ion-card>
         <div class="header-content">
-          <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-          <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-          <ion-card-title (click)="toggleForms('document')" [class.red-text]="isDocumentationFormValid()">
-            Verification of the Premises Against Submitted Documentation
+          <ion-img *ngIf="isInspectionReport()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isInspectionReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('reports')" [class.red-text]="isInspectionReport()">
+            Inspection report
           </ion-card-title>
           <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
         </div>
-
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
-      </div>
-
-      <div class="header-content">
-        <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('community')" [class.red-text]="isCommunityFormValid()">
-          Verification of the Community Consultation Process
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
-
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
-    
-      <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isInspectionReport()"></ion-img>
+      
         <div class="header-content">
-          <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-          <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-          <ion-card-title (click)="toggleForms('comments')" [class.red-text]="isCommentForm()">
-            Comments on Applicant, Premises, Community Consultation and Objections
+          <ion-img *ngIf="isGeneralFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isGeneralFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('general')" [class.red-text]="isGeneralFormValid()">
+            Coordinates Capture
           </ion-card-title>
           <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
         </div>
-        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGeneralFormValid()"></ion-img>
+      
+        <div class="header-content">
+          <ion-img *ngIf="isApplicantFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isApplicantFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('applicant')" [class.red-text]="isApplicantFormValid()">
+            Verification of the applicant
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isApplicantFormValid()"></ion-img>
+      
+        <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+          <div class="header-content">
+            <ion-img *ngIf="isDocumentationFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+            <ion-img *ngIf="!isDocumentationFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+            <ion-card-title (click)="toggleForms('document')" [class.red-text]="isDocumentationFormValid()">
+              Verification of the Premises Against Submitted Documentation
+            </ion-card-title>
+            <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+          </div>
+  
+          <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isDocumentationFormValid()"></ion-img>
+        </div>
+  
+        <div class="header-content">
+          <ion-img *ngIf="isCommunityFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isCommunityFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('community')" [class.red-text]="isCommunityFormValid()">
+            Verification of the Community Consultation Process
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+  
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img>
+      
+        <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+          <div class="header-content">
+            <ion-img *ngIf="isCommentForm()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+            <ion-img *ngIf="!isCommentForm()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+            <ion-card-title (click)="toggleForms('comments')" [class.red-text]="isCommentForm()">
+              Comments on Applicant, Premises, Community Consultation and Objections
+            </ion-card-title>
+            <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+          </div>
+          <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommentForm()"></ion-img>
+        </div>
+      
+        
+        <!--<ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img> -->
+  
+        <div class="header-content">
+          <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('photos')" [class.red-text]="isPhotoAvailable">
+            Photos
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+  
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
+  
+        <div class="header-content">
+          <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+  
+          <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationFormValid()">
+            Recommendation
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <hr>
+  
+        <ion-button class="buttonClass2" (click)="onSubmit()" [disabled]="!isFormValid()">
+          Submit
+        </ion-button>
+      </ion-card>
+    </div>
+  
+    <div *ngIf="currentForm === 'reports'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Inspection Reports</h1>
       </div>
     
-      
-      <!--<ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isCommunityFormValid()"></ion-img> -->
-
-      <div class="header-content">
-        <ion-img *ngIf="isPhotoAvailable" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isPhotoAvailable" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('photos')" [class.red-text]="isPhotoAvailable">
-          Photos
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      <span class="inspection-report">Upload SAPS Notice</span>
+      <!--
+      <ion-card class="upload" (click)="selectFileReport()">
+        <ion-img src="../../../assets/Images/uploads.svg"></ion-img>
+        <span>Click to upload</span>
+        <span>DOCX or PDF</span>
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".docx, .pdf" style="display: none;"  >
+      </ion-card>
+    
+      <ion-card *ngIf="reportFiles.length > 0" class="upload2">
+        <div class="header-content2">
+          <ion-card-title>{{ reportFiles[0].name }}</ion-card-title>
+          <ion-img src="../../../assets/Images/Trash.svg" (click)="presentAlertConfirm(0)" class=""></ion-img>
+        </div>
+        <span>{{ (reportFiles[0].size / 1024).toFixed(2) }} KB</span>
+      </ion-card>
+      <ion-card *ngIf="reportFiles.length === 0" class="upload2">
+        <span>No file uploaded</span>
+      </ion-card>-->
+        
+       <ion-card class="upload" (click)="selectFileNotice()">
+        <ion-img src="../../../assets/Images/uploads.svg"></ion-img>
+        <span>Click to upload</span>
+        <span>DOCX or PDF</span>
+        <input type="file" #fileInput (change)="onFileSelectedRecommendation($event)" accept=".docx, .pdf" style="display: none;">
+      </ion-card>
+    
+      <ion-card *ngIf="noticeFiles.length > 0" class="upload2">
+        <div class="header-content2">
+          <ion-card-title>{{ noticeFiles[0].name }}</ion-card-title>
+          <ion-img src="../../../assets/Images/Trash.svg" (click)="presentAlertConfirmNotice(0)" class=""></ion-img>
+        </div>
+        <span>{{ (noticeFiles[0].size / 1024).toFixed(2) }} KB</span>
+      </ion-card>
+      <ion-card *ngIf="noticeFiles.length === 0" class="upload2">
+        <span>No file uploaded</span>
+      </ion-card>
+  
+      <button class="next-button" (click)="toggleForms('general')" [disabled]="!isInspectionReport()">Next</button>
       </div>
-
-      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isPhotoAvailable"></ion-img>
-
-      <div class="header-content">
-        <ion-img *ngIf="isRecommendationFormValid() "  src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isRecommendationFormValid() "src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
-        <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationFormValid()">
-          Recommendation
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+    
+  
+    <div *ngIf="currentForm === 'applicant'">
+      <div class="header-container">
+        <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
+        <h1 class="header-text">Applicant</h1>
       </div>
-      <hr>
-
-      <ion-button class="buttonClass2" (click)="onSubmit()" [disabled]="!isFormValid()">
-        Submit
-      </ion-button>
-    </ion-card>
-  </div>
-
-  <div *ngIf="currentForm === 'reports'">
-
-    <div class="header-container">
-      <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')"></a>
-      <h1 class="header-text" style="color: black;">Inspection Reports</h1>
-    </div>
-  
-    <span class="inspection-report">Upload SAPS Notice</span>
-    <!--
-    <ion-card class="upload" (click)="selectFileReport()">
-      <ion-img src="../../../assets/Images/uploads.svg"></ion-img>
-      <span>Click to upload</span>
-      <span>DOCX or PDF</span>
-      <input type="file" #fileInput (change)="onFileSelected($event)" accept=".docx, .pdf" style="display: none;"  >
-    </ion-card>
-  
-    <ion-card *ngIf="reportFiles.length > 0" class="upload2">
-      <div class="header-content2">
-        <ion-card-title>{{ reportFiles[0].name }}</ion-card-title>
-        <ion-img src="../../../assets/Images/Trash.svg" (click)="presentAlertConfirm(0)" class=""></ion-img>
-      </div>
-      <span>{{ (reportFiles[0].size / 1024).toFixed(2) }} KB</span>
-    </ion-card>
-    <ion-card *ngIf="reportFiles.length === 0" class="upload2">
-      <span>No file uploaded</span>
-    </ion-card>-->
-      
-     <ion-card class="upload" (click)="selectFileNotice()">
-      <ion-img src="../../../assets/Images/uploads.svg"></ion-img>
-      <span>Click to upload</span>
-      <span>DOCX or PDF</span>
-      <input type="file" #fileInput (change)="onFileSelectedRecommendation($event)" accept=".docx, .pdf" style="display: none;">
-    </ion-card>
-  
-    <ion-card *ngIf="noticeFiles.length > 0" class="upload2">
-      <div class="header-content2">
-        <ion-card-title>{{ noticeFiles[0].name }}</ion-card-title>
-        <ion-img src="../../../assets/Images/Trash.svg" (click)="presentAlertConfirmNotice(0)" class=""></ion-img>
-      </div>
-      <span>{{ (noticeFiles[0].size / 1024).toFixed(2) }} KB</span>
-    </ion-card>
-    <ion-card *ngIf="noticeFiles.length === 0" class="upload2">
-      <span>No file uploaded</span>
-    </ion-card>
-
-    <button class="next-button" (click)="toggleForms('general')" [disabled]="!isInspectionReport()">Next</button>
-    </div>
-  
-
-  <div *ngIf="currentForm === 'applicant'">
-    <div class="header-container">
-      <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
-      <h1 class="header-text">Applicant</h1>
-    </div>
-  
-    <ion-card class="upload2">
-  
-      <span>(a) Was an appointment set with the applicant for inspection on this day?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col>
-              <ion-radio-group formControlName="appointmentSet">
-                <ion-row class="horizontal-radios">
-                  <ion-col>
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col>
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <!--Making it on line-->
-                  <ion-col>
-                    <div class="radios">
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('appointmentSet')?.value === '2'">
-        <textarea formControlName="appointmentSetComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-     
-      <hr>
-  
-      <span>(b) Is the person found or consulted at the premises the applicant in this matter?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="consultedOrFound">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="consultedOrFound" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="consultedOrFound" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-
-                  <ion-col>
-                    <div class="radios">
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value === '2'">
-        <textarea formControlName="consultedOrFoundComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-    <span>(c) Has the applicant indicated that this particular person will be at the premises?</span>
-    <ion-card-title class="general-name">
-      <ion-grid>
-        <ion-row class="horizontal-radios">
-          <ion-col >
-            <ion-radio-group formControlName="applicantIndicatedPersonAtPremises">
-              <ion-row class="horizontal-radios" >
-                
-                <ion-col >
-                  
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="1"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-               
-                </ion-col>
-                <ion-col >
-                  
-                  <div class="radios" >
-                    <ion-radio id="no_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="2"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
-                
-                </ion-col>
-                <ion-col >
-                <div class="radios" >
-                  <ion-radio id="no_appt" class="move-radios" name="applicantIndicatedPersonAtPremises" value="3"></ion-radio>
-                  <label for="no_appt">N/A</label>
-                </div>
+    
+      <ion-card class="upload2">
+    
+        <span>(a) Was an appointment set with the applicant for inspection on this day?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col>
+                <ion-radio-group formControlName="appointmentSet">
+                  <ion-row class="horizontal-radios">
+                    <ion-col>
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col>
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <!--Making it on line-->
+                    <ion-col>
+                      <div class="radios">
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
               </ion-col>
-              </ion-row>
-            
-            </ion-radio-group>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('appointmentSet')?.value === '2'">
+          <textarea formControlName="appointmentSetComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+       
+        <hr>
+        <span>(b) Is the person found or consulted at the premises the applicant in this matter?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="consultedOrFound" (ionChange)="applicantForm($event)">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="consultedOrFound" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="consultedOrFound" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+  
+                    <ion-col>
+                      <div class="radios">
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value === '2'">
+          <textarea formControlName="consultedOrFoundComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
       
-    </ion-card-title>
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('applicantIndicatedPersonAtPremises')?.value === '2'">
-      <textarea formControlName="applicantIndicatedPersonAtPremisesComment" placeholder="Comments"
-          id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-  </div>
-    <hr>
+    <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value !== '1'">
 
-    <span>(d) If not the applicant, can the person found at the premises confirm the applicant?</span>
-    <ion-card-title class="general-name">
-      <ion-grid>
-        <ion-row class="horizontal-radios">
-          <ion-col >
-            <ion-radio-group formControlName="canPersonBeFound">
-              <ion-row class="horizontal-radios">
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="canPersonBeFound" value="1"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="canPersonBeFound" value="2"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="canPersonBeFound" value="3"></ion-radio>
+        <span>(b(i)) Has the applicant indicated that this particular person will be at the premises?</span>
+      <ion-card-title class="general-name">
+        <ion-grid>
+          <ion-row class="horizontal-radios">
+            <ion-col >
+              <ion-radio-group formControlName="applicantIndicatedPersonAtPremises">
+                <ion-row class="horizontal-radios" >
+                  
+                  <ion-col >
+                    
+                    <div class="radios">
+                      <ion-radio id="yes_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="1"></ion-radio>
+                      <label for="yes_appt">Yes</label>
+                    </div>
+                 
+                  </ion-col>
+                  <ion-col >
+                    
+                    <div class="radios" >
+                      <ion-radio id="no_appt" class="move-radio" name="applicantIndicatedPersonAtPremises" value="2"></ion-radio>
+                      <label for="no_appt">No</label>
+                    </div>
+                  
+                  </ion-col>
+                  <ion-col >
+                  <div class="radios" >
+                    <ion-radio id="no_appt" class="move-radios" name="applicantIndicatedPersonAtPremises" value="3"></ion-radio>
                     <label for="no_appt">N/A</label>
                   </div>
                 </ion-col>
-              </ion-row>
-            </ion-radio-group>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      
-    </ion-card-title>
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('canPersonBeFound')?.value === '2'">
-      <textarea formControlName="canPersonBeFoundComment" placeholder="Comments"
-          id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-  </div>
-    <hr>
-
-
-    <span>(e) Does the applicant have any other interests in the liquor trade in the republic?</span>
-    <ion-card-title class="general-name">
-      <ion-grid>
-        <ion-row class="horizontal-radios">
-          <ion-col >
-            <ion-radio-group formControlName="interestInLiquorTrade">
-              <ion-row class="horizontal-radios">
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="interestInLiquorTrade" value="1"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="interestInLiquorTrade" value="2"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
-                </ion-col>
-
-                <ion-col >
-                  <div class="radios">
-                  </div>
-                </ion-col>
-               
-              </ion-row>
-            </ion-radio-group>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      
-    </ion-card-title>
-     <div class="recommend-comments1" *ngIf="completeReportForm.get('interestInLiquorTrade')?.value === '1'">
-        <textarea formControlName="interestInLiquorTradeComment" placeholder="Specify"
+                </ion-row>
+              
+              </ion-radio-group>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+      </ion-card-title>
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('applicantIndicatedPersonAtPremises')?.value === '2'">
+        <textarea formControlName="applicantIndicatedPersonAtPremisesComment" placeholder="Comments"
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-    <hr>
-
-
-    <span>(f) Has any of the above listed outlets ever been issued with a compliance notice?</span>
-    <ion-card-title class="general-name">
-      <ion-grid>
-        <ion-row class="horizontal-radios">
-          <ion-col >
-            <ion-radio-group formControlName="issuedComplience">
-              <ion-row class="horizontal-radios">
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="issuedComplience" value="1"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="issuedComplience" value="2"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="issuedComplience" value="3"></ion-radio>
-                    <label for="no_appt">N/A</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      
-    </ion-card-title>
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('issuedComplience')?.value === '1'">
-      <textarea formControlName="issuedComplienceComment" placeholder="Comments"
-          id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-  </div>
-    <hr>
-
-
-    <span>(g) Were any complaints received against any of the outlets mentioned in (f)?</span>
-    <ion-card-title class="general-name">
-      <ion-grid>
-        <ion-row class="horizontal-radios">
-          <ion-col >
-            <ion-radio-group formControlName="complaintsReceived">
-              <ion-row class="horizontal-radios">
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="complaintsReceived" value="1"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="complaintsReceived" value="2"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
-                </ion-col>
-                <ion-col >
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="complaintsReceived" value="3"></ion-radio>
-                    <label for="no_appt">N/A</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      
-    </ion-card-title>
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('complaintsReceived')?.value === '1'">
-      <textarea formControlName="complaintsReceivedComment" placeholder="Comments"
-          id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-  </div>
-    <hr>
-    </ion-card>
-
-    <div *ngIf="appType">
-    <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
-        Next
-    </button>
-    </div>
-
-
-  </div>
-  
-  
-  <div *ngIf="currentForm === 'general'" >
-    <div class="header-container">
-      <img src="assets/Images/Back Icon.svg"  class="back-Arrow"(click)="toggleForms('landing')">
-      <h1 class="header-text">Coodinates Capture</h1>
     </div>
     
-        <ion-label>Person Contacted</ion-label>
-        <ion-item>
-        <ion-input placeholder="Enter Person Name" formControlName="contactPerson"></ion-input>
-        </ion-item>
-        <!--ion-item>
-          <ion-input  placeholder="{{ dateFormatPlaceholder }}" id="inspection-date-input" formControlName="inspectionDate" class="small-input">
-        <ion-icon name="calendar" slot="end" (click)="openDatetimePicker()"></ion-icon>
-      </ion-input>
-        </ion-item-->
-        <ion-button id="open-datetime" fill="clear" style="display: none;"></ion-button>
-        <ion-popover trigger="open-datetime">
-         <ng-template>
-        <ion-content>
-          <ion-datetime
-            placeholder="Enter Inspection Date"
-            (ionChange)="dateChanged1($event); closePopover()"
-          ></ion-datetime>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
-       
-        <ion-label position="floating">Latitude Of Outlet (South)</ion-label>
-        <ion-item>
-        <ion-input placeholder="Enter Latitude" formControlName="latitude"></ion-input>
-        </ion-item>
-        <ion-label position="floating">Longitude of Outlet (East)</ion-label>
-        <ion-item>
-        <ion-input placeholder="Enter Longitude" formControlName="longitude"></ion-input>
-      </ion-item>
-      <div class="">
-        <ion-button (click)="getCurrentPosition()" class="buttonClass2">Allow location access</ion-button>
 
-        <button class="next-button" (click)="toggleForms('applicant')" [disabled]="!isGeneralFormValid()">Next</button>
-
-      </div>
+      <hr>
+  
+      <span>(b(ii)) If not the applicant, can the person found at the premises confirm the applicant?</span>
+      <ion-card-title class="general-name">
+        <ion-grid>
+          <ion-row class="horizontal-radios">
+            <ion-col >
+              <ion-radio-group formControlName="canPersonBeFound">
+                <ion-row class="horizontal-radios">
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="yes_appt" class="move-radio" name="canPersonBeFound" value="1"></ion-radio>
+                      <label for="yes_appt">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="canPersonBeFound" value="2"></ion-radio>
+                      <label for="no_appt">No</label>
+                    </div>
+                  </ion-col>
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="canPersonBeFound" value="3"></ion-radio>
+                      <label for="no_appt">N/A</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+      </ion-card-title>
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('canPersonBeFound')?.value === '2'">
+        <textarea formControlName="canPersonBeFoundComment" placeholder="Comments"
+            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+    </div>
   </div>
-  <!--Documentation-->
-  <div *ngIf="currentForm === 'document'">
-    <div class="header-container">
-      <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
-      <h1 class="header-text">Documentation</h1>
-    </div>
-  
-    <ion-card class="upload2">
-      <span>(a) Does the applicant have a right to occupy the premises ?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="rightToOccupy">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="rightToOccupy" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="rightToOccupy" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="rightToOccupy" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('rightToOccupy')?.value === '2'">
-        <textarea formControlName="rightToOccupyComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
       <hr>
   
   
-      <span>(b) If the lease agreement is attached, is the Lessor's proof of right?</span>
+      <span>(c) Does the applicant have any other interests in the liquor trade in the republic?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="leaseAttached">
+              <ion-radio-group formControlName="interestInLiquorTrade">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="leaseAttached" value="1"></ion-radio>
+                      <ion-radio id="yes_appt" class="move-radio" name="interestInLiquorTrade" value="1"></ion-radio>
                       <label for="yes_appt">Yes</label>
                     </div>
                   </ion-col>
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="leaseAttached" value="2"></ion-radio>
+                      <ion-radio id="no_appt" class="move-radio" name="interestInLiquorTrade" value="2"></ion-radio>
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="leaseAttached" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('leaseAttached')?.value === '2'">
-        <textarea formControlName="leaseAttachedComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
   
-  
-      <span>(c) Are the premises situated at the address indicated in the application?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="situatedInRightAddress">
-                <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="situatedInRightAddress" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="situatedInRightAddress" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="situatedInRightAddress" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('situatedInRightAddress')?.value === '2'">
-        <textarea formControlName="situatedInRightAddressComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-      <span>(d) Are the premises in line with the plan submitted with the application?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="inLineWithSubmittedApplication">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="inLineWithSubmittedApplication" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="inLineWithSubmittedApplication" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="inLineWithSubmittedApplication" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('inLineWithSubmittedApplication')?.value === '2'">
-        <textarea formControlName="inLineWithSubmittedApplicationComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-      <span>(e) Are the premises suitable for the category of registration applied for?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="premisesSuitable">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="premisesSuitable" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="premisesSuitable" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="premisesSuitable" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('premisesSuitable')?.value === '2'">
-        <textarea formControlName="premisesSuitableComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-      <span>(f) Ablution facilities - are these in working order?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="ablutionFacilityInOrder">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="ablutionFacilityInOrder" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="ablutionFacilityInOrder" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="ablutionFacilityInOrder" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
                     </div>
                   </ion-col>
                  
@@ -719,93 +351,35 @@
         </ion-grid>
         
       </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('ablutionFacilityInOrder')?.value === '2'">
-        <textarea formControlName="ablutionFacilityInOrderComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
+       <div class="recommend-comments1" *ngIf="completeReportForm.get('interestInLiquorTrade')?.value === '1'">
+          <textarea formControlName="interestInLiquorTradeComment" placeholder="Specify"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
       <hr>
   
-      <span>(g) Are the premises ready to commence with the business?</span>
+  
+      <span>(d) Has any of the above listed outlets ever been issued with a compliance notice?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="readyForBusiness">
+              <ion-radio-group formControlName="issuedComplience">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="readyForBusiness" value="1"></ion-radio>
+                      <ion-radio id="yes_appt" class="move-radio" name="issuedComplience" value="1"></ion-radio>
                       <label for="yes_appt">Yes</label>
                     </div>
                   </ion-col>
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="2"></ion-radio>
+                      <ion-radio id="no_appt" class="move-radio" name="issuedComplience" value="2"></ion-radio>
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                  
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('readyForBusiness')?.value === '2'">
-        <textarea formControlName="readyForBusinessComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-    </ion-card>
-    <ng-container *ngIf="appType == 'ApplicationForSpecialEvent'; else spButton">
-      <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
-    </ng-container>
-
-    <ng-template #spButton>
-      <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
-  </ng-template>
-
-  </div>
-  
-
-  <!--Community-->
-  <div *ngIf="currentForm === 'community'">
-    <div class="header-container">
-      <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
-      <h1 class="header-text">Community</h1>
-    </div>
-  
-    <ion-card class="upload2">
-      <!-- Question (a) -->
-      <span>(a) Was Form 2/8/12 served on the correct ward committee?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="formServedToCorrectWardCommittee">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="3"></ion-radio>
+                      <ion-radio id="no_appt" class="move-radio" name="issuedComplience" value="3"></ion-radio>
                       <label for="no_appt">N/A</label>
                     </div>
                   </ion-col>
@@ -816,37 +390,35 @@
         </ion-grid>
         
       </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedToCorrectWardCommittee')?.value === '2'">
-        <textarea formControlName="formServedToCorrectWardCommitteeComment" placeholder="Comments"
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('issuedComplience')?.value === '1'">
+        <textarea formControlName="issuedComplienceComment" placeholder="Comments"
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
       <hr>
   
   
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (b) -->
-      <span>(b) Form 2/8/12 was confirmed by the ward councillor of the specific ward?</span>
+      <span>(e) Were any complaints received against any of the outlets mentioned in (f)?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
             <ion-col >
-              <ion-radio-group formControlName="confirmedByCouncillor">
+              <ion-radio-group formControlName="complaintsReceived">
                 <ion-row class="horizontal-radios">
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="confirmedByCouncillor" value="1"></ion-radio>
+                      <ion-radio id="yes_appt" class="move-radio" name="complaintsReceived" value="1"></ion-radio>
                       <label for="yes_appt">Yes</label>
                     </div>
                   </ion-col>
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="confirmedByCouncillor" value="2"></ion-radio>
+                      <ion-radio id="no_appt" class="move-radio" name="complaintsReceived" value="2"></ion-radio>
                       <label for="no_appt">No</label>
                     </div>
                   </ion-col>
                   <ion-col >
                     <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="confirmedByCouncillor" value="3"></ion-radio>
+                      <ion-radio id="no_appt" class="move-radio" name="complaintsReceived" value="3"></ion-radio>
                       <label for="no_appt">N/A</label>
                     </div>
                   </ion-col>
@@ -857,244 +429,95 @@
         </ion-grid>
         
       </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('confirmedByCouncillor')?.value === '2'">
-        <textarea formControlName="confirmedByCouncillorComment" placeholder="Comments"
+      <div class="recommend-comments1" *ngIf="completeReportForm.get('complaintsReceived')?.value === '1'">
+        <textarea formControlName="complaintsReceivedComment" placeholder="Comments"
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
       <hr>
+      </ion-card>
+  
+      <div *ngIf="appType">
+      <button class="next-button" (click)="appType!=='ApplicationForSpecialEvent' ? toggleForms('document') : toggleForms('community')" [disabled]="!isApplicantFormValid()">
+          Next
+      </button>
+      </div>
   
   
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (c) -->
-      <span>(c) Is the ward committee's report in terms of Section 22(2)(d)(i) filed in the application?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="wardCommiteeReport">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="wardCommiteeReport" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="wardCommiteeReport" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="wardCommiteeReport" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('wardCommiteeReport')?.value === '2'">
-        <textarea formControlName="wardCommiteeReportComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
     </div>
-      <hr>
-  
-  
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (d) -->
-      <span>(d) Was the community appropriately and adequately consulted (furnish a report regarding verification)?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="communityConsultation">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="communityConsultation" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="communityConsultation" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="communityConsultation" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('communityConsultation')?.value === '2'">
-        <textarea formControlName="communityConsultationComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (e) -->
-      <span>(e) Is there an educational institution within the prescribed 100m radius?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="educationalInstitution">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="educationalInstitution" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="educationalInstitution" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="educationalInstitution" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('educationalInstitution')?.value === '1'">
-        <textarea formControlName="educationalInstitutionComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (f) -->
-      <span>(f) Was Form 2/8/12 appropriately served at the educational institution?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="formServedAtEducationInstitution">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="formServedAtEducationInstitution" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtEducationInstitution')?.value === '2'">
-        <textarea formControlName="formServedAtEducationInstitutionComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-      <!-- Repeat similar blocks for other questions with appropriate formControlName -->
-      <!-- Question (g) -->
-      <span>(g) Is there a place of worship within the prescribed 100m?</span>
-      <ion-card-title class="general-name">
-        <ion-grid>
-          <ion-row class="horizontal-radios">
-            <ion-col >
-              <ion-radio-group formControlName="placeOfWorship">
-                <ion-row class="horizontal-radios">
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="yes_appt" class="move-radio" name="aplaceOfWorship" value="1"></ion-radio>
-                      <label for="yes_appt">Yes</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="placeOfWorship" value="2"></ion-radio>
-                      <label for="no_appt">No</label>
-                    </div>
-                  </ion-col>
-                  <ion-col >
-                    <div class="radios">
-                      <ion-radio id="no_appt" class="move-radio" name="placeOfWorship" value="3"></ion-radio>
-                      <label for="no_appt">N/A</label>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-radio-group>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('placeOfWorship')?.value === '1'">
-        <textarea formControlName="placeOfWorshipComment" placeholder="Comments"
-            id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
-      <hr>
-  
-  
-     
     
-       
-
-        <span>(h) Was Form 2/8/12 appropriately served at the place of worship?</span>
+    
+    <div *ngIf="currentForm === 'general'" >
+      <div class="header-container">
+        <img src="assets/Images/Back Icon.svg"  class="back-Arrow"(click)="toggleForms('landing')">
+        <h1 class="header-text">Coodinates Capture</h1>
+      </div>
+      
+          <ion-label>Person Contacted</ion-label>
+          <ion-item>
+          <ion-input placeholder="Enter Person Name" formControlName="contactPerson"></ion-input>
+          </ion-item>
+          <!--ion-item>
+            <ion-input  placeholder="{{ dateFormatPlaceholder }}" id="inspection-date-input" formControlName="inspectionDate" class="small-input">
+          <ion-icon name="calendar" slot="end" (click)="openDatetimePicker()"></ion-icon>
+        </ion-input>
+          </ion-item-->
+          <ion-button id="open-datetime" fill="clear" style="display: none;"></ion-button>
+          <ion-popover trigger="open-datetime">
+           <ng-template>
+          <ion-content>
+            <ion-datetime
+              placeholder="Enter Inspection Date"
+              (ionChange)="dateChanged1($event); closePopover()"
+            ></ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+         
+          <ion-label position="floating">Latitude Of Outlet (South)</ion-label>
+          <ion-item>
+          <ion-input placeholder="Enter Latitude" formControlName="latitude"></ion-input>
+          </ion-item>
+          <ion-label position="floating">Longitude of Outlet (East)</ion-label>
+          <ion-item>
+          <ion-input placeholder="Enter Longitude" formControlName="longitude"></ion-input>
+        </ion-item>
+        <div class="">
+          <ion-button (click)="getCurrentPosition()" class="buttonClass2">Allow location access</ion-button>
+  
+          <button class="next-button" (click)="toggleForms('applicant')" [disabled]="!isGeneralFormValid()">Next</button>
+  
+        </div>
+    </div>
+    <!--Documentation-->
+    <div *ngIf="currentForm === 'document'">
+      <div class="header-container">
+        <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
+        <h1 class="header-text">Documentation</h1>
+      </div>
+    
+      <ion-card class="upload2">
+        <span>(a) Does the applicant have a right to occupy the premises ?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
               <ion-col >
-                <ion-radio-group formControlName="formServedAtPlaceOfWorship">
+                <ion-radio-group formControlName="rightToOccupy">
                   <ion-row class="horizontal-radios">
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="yes_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="1"></ion-radio>
+                        <ion-radio id="yes_appt" class="move-radio" name="rightToOccupy" value="1"></ion-radio>
                         <label for="yes_appt">Yes</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="2"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="rightToOccupy" value="2"></ion-radio>
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="3"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="rightToOccupy" value="3"></ion-radio>
                         <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
@@ -1105,33 +528,35 @@
           </ion-grid>
           
         </ion-card-title>
-        <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtPlaceOfWorship')?.value === '2'">
-          <textarea formControlName="formServedAtPlaceOfWorshipComment" placeholder="Comments"
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('rightToOccupy')?.value === '2'">
+          <textarea formControlName="rightToOccupyComment" placeholder="Comments"
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
-        <span>(i) Were any objections received at the time of the inspection</span>
+    
+    
+        <span>(b) If the lease agreement is attached, is the Lessor's proof of right?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
               <ion-col >
-                <ion-radio-group formControlName="formObjectionsInspection">
+                <ion-radio-group formControlName="leaseAttached">
                   <ion-row class="horizontal-radios">
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="yes_appt" class="move-radio" name="formObjectionsInspection" value="1"></ion-radio>
+                        <ion-radio id="yes_appt" class="move-radio" name="leaseAttached" value="1"></ion-radio>
                         <label for="yes_appt">Yes</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsInspection" value="2"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="leaseAttached" value="2"></ion-radio>
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsInspection" value="3"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="leaseAttached" value="3"></ion-radio>
                         <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
@@ -1142,38 +567,193 @@
           </ion-grid>
           
         </ion-card-title>
-        <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
-          <textarea formControlName="formObjectionsInspectionComment" placeholder="Comments"
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('leaseAttached')?.value === '2'">
+          <textarea formControlName="leaseAttachedComment" placeholder="Comments"
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
-        <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
-        <span>(j) If objections were received, were they served to the applicant for response?</span>
+    
+    
+        <span>(c) Are the premises situated at the address indicated in the application?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
               <ion-col >
-                <ion-radio-group formControlName="formObjectionsReceived">
+                <ion-radio-group formControlName="situatedInRightAddress">
                   <ion-row class="horizontal-radios">
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="yes_appt" class="move-radio" name="formObjectionsReceived" value="1"></ion-radio>
+                        <ion-radio id="yes_appt" class="move-radio" name="situatedInRightAddress" value="1"></ion-radio>
                         <label for="yes_appt">Yes</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="2"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="situatedInRightAddress" value="2"></ion-radio>
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="3"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="situatedInRightAddress" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('situatedInRightAddress')?.value === '2'">
+          <textarea formControlName="situatedInRightAddressComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+        <span>(d) Are the premises in line with the plan submitted with the application?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="inLineWithSubmittedApplication">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="inLineWithSubmittedApplication" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="inLineWithSubmittedApplication" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="inLineWithSubmittedApplication" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('inLineWithSubmittedApplication')?.value === '2'">
+          <textarea formControlName="inLineWithSubmittedApplicationComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    
+        <span>(e) Are the premises suitable for the category of registration applied for?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="premisesSuitable">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="premisesSuitable" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="premisesSuitable" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="premisesSuitable" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('premisesSuitable')?.value === '2'">
+          <textarea formControlName="premisesSuitableComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    
+        <span>(f) Ablution facilities - are these in working order?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="ablutionFacilityInOrder">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="ablutionFacilityInOrder" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="ablutionFacilityInOrder" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="ablutionFacilityInOrder" value="3"></ion-radio>
                         <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
                    
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('ablutionFacilityInOrder')?.value === '2'">
+          <textarea formControlName="ablutionFacilityInOrderComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+        <span>(g) Are the premises ready to commence with the business?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="readyForBusiness">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="readyForBusiness" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="readyForBusiness" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
                     
                   </ion-row>
                 </ion-radio-group>
@@ -1182,33 +762,54 @@
           </ion-grid>
           
         </ion-card-title>
-        <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsReceived')?.value === '2'">
-          <textarea formControlName="formObjectionsReceivedComment" placeholder="Comments"
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('readyForBusiness')?.value === '2'">
+          <textarea formControlName="readyForBusinessComment" placeholder="Comments"
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
-        <span>(k) Has the applicant responded to the objections?</span>
+      </ion-card>
+      <ng-container *ngIf="appType == 'ApplicationForSpecialEvent'; else spButton">
+        <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
+      </ng-container>
+  
+      <ng-template #spButton>
+        <button class="next-button" (click)="toggleForms('community')" [disabled]="!isDocumentationFormValid()">Next</button>
+    </ng-template>
+  
+    </div>
+    
+  
+    <!--Community-->
+    <div *ngIf="currentForm === 'community'">
+      <div class="header-container">
+        <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
+        <h1 class="header-text">Community</h1>
+      </div>
+    
+      <ion-card class="upload2">
+        <!-- Question (a) -->
+        <span>(a) Was Form 2/8/12 served on the correct ward committee?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
               <ion-col >
-                <ion-radio-group formControlName="formApplicantRespondedToObjections">
+                <ion-radio-group formControlName="formServedToCorrectWardCommittee">
                   <ion-row class="horizontal-radios">
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="yes_appt" class="move-radio" name="formApplicantRespondedToObjections" value="1"></ion-radio>
+                        <ion-radio id="yes_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="1"></ion-radio>
                         <label for="yes_appt">Yes</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formApplicantRespondedToObjections" value="2"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="2"></ion-radio>
                         <label for="no_appt">No</label>
                       </div>
                     </ion-col>
                     <ion-col >
                       <div class="radios">
-                        <ion-radio id="no_appt" class="move-radio" name="formApplicantRespondedToObjections" value="3"></ion-radio>
+                        <ion-radio id="no_appt" class="move-radio" name="formServedToCorrectWardCommittee" value="3"></ion-radio>
                         <label for="no_appt">N/A</label>
                       </div>
                     </ion-col>
@@ -1219,515 +820,925 @@
           </ion-grid>
           
         </ion-card-title>
-        <div class="recommend-comments1" *ngIf="completeReportForm.get('formApplicantRespondedToObjections')?.value === '2'">
-          <textarea formControlName="formApplicantRespondedToObjectionsComment" placeholder="Comments"
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedToCorrectWardCommittee')?.value === '2'">
+          <textarea formControlName="formServedToCorrectWardCommitteeComment" placeholder="Comments"
               id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
         <hr>
-        </div>
-    </ion-card>
-
-    <div>
-      <button class="next-button"
-              (click)="appType === 'ApplicationForSpecialEvent' ? toggleForms('photos') : toggleForms('comments')"
-              [disabled]="!isCommunityFormValid()">
-        Next
-      </button>
-    </div>
     
-
     
-
-
-  
-</div>
-
-
-  
-  <!--Recomendation-->
-
-  <div *ngIf="currentForm ==='recommendation'">
-
-    <div class="header-container">
-        <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
-        <h1 class="header-text">Recommendation</h1>
-    </div>
-   
-    <ion-card class="upload2">
-        <!-- Recommendation Options -->
-        <span class="appReco"> Is the application recommendation for registering for the category applied for ?</span>
-        <br>
-        <br>
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (b) -->
+        <span>(b) Form 2/8/12 was confirmed by the ward councillor of the specific ward?</span>
         <ion-card-title class="general-name">
           <ion-grid>
-            <ion-row class="vertical-radios">
-              <ion-radio-group formControlName="recommendation">
-                <div class="radioss">
-                  <ion-radio id="yes_appt" class="move-radio" name="recommendation" value="1"></ion-radio>
-                  <label for="yes_appt">Approval</label>
-                </div>
-                <div class="radioss">
-                  <ion-radio id="no_appt" class="move-radio" name="recommendation" value="2"></ion-radio>
-                  <label for="no_appt">Refusal</label>
-                </div>
-                <div class="radioss">
-                  <ion-radio id="na_appt_sec22_5" class="move-radio" name="recommendation" value="3"></ion-radio>
-                  <label for="sec22_5">Section 22(5)</label>
-                </div>
-                <div class="radioss">
-                  <ion-radio id="na_appt_sec22_5" class="move-radio" name="recommendation" value="4"></ion-radio>
-                  <label for="sec22_5">Section 22(6)</label>
-                </div>
-                <!--
-                <div class="radioss">
-                  <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="5"></ion-radio>
-                  <label for="hearing">Board Hearing</label>
-                </div>
-                -->
-                <div class="radioss">
-                  <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="6"></ion-radio>
-                  <label for="hearing">Validation of Objections</label>
-                </div>
-                <div class="radioss">
-                  <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="7"></ion-radio>
-                  <label for="hearing">Cancellation</label>
-                </div>
-              </ion-radio-group>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="confirmedByCouncillor">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="confirmedByCouncillor" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="confirmedByCouncillor" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="confirmedByCouncillor" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
             </ion-row>
           </ion-grid>
-        </ion-card-title>
-        <div *ngIf="completeReportForm.get('recommendation')?.value ==='2'  || completeReportForm.get('recommendation')?.value ==='3'">
-            
-          <p>Section 22(5)</p>
           
-          <div *ngFor="let section of sections">
-            <div class="flex">
-            <div class="" style="margin-bottom: 10px;">
-              <input 
-                  class="checkmart" 
-                  type="checkbox" 
-                  [checked]="section.show" 
-                  (change)="toggleSection(section)"
-              >
-              <label class="check">{{ section.name }}</label>
-            </div>
-          </div>
-          <p>Useless paragraph</p>
-
-
-          <!--Ion Item for notes-->
-            <div *ngIf="section.show">
-                  <textarea style="height: 50px; background-color: #fff; font-size: 12px; margin-bottom: 10px;" [(ngModel)]="section.notes"
-                      [ngModelOptions]="{standalone: true}" (change)="getNotes(section, $event)"
-                      id="residentialAddress" placeholder="Please Provide Explanatory Notes"></textarea>
-             </div>
-        </div> 
-
-        </div>
-      
-
-
-        <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '3'" class="recommend-comments">
-          <textarea formControlName="comments" style="height: 100px; background-color: #fff;"
-              id="residentialAddress" class="form-control mb-3  mt-3" placeholder="Comments"></textarea>
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('confirmedByCouncillor')?.value === '2'">
+          <textarea formControlName="confirmedByCouncillorComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
       </div>
-    </ion-card>
-
-    <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendationFormValid()">Next</button>
-
-
-    <!--
-      <ion-label position="floating">Inspection Date</ion-label>
-      <ion-item>
-      <ion-input  placeholder="{{ dateFormatPlaceholder }}" id="inspection-date-input"  class="small-input">
-        <ion-icon name="calendar" slot="end" (click)="openDatetimePicker()"></ion-icon>
-      </ion-input>
-    </ion-item>
-    <ion-button id="open-datetime" fill="clear" style="display: none;"></ion-button>
-    <ion-popover trigger="open-datetime">
-      <ng-template>
-        <ion-content>
-          <ion-datetime
-            placeholder="Enter Future Inspection Date"
-            (ionChange)="dateChanged($event); closePopover()"
-          ></ion-datetime>
-        </ion-content>
-      </ng-template>
-    </ion-popover>-->
-
+        <hr>
     
-   
-
     
-</div>
-<div *ngIf="appType !== 'ApplicationForSpecialEvent'">
-<div  *ngIf="currentForm ==='comments'">
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (c) -->
+        <span>(c) Is the ward committee's report in terms of Section 22(2)(d)(i) filed in the application?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="wardCommiteeReport">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="wardCommiteeReport" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="wardCommiteeReport" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="wardCommiteeReport" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('wardCommiteeReport')?.value === '2'">
+          <textarea formControlName="wardCommiteeReportComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (d) -->
+        <span>(d) Was the community appropriately and adequately consulted (furnish a report regarding verification)?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="communityConsultation">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="communityConsultation" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="communityConsultation" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="communityConsultation" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('communityConsultation')?.value === '2'">
+          <textarea formControlName="communityConsultationComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (e) -->
+        <span>(e) Is there an educational institution within the prescribed 100m radius?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="educationalInstitution" (ionChange)="communitySchool($event)">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="educationalInstitution" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="educationalInstitution" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="educationalInstitution" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('educationalInstitution')?.value === '1'">
+          <textarea formControlName="educationalInstitutionComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    <div *ngIf="this.completeReportForm.get('educationalInstitution')?.value !== '2'">
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (f) -->
+        <span>(e(i)) Was Form 2/8/12 appropriately served at the educational institution?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="formServedAtEducationInstitution">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="formServedAtEducationInstitution" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="formServedAtEducationInstitution" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtEducationInstitution')?.value === '2'">
+          <textarea formControlName="formServedAtEducationInstitutionComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
 
-  <div class="header-container">
-    <img src="assets/Images/Back Icon.svg"  class="back-Arrow"(click)="toggleForms('landing')">
-    <h1 class="header-text">Comments</h1>
-  </div>
+    </div>
+        <hr>
+    
+      
+        <!-- Repeat similar blocks for other questions with appropriate formControlName -->
+        <!-- Question (g) -->
+        <span>(f) Is there a place of worship within the prescribed 100m?</span>
+        <ion-card-title class="general-name">
+          <ion-grid>
+            <ion-row class="horizontal-radios">
+              <ion-col >
+                <ion-radio-group formControlName="placeOfWorship" (ionChange)="communityChurch($event)">
+                  <ion-row class="horizontal-radios">
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="yes_appt" class="move-radio" name="placeOfWorship" value="1"></ion-radio>
+                        <label for="yes_appt">Yes</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="placeOfWorship" value="2"></ion-radio>
+                        <label for="no_appt">No</label>
+                      </div>
+                    </ion-col>
+                    <ion-col >
+                      <div class="radios">
+                        <ion-radio id="no_appt" class="move-radio" name="placeOfWorship" value="3"></ion-radio>
+                        <label for="no_appt">N/A</label>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-radio-group>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-card-title>
+        <div class="recommend-comments1" *ngIf="completeReportForm.get('placeOfWorship')?.value === '1'">
+          <textarea formControlName="placeOfWorshipComment" placeholder="Comments"
+              id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+      </div>
+        <hr>
+    
+    
+       
+      
+         <div *ngIf="this.completeReportForm.get('placeOfWorship')?.value !=='2'">
   
-      <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'">Applicant</ion-label>
-      <ion-item>
-      <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Applicant" formControlName="applicant"></ion-input>
-      </ion-item>
-  
-     
-
-<ion-card class="upload2">
-<!-- Right to Occupy Premises Radio Button Group -->
-
-  <span>(a) Right to Occupy Premises</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col>
-        
-            <ion-radio-group formControlName="rightToOccupyPremises">
+          <span>(f(i)) Was Form 2/8/12 appropriately served at the place of worship?</span>
+          <ion-card-title class="general-name">
+            <ion-grid>
               <ion-row class="horizontal-radios">
                 <ion-col >
-                  <div class="radios">
-                    <ion-radio id="yes_appt" class="move-radio" name="rightToOccupyPremises" value="Yes"></ion-radio>
-                    <label for="yes_appt">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_appt" class="move-radio" name="rightToOccupyPremises" value="No"></ion-radio>
-                    <label for="no_appt">No</label>
-                  </div>
+                  <ion-radio-group formControlName="formServedAtPlaceOfWorship">
+                    <ion-row class="horizontal-radios">
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="yes_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="1"></ion-radio>
+                          <label for="yes_appt">Yes</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="2"></ion-radio>
+                          <label for="no_appt">No</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formServedAtPlaceOfWorship" value="3"></ion-radio>
+                          <label for="no_appt">N/A</label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-radio-group>
                 </ion-col>
               </ion-row>
-            </ion-radio-group>
+            </ion-grid>
+            
+          </ion-card-title>
+          <div class="recommend-comments1" *ngIf="completeReportForm.get('formServedAtPlaceOfWorship')?.value === '2'">
+            <textarea formControlName="formServedAtPlaceOfWorshipComment" placeholder="Comments"
+                id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+        </div>
+
+      </div>
+          <hr>
+          <span>(g) Were any objections received at the time of the inspection</span>
+          <ion-card-title class="general-name">
+            <ion-grid>
+              <ion-row class="horizontal-radios">
+                <ion-col >
+                  <ion-radio-group formControlName="formObjectionsInspection">
+                    <ion-row class="horizontal-radios">
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="yes_appt" class="move-radio" name="formObjectionsInspection" value="1"></ion-radio>
+                          <label for="yes_appt">Yes</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formObjectionsInspection" value="2"></ion-radio>
+                          <label for="no_appt">No</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formObjectionsInspection" value="3"></ion-radio>
+                          <label for="no_appt">N/A</label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-radio-group>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            
+          </ion-card-title>
+          <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
+            <textarea formControlName="formObjectionsInspectionComment" placeholder="Comments"
+                id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+        </div>
+          <hr>
+          <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
+          <span>(h) If objections were received, were they served to the applicant for response?</span>
+          <ion-card-title class="general-name">
+            <ion-grid>
+              <ion-row class="horizontal-radios">
+                <ion-col >
+                  <ion-radio-group formControlName="formObjectionsReceived">
+                    <ion-row class="horizontal-radios">
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="yes_appt" class="move-radio" name="formObjectionsReceived" value="1"></ion-radio>
+                          <label for="yes_appt">Yes</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="2"></ion-radio>
+                          <label for="no_appt">No</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formObjectionsReceived" value="3"></ion-radio>
+                          <label for="no_appt">N/A</label>
+                        </div>
+                      </ion-col>
+                     
+                      
+                    </ion-row>
+                  </ion-radio-group>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            
+          </ion-card-title>
+          <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsReceived')?.value === '2'">
+            <textarea formControlName="formObjectionsReceivedComment" placeholder="Comments"
+                id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+        </div>
+          <hr>
+          <span>(i) Has the applicant responded to the objections?</span>
+          <ion-card-title class="general-name">
+            <ion-grid>
+              <ion-row class="horizontal-radios">
+                <ion-col >
+                  <ion-radio-group formControlName="formApplicantRespondedToObjections">
+                    <ion-row class="horizontal-radios">
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="yes_appt" class="move-radio" name="formApplicantRespondedToObjections" value="1"></ion-radio>
+                          <label for="yes_appt">Yes</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formApplicantRespondedToObjections" value="2"></ion-radio>
+                          <label for="no_appt">No</label>
+                        </div>
+                      </ion-col>
+                      <ion-col >
+                        <div class="radios">
+                          <ion-radio id="no_appt" class="move-radio" name="formApplicantRespondedToObjections" value="3"></ion-radio>
+                          <label for="no_appt">N/A</label>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-radio-group>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            
+          </ion-card-title>
+          <div class="recommend-comments1" *ngIf="completeReportForm.get('formApplicantRespondedToObjections')?.value === '2'">
+            <textarea formControlName="formApplicantRespondedToObjectionsComment" placeholder="Comments"
+                id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
+        </div>
+          <hr>
+          </div>
+      </ion-card>
+  
+      <div>
+        <button class="next-button"
+                (click)="appType === 'ApplicationForSpecialEvent' ? toggleForms('photos') : toggleForms('comments')"
+                [disabled]="!isCommunityFormValid()">
+          Next
+        </button>
+      </div>
+      
+  
+      
+  
+  
+    
+  </div>
+  
+  
+    
+    <!--Recomendation-->
+  
+    <div *ngIf="currentForm ==='recommendation'">
+  
+      <div class="header-container">
+          <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
+          <h1 class="header-text">Recommendation</h1>
+      </div>
+     
+      <ion-card class="upload2">
+          <!-- Recommendation Options -->
+          <span class="appReco"> Is the application recommendation for registering for the category applied for ?</span>
+          <br>
+          <br>
+          <ion-card-title class="general-name">
+            <ion-grid>
+              <ion-row class="vertical-radios">
+                <ion-radio-group formControlName="recommendation" (ionChange)="refusalSectionValidation($event)">
+                  <div class="radioss">
+                    <ion-radio id="yes_appt" class="move-radio" name="recommendation" value="1"></ion-radio>
+                    <label for="yes_appt">Approval</label>
+                  </div>
+                  <div class="radioss">
+                    <ion-radio id="no_appt" class="move-radio" name="recommendation" value="2"></ion-radio>
+                    <label for="no_appt">Refusal</label>
+                  </div>        
+                  <div class="radioss">
+                    <ion-radio id="na_appt_sec22_5" class="move-radio" name="recommendation" value="3"></ion-radio>
+                    <label for="sec22_5">Section 22(5)</label>
+                  </div>
+                  <div class="radioss">
+                    <ion-radio id="na_appt_sec22_5" class="move-radio" name="recommendation" value="4"></ion-radio>
+                    <label for="sec22_5">Section 22(6)</label>
+                  </div>
+                  
+                  <div class="radioss">
+                    <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="5"></ion-radio>
+                    <label for="hearing">Board Hearing</label>
+                  </div>
+                  
+                  <div class="radioss">
+                    <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="6"></ion-radio>
+                    <label for="hearing">Validation of Objections</label>
+                  </div>
+                  <div class="radioss">
+                    <ion-radio id="na_appt_hearing" class="move-radio" name="recommendation" value="7"></ion-radio>
+                    <label for="hearing">Cancellation</label>
+                  </div>
+                </ion-radio-group>
+              </ion-row>
+            </ion-grid>
+          </ion-card-title>
+          <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3'">
+            <p>Section 22(5)</p>
+          
+            <div *ngFor="let section of sections">
+              <div class="flex">
+                <div style="margin-bottom: 10px;">
+                  <input 
+                    class="checkmart" 
+                    type="checkbox" 
+                    [checked]="section.show" 
+                    (change)="toggleSection(section)"
+                  >
+                  <label class="check">{{ section.name }}</label>
+                </div>
+              </div>
+          
+              <!-- Notes Textarea -->
+              <div *ngIf="section.show">
+                <textarea 
+                  style="height: 50px; background-color: #fff; font-size: 12px; margin-bottom: 10px;" 
+                  [(ngModel)]="section.notes"
+                  [ngModelOptions]="{standalone: true}" 
+                  (change)="getNotes(section, $event)"
+                  id="residentialAddress" 
+                  placeholder="Please Provide Explanatory Notes">
+                </textarea>
+              </div>
+            </div>
+                  <div *ngIf="!isAnySectionSelected"  style="color: red; margin-top: 10px;">
+                   Please select at least one section to proceed.
+                  </div>
+          
+          </div>
+          
+          <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '3'" class="recommend-comments">
+            <textarea formControlName="comments" style="height: 100px; background-color: #fff;"
+                id="residentialAddress" class="form-control mb-3  mt-3" placeholder="Comments"></textarea>
+        </div>
+      </ion-card>
+  
+      <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendationFormValid()">Next</button>
+  
+  
+      <!--
+        <ion-label position="floating">Inspection Date</ion-label>
+        <ion-item>
+        <ion-input  placeholder="{{ dateFormatPlaceholder }}" id="inspection-date-input"  class="small-input">
+          <ion-icon name="calendar" slot="end" (click)="openDatetimePicker()"></ion-icon>
+        </ion-input>
+      </ion-item>
+      <ion-button id="open-datetime" fill="clear" style="display: none;"></ion-button>
+      <ion-popover trigger="open-datetime">
+        <ng-template>
+          <ion-content>
+            <ion-datetime
+              placeholder="Enter Future Inspection Date"
+              (ionChange)="dateChanged($event); closePopover()"
+            ></ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-popover>-->
+  
+      
+     
+  
+      
+  </div>
+  <div *ngIf="appType !== 'ApplicationForSpecialEvent'">
+  <div  *ngIf="currentForm ==='comments'">
+  
+    <div class="header-container">
+      <img src="assets/Images/Back Icon.svg"  class="back-Arrow"(click)="toggleForms('landing')">
+      <h1 class="header-text">Comments</h1>
+    </div>
+    
+        <ion-label *ngIf="appType!=='ApplicationForSpecialEvent'">Applicant</ion-label>
+        <ion-item>
+        <ion-input *ngIf="appType!=='ApplicationForSpecialEvent'" placeholder="Applicant" formControlName="applicant"></ion-input>
+        </ion-item>
+    
+       
+  
+  <ion-card class="upload2">
+  <!-- Right to Occupy Premises Radio Button Group -->
+  
+    <span>(a) Right to Occupy Premises</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col>
+          
+              <ion-radio-group formControlName="rightToOccupyPremises">
+                <ion-row class="horizontal-radios">
+                  <ion-col >
+                    <div class="radios">
+                      <ion-radio id="yes_appt" class="move-radio" name="rightToOccupyPremises" value="Yes"></ion-radio>
+                      <label for="yes_appt">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_appt" class="move-radio" name="rightToOccupyPremises" value="No"></ion-radio>
+                      <label for="no_appt">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        </ion-card-title>
+        
+   <hr>
+  
+  
+  
+  <!-- Additional Input Fields with Radio Buttons -->
+  
+  <!-- Building Structure and Means of Communication -->
+  
+    <span>(b) Building structure and means of communication</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col>
+              <ion-radio-group formControlName="buildingStructureAndMeansOfCommunication">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_building" name="buildingStructureAndMeansOfCommunication" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_building">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_building" name="buildingStructureAndMeansOfCommunication"  class="move-radio" value="No"></ion-radio>
+                      <label for="no_building">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
           </ion-col>
         </ion-row>
       </ion-grid>
-      </ion-card-title>
+    </ion-card-title>
+  
+  
+  <!-- Counter/Point of Sale -->
+  
+    <span>(c) Counter/Point of Sale</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col>
+              <ion-radio-group formControlName="counterPointOfSake">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_counter" name="counterPointOfSake" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_counter">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_counter" name="counterPointOfSake" class="move-radio" value="No"></ion-radio>
+                      <label for="no_counter">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+   <hr>
+  <!-- Display Area/Shelves -->
+  
+    <span>(d) Display Area/Shelves</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+              <ion-radio-group formControlName="displayAreaShelves">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_display" name="displayAreaShelves" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_display">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_display" name="displayAreaShelves" class="move-radio" value="No"></ion-radio>
+                      <label for="no_display">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+   <hr>
+  <!-- Demarcated Drinking Area -->
+  
+    <span>(e) Demarcated Drinking Area</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col>
+          
+              <ion-radio-group formControlName="demarcatedDrinkingArea">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_drinking_area">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="No"></ion-radio>
+                      <label for="no_drinking_area">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+          
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  <hr>
+  
+  <!-- Storage Room -->
+  
+    <span>(g) Storage Room</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+           
+              <ion-radio-group formControlName="storageRoom">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_storage" name="storageRoom" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_storage">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_storage" name="storageRoom" class="move-radio" value="No"></ion-radio>
+                      <label for="no_storage">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+  <hr>
+  <!-- Ablution Facilities -->
+  
+    <span>(h) Ablution Facilities</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+           
+              <ion-radio-group formControlName="ablutionFacilities">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_ablution" name="ablutionFacilities" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_ablution">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_ablution" name="ablutionFacilities" class="move-radio" value="No"></ion-radio>
+                      <label for="no_ablution">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+       
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+    <span>(i) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper) </span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+           
+              <ion-radio-group formControlName="complianceSectionA">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_ablution" name="complianceSectionA" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_ablution">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_ablution" name="complianceSectionA"class="move-radio" value="No"></ion-radio>
+                      <label for="no_ablution">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+       
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+    <span>(j) Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+           
+              <ion-radio-group formControlName="complianceSectionB">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_ablution" name="complianceSectionB" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_ablution">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_ablution" name="complianceSectionB" class="move-radio" value="No"></ion-radio>
+                      <label for="no_ablution">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+       
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+    <span>(k) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)</span>
+    <ion-card-title class="general-name">
+      <ion-grid>
+        <ion-row class="horizontal-radios">
+          <ion-col >
+           
+              <ion-radio-group formControlName="complianceSectionC">
+                <ion-row>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="yes_ablution" name="complianceSectionC" class="move-radio" value="Yes"></ion-radio>
+                      <label for="yes_ablution">Yes</label>
+                    </div>
+                  </ion-col>
+                  <ion-col>
+                    <div class="radios">
+                      <ion-radio id="no_ablution"  name="complianceSectionC" class="move-radio" value="No"></ion-radio>
+                      <label for="no_ablution">No</label>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-radio-group>
+       
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  
+  </ion-card>
+  
+  
+  
+  
+  
+  
+      <button class="next-button" (click)="toggleForms('photos')" [disabled]="!isCommentForm()">Next</button>
+    </div>
+   </div>
+  <!--Photos-->
+  
+  <div *ngIf="currentForm ==='photos'">
+  
+    <div class="header-container">
+        <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
+        <h1 class="header-text">Photos</h1>
+    </div>
       
- <hr>
-
-
-
-<!-- Additional Input Fields with Radio Buttons -->
-
-<!-- Building Structure and Means of Communication -->
-
-  <span>(b) Building structure and means of communication</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col>
-            <ion-radio-group formControlName="buildingStructureAndMeansOfCommunication">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_building" name="buildingStructureAndMeansOfCommunication" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_building">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_building" name="buildingStructureAndMeansOfCommunication"  class="move-radio" value="No"></ion-radio>
-                    <label for="no_building">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
-
-<!-- Counter/Point of Sale -->
-
-  <span>(c) Counter/Point of Sale</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col>
-            <ion-radio-group formControlName="counterPointOfSake">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_counter" name="counterPointOfSake" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_counter">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_counter" name="counterPointOfSake" class="move-radio" value="No"></ion-radio>
-                    <label for="no_counter">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
- <hr>
-<!-- Display Area/Shelves -->
-
-  <span>(d) Display Area/Shelves</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-            <ion-radio-group formControlName="displayAreaShelves">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_display" name="displayAreaShelves" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_display">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_display" name="displayAreaShelves" class="move-radio" value="No"></ion-radio>
-                    <label for="no_display">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-          
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
- <hr>
-<!-- Demarcated Drinking Area -->
-
-  <span>(e) Demarcated Drinking Area</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col>
-        
-            <ion-radio-group formControlName="demarcatedDrinkingArea">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_drinking_area">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_drinking_area" name="demarcatedDrinkingArea" class="move-radio" value="No"></ion-radio>
-                    <label for="no_drinking_area">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-        
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-<hr>
-
-<!-- Storage Room -->
-
-  <span>(g) Storage Room</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-         
-            <ion-radio-group formControlName="storageRoom">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_storage" name="storageRoom" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_storage">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_storage" name="storageRoom" class="move-radio" value="No"></ion-radio>
-                    <label for="no_storage">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-          
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
-<hr>
-<!-- Ablution Facilities -->
-
-  <span>(h) Ablution Facilities</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-         
-            <ion-radio-group formControlName="ablutionFacilities">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_ablution" name="ablutionFacilities" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_ablution">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_ablution" name="ablutionFacilities" class="move-radio" value="No"></ion-radio>
-                    <label for="no_ablution">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-     
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
-  <span>(i) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper) </span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-         
-            <ion-radio-group formControlName="complianceSectionA">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionA" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_ablution">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_ablution" name="complianceSectionA"class="move-radio" value="No"></ion-radio>
-                    <label for="no_ablution">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-     
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
-  <span>(j) Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-         
-            <ion-radio-group formControlName="complianceSectionB">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionB" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_ablution">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_ablution" name="complianceSectionB" class="move-radio" value="No"></ion-radio>
-                    <label for="no_ablution">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-     
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-  <span>(k) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)</span>
-  <ion-card-title class="general-name">
-    <ion-grid>
-      <ion-row class="horizontal-radios">
-        <ion-col >
-         
-            <ion-radio-group formControlName="complianceSectionC">
-              <ion-row>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="yes_ablution" name="complianceSectionC" class="move-radio" value="Yes"></ion-radio>
-                    <label for="yes_ablution">Yes</label>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="radios">
-                    <ion-radio id="no_ablution"  name="complianceSectionC" class="move-radio" value="No"></ion-radio>
-                    <label for="no_ablution">No</label>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-radio-group>
-     
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-title>
-
-</ion-card>
-
-
-
-
-
-
-    <button class="next-button" (click)="toggleForms('photos')" [disabled]="!isCommentForm()">Next</button>
-  </div>
- </div>
-<!--Photos-->
-
-<div *ngIf="currentForm ==='photos'">
-
-  <div class="header-container">
-      <img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')">
-      <h1 class="header-text">Photos</h1>
-  </div>
-    
-
-  <ion-card class="photos-card">
-    <ng-container *ngIf="imageSources.length > 0; else noPhoto">
-      <div class="scrollable-container">
-        <div *ngFor="let image of imageSources.slice().reverse(); let i = index">
-          <img [src]="image.src" alt="Uploaded Photo" class="single-uploaded-photo" (click)="toggleDropdown($event, i)">
-          <p class="image-description">{{ image.description }}</p>
-          <div class="dropdown-content" [class.show]="dropdownVisible[i]">
-            <ion-item (click)="viewImage(image.src)">View</ion-item>
-            <ion-item (click)="deleteImage(image.src)">Delete</ion-item>
+  
+    <ion-card class="photos-card">
+      <ng-container *ngIf="imageSources.length > 0; else noPhoto">
+        <div class="scrollable-container">
+          <div *ngFor="let image of imageSources.slice().reverse(); let i = index">
+            <img [src]="image.src" alt="Uploaded Photo" class="single-uploaded-photo" (click)="toggleDropdown($event, i)">
+            <p class="image-description">{{ image.description }}</p>
+            <div class="dropdown-content" [class.show]="dropdownVisible[i]">
+              <ion-item (click)="viewImage(image.src)">View</ion-item>
+              <ion-item (click)="deleteImage(image.src)">Delete</ion-item>
+            </div>
           </div>
         </div>
+      </ng-container>
+      <ng-template #noPhoto>
+        <p class="no-photo-text">No photo uploaded yet</p>
+      </ng-template>
+      <div class="add-ticket-container">
+       
       </div>
-    </ng-container>
-    <ng-template #noPhoto>
-      <p class="no-photo-text">No photo uploaded yet</p>
-    </ng-template>
-    <div class="add-ticket-container">
-     
-    </div>
-  </ion-card>
-  <ion-buttons slot="end">
-    <ion-img src="assets/Images/Vector.svg" (click)="presentActionSheet()" class="add-ticket-icon"></ion-img>
-  </ion-buttons>
-  <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isPhotoAvailable">Next</button>
-</div>
-
-</form>
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-clip-rotate-pulse">
-  <p style="color:white;font-size: 20px;text-align: center;">Please wait...</p>
-</ngx-spinner>
-</ion-content>
-
-<app-menu-footer></app-menu-footer>
+    </ion-card>
+    <ion-buttons slot="end">
+      <ion-img src="assets/Images/Vector.svg" (click)="presentActionSheet()" class="add-ticket-icon"></ion-img>
+    </ion-buttons>
+    <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isPhotoAvailable">Next</button>
+  </div>
+  
+  </form>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-clip-rotate-pulse">
+    <p style="color:white;font-size: 20px;text-align: center;">Please wait...</p>
+  </ngx-spinner>
+  </ion-content>
+  
+  <app-menu-footer></app-menu-footer>

@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment.prod';
 export class ViewComplaintPage implements OnInit {
   ecpNumber:string="";
   complains:string="";
+  inspector: string="";
 
   constructor(private aRoute: Router, private eRef: ElementRef, private http:HttpClient, private route: ActivatedRoute) {}
 
@@ -43,12 +44,15 @@ export class ViewComplaintPage implements OnInit {
         console.log(error)
       });
 
-      let url1 = "http://localhost:8081/api/general/get-complain/"+this.referenceNo;
+      let url1 = environment+"api/general/get-complain/"+this.referenceNo;
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;
-        this.ecpNumber=response.ecpNumber;
+
         
+
+        this.ecpNumber=response.ecpNumber;
+        this.inspector= response.inspector
        
         console.log(this.complains)
         console.log(this.ecpNumber);
