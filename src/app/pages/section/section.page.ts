@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import SignaturePad from 'signature_pad';
 import { Route } from '@angular/router';
 import { headers, headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class SectionPage implements OnInit {
 
-  showAlert!: boolean;
+ 
   alertMessage!: string;
   alertType!: string;
   sectionForm: FormGroup;
@@ -26,7 +27,7 @@ export class SectionPage implements OnInit {
   caseNo:any
 
   constructor(
-    private fb: FormBuilder,private router: ActivatedRoute, private spinner: NgxSpinnerService, private http: HttpClient, private aRoute: Router
+    private fb: FormBuilder,private router: ActivatedRoute, private spinner: NgxSpinnerService, private http: HttpClient, private aRoute: Router ,  private alertController: AlertController,
   ) {
     this.sectionForm = this.fb.group({
       receivedBy: ['', Validators.required],
@@ -35,12 +36,8 @@ export class SectionPage implements OnInit {
   }
 
   ngOnInit() {
-  }
-  showAlertMessage(type: string, message: string) {
-    this.alertType = type;
-    this.alertMessage = message;
-    this.showAlert = true;
 
+  
 
     this.router.paramMap.subscribe(param => {
       this.caseNo = param.get('caseId');
@@ -51,14 +48,11 @@ export class SectionPage implements OnInit {
 
   })
   }
-
+  
  
-  public onSubmit(): void {
+  async onSubmit(){
     this.spinner.show();
-    if(!this.signatureImg && this.sectionForm.invalid){
-      this.showAlertMessage('error', 'please enter all fields');
-      return;
-    }
+  
     this.summons = this.summons || {};
     this.summons = Object.assign(this.summons, this.sectionForm.value);
 
@@ -78,6 +72,7 @@ export class SectionPage implements OnInit {
       
       this.spinner.hide();
       alert("Complete");
+      this.showAlert('success', 'Served Notice Complete');
       this.aRoute.navigate([`/my-tasks`])
       
       
@@ -85,13 +80,10 @@ export class SectionPage implements OnInit {
 
       console.log(error);
       this.spinner.hide();
-
-      alert("Something went wrong. Try again");
+     this.showAlert('Failed', 'Something went wrong. please Try again');
     })
 
-  
 
-    this.spinner.hide();
   }
   
   signaturePad!: SignaturePad;
@@ -121,7 +113,7 @@ export class SectionPage implements OnInit {
   async savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
-    this.showAlertMessage('error', 'Signature Served');
+    await this.showAlert('sucess', 'Signature Saved');
   }
 
   navigatoToBack()
@@ -152,5 +144,13 @@ export class SectionPage implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
 
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
 }
