@@ -71,7 +71,6 @@ export class SectionPage implements OnInit {
 
       
       this.spinner.hide();
-      alert("Complete");
       this.showAlert('success', 'Served Notice Complete');
       this.aRoute.navigate([`/my-tasks`])
       
