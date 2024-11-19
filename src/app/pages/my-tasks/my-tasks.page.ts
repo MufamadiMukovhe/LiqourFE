@@ -109,6 +109,9 @@ export class MyTasksPage implements OnInit {
         case 'Inspector Serve Summons':
           this.route.navigate([`/summons/${caseId}`])
           break;
+        case 'Inspector Serve Section 22(6) Notice':
+          this.route.navigate([`/section/${caseId}/`])
+          break;
         case 'Inspector Serve Section 22(5) Notice':
           this.route.navigate([`/section/${caseId}/`])
           break;
