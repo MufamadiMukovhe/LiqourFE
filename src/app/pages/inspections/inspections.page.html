@@ -17,7 +17,7 @@
     </ion-item>
 
     <div *ngFor="let outlet of filteredOutlets" class="outlet-card">
-      <div *ngIf="outlet.action == 'Complete Inspection Report' || outlet.action == 'Complete Report'">
+      <div *ngIf="outlet.action == 'Complete Inspection Report' || outlet.action == 'Complete Report' || outlet.action == 'Complete Report Query' ">
         <ion-card [ngClass]="{'not-clickable': outlet.status === 'Complete'}">
           <ion-grid 
             class="" 
