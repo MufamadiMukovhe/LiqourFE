@@ -957,7 +957,7 @@ export class CompleteInspectionPage implements OnInit {
     });
     await actionSheet.present();
   }
-  compulsoryPhotosCaptured: boolean[] = new Array(2).fill(false);  // Only 2 compulsory photos
+  compulsoryPhotosCaptured: boolean[] = new Array(12).fill(false);  // Only 2 compulsory photos
   availableDescriptions: string[] = ['Front View', 'Front & Left Side View','Front & Right Side View','Back View','Back & Left Side','Back & Right-side','Drinking Area View','Counter View','Shelves Area view','Storage Area View','Toilet Front View','Toilet Inside View', 'Other'];  
 
   selectedDescriptions: Set<string> = new Set(); // Use a Set to keep track of selected descriptions
@@ -988,7 +988,7 @@ async selectImage(source: CameraSource) {
       this.selectedDescriptions.add(description);
 
       const compulsoryIndex = this.availableDescriptions.indexOf(description);
-      if (compulsoryIndex >= 0 && compulsoryIndex < 2) {
+      if (compulsoryIndex >= 0 && compulsoryIndex < 12) {
         this.compulsoryPhotosCaptured[compulsoryIndex] = true;
       }
 
