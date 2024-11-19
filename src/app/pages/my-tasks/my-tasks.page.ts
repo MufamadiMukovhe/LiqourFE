@@ -52,16 +52,11 @@ export class MyTasksPage implements OnInit {
 
         if(this.role==='INSPECTOR')
           {
-<<<<<<< HEAD
-            console.log(this.collect)
-            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report');
-=======
             //this.collect = response;
             this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report'|| item.action === 'Complete Report Query');
 
 
           
->>>>>>> a4a763a91902783421d8ce121ad63cc52b27cf0d
             this.collect = this.collect.filter(item => item.status!=='Complete')
 
             console.log(this.collect);
