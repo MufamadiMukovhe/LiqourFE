@@ -65,6 +65,7 @@ export class MyTasksPage implements OnInit {
           }
           else{
             this.collect = response;
+            console.log(this.collect)
           }
         
         
@@ -108,6 +109,9 @@ export class MyTasksPage implements OnInit {
           break;
         case 'Inspector Serve Summons':
           this.route.navigate([`/summons/${caseId}`])
+          break;
+        case 'Inspector Serve Section 22(6) Notice':
+          this.route.navigate([`/section/${caseId}/`])
           break;
         case 'Inspector Serve Section 22(5) Notice':
           case 'Inspector Serve Section 22(6) Notice':
