@@ -117,7 +117,8 @@ export class SectionPage implements OnInit {
 
   navigatoToBack()
   {
-    this.aRoute.navigate(['my-task'])
+    this.aRoute.navigate(['/my-task'])
+
   }
 
   convertSrcToFile(dataURL: string, filename: string): File {
