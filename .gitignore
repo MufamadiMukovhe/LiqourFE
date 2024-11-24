@@ -54,6 +54,10 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+#iOS and android
+ios/
+android/
+
 
 # Miscellaneous
 /.angular
