@@ -1304,7 +1304,7 @@
               </ion-row>
             </ion-grid>
           </ion-card-title>
-          <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3'">
+          <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3' || completeReportForm.get('recommendation')?.value === '4' " >
             <p>Section 22(5)</p>
           
             <div *ngFor="let section of sections">
@@ -1338,7 +1338,7 @@
           
           </div>
           
-          <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '3'" class="recommend-comments">
+          <div *ngIf="completeReportForm.get('recommendation')?.value !== '2' && completeReportForm.get('recommendation')?.value !== '4' && completeReportForm.get('recommendation')?.value !== '3'"  class="recommend-comments">
             <textarea formControlName="comments" style="height: 100px; background-color: #fff;"
                 id="residentialAddress" class="form-control mb-3  mt-3" placeholder="Comments"></textarea>
         </div>

@@ -480,7 +480,7 @@ export class CompleteInspectionPage implements OnInit {
     
   const recommendationValue = this.completeReportForm.get('recommendation')?.value;
   const isSectionValid =
-    recommendationValue !== '2' && recommendationValue !== '3'
+    recommendationValue !== '2' && recommendationValue !== '3' && recommendationValue !== '4'
       ? true
       : this.sections.some(section => section.show);
 
@@ -553,7 +553,7 @@ export class CompleteInspectionPage implements OnInit {
   refusalSectionValidation(event:any)
   {
 
-    if(event.detail.value==='2' || event.detail.value==='3')
+    if(event.detail.value==='2' || event.detail.value==='3' || event.detail.value==='4')
     {
       this.completeReportForm.get('comments')?.clearValidators();
       this.completeReportForm.get('comments')?.updateValueAndValidity();
