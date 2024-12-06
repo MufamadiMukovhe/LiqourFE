@@ -1305,7 +1305,9 @@
             </ion-grid>
           </ion-card-title>
           <div *ngIf="completeReportForm.get('recommendation')?.value === '2' || completeReportForm.get('recommendation')?.value === '3' || completeReportForm.get('recommendation')?.value === '4' " >
-            <p>Section 22(5)</p>
+            <p>
+              {{ completeReportForm.get('recommendation')?.value === '4' ? 'Section 22(6)' : 'Section 22(5)' }}
+            </p>
           
             <div *ngFor="let section of sections">
               <div class="flex">
