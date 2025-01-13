@@ -231,9 +231,9 @@
       </div>
         <hr>
       
-    <div class="recommend-comments1" *ngIf="completeReportForm.get('consultedOrFound')?.value !== '1'">
+    <div class="recommend-comments1" >
 
-        <span>(b(i)) Has the applicant indicated that this particular person will be at the premises?</span>
+        <span>(c) Has the applicant indicated that this particular person will be at the premises?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
@@ -279,7 +279,7 @@
 
       <hr>
   
-      <span>(b(ii)) If not the applicant, can the person found at the premises confirm the applicant?</span>
+      <span>(d) If not the applicant, can the person found at the premises confirm the applicant?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
@@ -311,15 +311,15 @@
         </ion-grid>
         
       </ion-card-title>
-      <div class="recommend-comments1" *ngIf="completeReportForm.get('canPersonBeFound')?.value === '2'">
+      <!--div class="recommend-comments1" *ngIf="completeReportForm.get('canPersonBeFound')?.value === '2'">
         <textarea formControlName="canPersonBeFoundComment" placeholder="Comments"
             id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
-    </div>
+    </div-->
   </div>
       <hr>
   
   
-      <span>(c) Does the applicant have any other interests in the liquor trade in the republic?</span>
+      <span>(e) Does the applicant have any other interests in the liquor trade in the republic?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
@@ -358,7 +358,7 @@
       <hr>
   
   
-      <span>(d) Has any of the above listed outlets ever been issued with a compliance notice?</span>
+      <span>(f) Has any of the above listed outlets ever been issued with a compliance notice?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row class="horizontal-radios">
@@ -993,7 +993,7 @@
     <div *ngIf="this.completeReportForm.get('educationalInstitution')?.value !== '2'">
         <!-- Repeat similar blocks for other questions with appropriate formControlName -->
         <!-- Question (f) -->
-        <span>(e(i)) Was Form 2/8/12 appropriately served at the educational institution?</span>
+        <span>(f) Was Form 2/8/12 appropriately served at the educational institution?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
@@ -1036,7 +1036,7 @@
       
         <!-- Repeat similar blocks for other questions with appropriate formControlName -->
         <!-- Question (g) -->
-        <span>(f) Is there a place of worship within the prescribed 100m?</span>
+        <span>(g) Is there a place of worship within the prescribed 100m?</span>
         <ion-card-title class="general-name">
           <ion-grid>
             <ion-row class="horizontal-radios">
@@ -1079,7 +1079,7 @@
       
          <div *ngIf="this.completeReportForm.get('placeOfWorship')?.value !=='2'">
   
-          <span>(f(i)) Was Form 2/8/12 appropriately served at the place of worship?</span>
+          <span>(h) Was Form 2/8/12 appropriately served at the place of worship?</span>
           <ion-card-title class="general-name">
             <ion-grid>
               <ion-row class="horizontal-radios">
@@ -1118,7 +1118,7 @@
 
       </div>
           <hr>
-          <span>(g) Were any objections received at the time of the inspection</span>
+          <span>(i) Were any objections received at the time of the inspection</span>
           <ion-card-title class="general-name">
             <ion-grid>
               <ion-row class="horizontal-radios">
@@ -1156,7 +1156,7 @@
         </div>
           <hr>
           <div class="recommend-comments1" *ngIf="completeReportForm.get('formObjectionsInspection')?.value === '1'">
-          <span>(h) If objections were received, were they served to the applicant for response?</span>
+          <span>(j) If objections were received, were they served to the applicant for response?</span>
           <ion-card-title class="general-name">
             <ion-grid>
               <ion-row class="horizontal-radios">
@@ -1195,7 +1195,7 @@
                 id="commentCommunityProcess" class="form-control mb-3 mt-3"></textarea>
         </div>
           <hr>
-          <span>(i) Has the applicant responded to the objections?</span>
+          <span>(k) Has the applicant responded to the objections?</span>
           <ion-card-title class="general-name">
             <ion-grid>
               <ion-row class="horizontal-radios">
@@ -1388,10 +1388,13 @@
     
        
   
-  <ion-card class="upload2">
+  <ion-card class="upload2">  
   <!-- Right to Occupy Premises Radio Button Group -->
-  
-    <span>(a) Right to Occupy Premises</span>
+  <span>Premises</span>
+  <br>
+  <br>
+  <div style="padding: 5px;">
+    <span> Right to Occupy Premises</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1420,13 +1423,13 @@
         
    <hr>
   
-  
+ 
   
   <!-- Additional Input Fields with Radio Buttons -->
   
   <!-- Building Structure and Means of Communication -->
   
-    <span>(b) Building structure and means of communication</span>
+    <span>Building structure and means of communication</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1455,7 +1458,7 @@
   
   <!-- Counter/Point of Sale -->
   
-    <span>(c) Counter/Point of Sale</span>
+    <span>Counter/Point of Sale</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1484,7 +1487,7 @@
    <hr>
   <!-- Display Area/Shelves -->
   
-    <span>(d) Display Area/Shelves</span>
+    <span>Display Area/Shelves</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1514,7 +1517,7 @@
    <hr>
   <!-- Demarcated Drinking Area -->
   
-    <span>(e) Demarcated Drinking Area</span>
+    <span>Demarcated Drinking Area</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1545,7 +1548,7 @@
   
   <!-- Storage Room -->
   
-    <span>(g) Storage Room</span>
+    <span>Storage Room</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1576,7 +1579,7 @@
   <hr>
   <!-- Ablution Facilities -->
   
-    <span>(h) Ablution Facilities</span>
+    <span> Ablution Facilities</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1603,8 +1606,12 @@
         </ion-row>
       </ion-grid>
     </ion-card-title>
-  
-    <span>(i) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper) </span>
+    </div>
+  <span>Community Consultation</span>
+  <br>
+  <br>
+  <div style="padding: 5px;">
+    <span>Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed and whether community consultation took place and if that consultation was proper)</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1632,7 +1639,7 @@
       </ion-grid>
     </ion-card-title>
   
-    <span>(j) Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)</span>
+    <span>Compliance with Section 22(2)(d)(ii) (State whether service of notice took place as prescribed)</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1659,7 +1666,7 @@
         </ion-row>
       </ion-grid>
     </ion-card-title>
-    <span>(k) Compliance with Section 22(2)(d)(i) (State whether service of notice took place as prescribed)</span>
+    <span>Compliance with Regulation 5 (State whether objections were received within prescribed timeframe)</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row class="horizontal-radios">
@@ -1686,7 +1693,7 @@
         </ion-row>
       </ion-grid>
     </ion-card-title>
-  
+  </div>
   </ion-card>
   
   

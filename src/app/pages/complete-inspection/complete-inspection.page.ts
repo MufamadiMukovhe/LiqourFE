@@ -532,8 +532,7 @@ export class CompleteInspectionPage implements OnInit {
     
       {
         this.completeReportForm.patchValue({
-          applicantIndicatedPersonAtPremises: '3',
-          canPersonBeFound:'3',
+      
   
         })
       }
