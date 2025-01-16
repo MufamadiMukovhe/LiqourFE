@@ -1,0 +1,213 @@
+<ion-content>
+  <form>
+  
+
+    <div *ngIf="currentForm === 'landing'">
+      <div class="header-container">
+        <a  class="back-Arrow"><img src="assets/Images/Back Icon.svg" (click)="navigateToBack()"></a>
+        <h1 class="header-text">Post Registration Inspection</h1>
+      </div><ion-card>
+        <div class="header-content">
+          <ion-img *ngIf="isInspectionReportGeneral()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isInspectionReportGeneral()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('general')" [class.red-text]="isInspectionReportGeneral()">
+            General
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isComplianceValid()"></ion-img>
+      
+        <div class="header-content">
+          <ion-img *ngIf="isComplianceValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isComplianceValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('compliance')" [class.red-text]="isComplianceValid()">
+            Compliance Inspection
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isComplianceValid()"></ion-img>
+ 
+
+      <div class="header-content">
+        <ion-img *ngIf="isRecommendationValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isRecommendationValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationValid()">
+          Recommendation
+        </ion-card-title>
+        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      </div>
+     
+
+      <ion-button class="buttonClass2" (click)="submitComplianceInspection()">
+        Submit
+      </ion-button>
+    </ion-card>
+    </div>
+
+
+    <div *ngIf="currentForm === 'general'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">General</h1>
+      </div>
+    
+      <form [formGroup]="registrationForm">
+        <table class="table table-bordered">
+            <tr>
+                <td>DATE</td>
+                <td><input formControlName="date" type="datetime-local" class="form-control mb-2" /></td>
+                <td>CITY/TOWN</td>
+                <td><input formControlName="cityTown" type="text" class="form-control" /></td>
+                <td>ECP NUMBER</td>
+                <td><input formControlName="ecpNumber" type="text" class="form-control" /></td>
+                <td>REGISTRATION CATEGORY</td>
+                <td><input formControlName="registrationCategory" type="text" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>BUSINESS NAME</td>
+                <td><input formControlName="businessName" type="text" class="form-control" /></td>
+                <td>REGISTERED PERSON</td>
+                <td><input formControlName="registeredPerson" type="text" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>TELEPHONE NUMBER/S</td>
+                <td colspan="3"><input formControlName="telephoneNumber" type="text" class="form-control" /></td>
+                <td>EMAIL ADDRESS</td>
+                <td colspan="3"><input formControlName="emailAddress" type="text" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>BUSINESS ADDRESS</td>
+                <td colspan="3" formGroupName="businessAddress">
+                    <input formControlName="streetNumber" type="text" class="form-control" placeholder="Street Number" />
+                    <input formControlName="streetName" type="text" class="form-control" placeholder="Street Name" />
+                    <input formControlName="villageSuburb" type="text" class="form-control" placeholder="Village/Suburb" />
+                </td>
+                <td>SPATIAL DATA COORDINATES</td>
+                <td colspan="3" formGroupName="spatialDataCoordinates">
+                    <input formControlName="latitude" type="text" class="form-control" placeholder="Latitude" />
+                    <input formControlName="longitude" type="text" class="form-control" placeholder="Longitude" />
+                </td>
+            </tr>
+            <tr>
+                <td>LOCAL MUNICIPALITY</td>
+                <td colspan="3"><input formControlName="localMunicipality" type="text" class="form-control" /></td>
+                <td>DISTRICT MUNICIPALITY</td>
+                <td colspan="3"><input formControlName="districtMunicipality" type="text" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>TYPE OF REGISTERED PERSON</td>
+                <td>
+                    <label><input type="radio" formControlName="typeOfRegisteredPerson" value="1" /> NATURAL</label>
+                    <label><input type="radio" formControlName="typeOfRegisteredPerson" value="2" /> JURISTIC</label>
+                </td>
+                <td>SECTION 40 MANAGER APPOINTED</td>
+                <td colspan="5" formGroupName="section40ManagerAppointed">
+                    <input formControlName="name" type="text" class="form-control" placeholder="Name" />
+                    <input formControlName="idNumber" type="text" class="form-control" placeholder="ID#" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <button class="next-button" (click)="toggleForms('compliance')" [disabled]="!isInspectionReportGeneral()">Next</button>
+    <br>
+    <br>
+    </div>
+    <div *ngIf="currentForm === 'compliance'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Compliance Inspection</h1>
+      </div>
+    
+      <form [formGroup]="healthCheckForm" class="health-check-form">
+        <button  (click)="goToLink(' ')" class="btn btn-primary-submit">T's and C's</button>
+        <br /><br />
+        <div class="table-container">
+            <table class="table-bordered custom-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Health Check</th>
+                        <th>Reference</th>
+                        <th>Health Check Questions</th>
+                        <th>Yes</th>
+                        <th>No</th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="questions">
+                    <tr *ngFor="let question of questions; let i = index" [formGroupName]="i">
+                        <td>{{ question.no }}</td>
+                        <td>{{ question.check }}</td>
+                        <td>{{ question.reference }}</td>
+                        <td>{{ question.question }}</td>
+                        <td>
+                            <label>
+                                <input type="radio" formControlName="answer" value="yes" />
+                            </label>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="radio" formControlName="answer" value="no" />
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isComplianceValid()">Next</button>
+    </div>
+    <div *ngIf="currentForm === 'recommendation'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="back-Arrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Recommendation</h1>
+      </div>
+      <h3 style=" font-size: 19px;padding-left: 15px;">The Application is recommended for</h3>
+    <form [formGroup]="recommendationForm">
+      <ion-radio-group formControlName="recommendation" style="display: flex;" >
+        <!-- Compliant Option -->
+        <ion-item>
+          <ion-label>Compliant</ion-label>
+          <ion-radio slot="start" value="1" checked></ion-radio>
+        </ion-item>
+       
+        <!-- Not Compliant Option (conditionally displayed) -->
+        <ion-item *ngIf="!showFailedCompliance">
+          <ion-label>Not Compliant</ion-label>
+          <ion-radio slot="start" value="2"></ion-radio>
+        </ion-item>
+      
+        <!-- Failed to Comply with Notice Option (conditionally displayed) -->
+        <ion-item *ngIf="showFailedCompliance">
+          <ion-label>Failed to Comply with Notice</ion-label>
+          <ion-radio slot="start" value="3"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      
+
+      <div class="form-floating mb-3">
+          <textarea formControlName="comments" style="height: 100px; background-color: #fff;"
+              id="residentialAddress" class="form-control mb-3  mt-3" placeholder="ANY COMMENTS/ADVICE FOR THE REGISTRANT" required></textarea>
+      </div>
+  </form>
+  <br>
+  <button class="next-button"  (click)="toggleForms('landing')" [disabled]="!isRecommendationValid()">Next</button>
+  <br>
+  <br>
+  
+    </div>
+
+  </form>
+
+
+<ngx-spinner
+bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-pulse">
+<p style="color:white;font-size: 20px;text-align: center;">Please wait...</p>
+</ngx-spinner>
+</ion-content>
+<app-menu-footer></app-menu-footer>

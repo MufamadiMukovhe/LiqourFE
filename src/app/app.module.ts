@@ -22,6 +22,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 
 
+
 const dbConfig: DBConfig  = {
   name: 'MyDb',
   version: 1,
@@ -39,8 +40,7 @@ const dbConfig: DBConfig  = {
 @NgModule({
   declarations: [
     AppComponent,
-    NetworkAlertComponent,
-    
+    NetworkAlertComponent
   ],
   imports: [
     BrowserModule,

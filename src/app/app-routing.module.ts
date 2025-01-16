@@ -252,6 +252,36 @@ const routes: Routes = [
     path: 'section/:caseId',
     loadChildren: () => import('./pages/section/section.module').then( m => m.SectionPageModule)
   },
+  {
+    path: 'non-compliance-deregistration/:caseId',
+    loadChildren: () => import('./pages/non-compliance-deregistration/non-compliance-deregistration.module').then( m => m.NonComplianceDeregistrationPageModule)
+  },
+  {
+    path: 'deregister/:caseId',
+    loadChildren: () => import('./pages/deregister/deregister.module').then( m => m.DeregisterPageModule)
+  },
+  {
+    path: 'post-registration-inspection/:caseId',
+    loadChildren: () => import('./pages/post-registration-inspection/post-registration-inspection.module').then( m => m.PostRegistrationInspectionPageModule)
+  },
+  {
+    path: 'premises-description/:caseId',
+    loadChildren: () => import('./pages/premises-description/premises-description.module').then( m => m.PremisesDescriptionPageModule)
+  },
+  {
+    path: 'non-compliance-section55/:caseId',
+    loadChildren: () => import('./pages/non-compliance-section55/non-compliance-section55.module').then( m => m.NonComplianceSection55PageModule)
+  },
+  {
+    path: 'outlets',
+    loadChildren: () => import('./pages/outlets/outlets.module').then( m => m.OutletsPageModule)
+  },
+
+ 
+
+
+
+
 
 
 

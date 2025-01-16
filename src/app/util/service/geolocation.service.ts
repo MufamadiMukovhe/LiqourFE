@@ -15,4 +15,17 @@ export class GeolocationService {
     const url = `${this.geocodeUrl}?address=${encodeURIComponent(address)}&key=${this.apiKey}`;
     return this.http.get(url);
   }
+
+  getCurrentLocation(): Promise<GeolocationPosition> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => resolve(position),
+          (error) => reject(error)
+        );
+      } else {
+        reject('Geolocation is not supported by this browser.');
+      }
+    });
+  }
 }
