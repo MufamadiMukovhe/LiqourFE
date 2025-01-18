@@ -9,29 +9,29 @@
   <form [formGroup]="gisReportForm">
   <div *ngIf="currentForm === 'landing'">
     <div class="header-container">
-      <a  [routerLink]="['/update-gis']" class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
+      <a  [routerLink]="['/my-task']"class="back-Arrow"><img src="assets/Images/Back Icon.svg"></a>
       <h1 class="header-text">Complete GIS Report</h1>
     </div>
     <ion-card>
       <div class="header-content">
-        <ion-img *ngIf="isGisReport()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
+        <ion-img *ngIf="isGisReport()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isGisReport()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-
         <ion-card-title (click)="toggleForms('uploads')" [class.red-text]="isGisReport()">
-          Upload GIS report
+          Inspection report
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
-    
-      <div class="header-content">
-        <ion-img *ngIf="isGisFormValid()" src="../../../assets/Images/Step Symboltick.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isGisFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
 
-        <ion-card-title (click)="toggleForms('fillin')" [class.red-text]="isGisFormValid()">
-          Complete GIS Report
-        </ion-card-title>
-        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isGisReport()"></ion-img>
+      <div class="header-content">
+          <ion-img *ngIf="isGisFormValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isGisFormValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('fillin')" [class.red-text]="isGisFormValid()">
+            Inspection report
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        
       <hr>
        <ion-button class="buttonClass2" (click)="onSubmit()">
         <img slot="start" class="image" src="../../../assets/Images/Icon (2).svg" alt="Image Alt Text" >
@@ -65,7 +65,7 @@
     <ion-card *ngIf="reportFiles.length === 0" class="upload2">
       <span>No file uploaded</span>
     </ion-card>
-  
+    <button class="next-button" (click)="toggleForms('fillin')" [disabled]="!isGisReport()">Next</button>
   </div>
   
 
@@ -84,12 +84,12 @@
       <ion-input class="custom-input" type="text" placeholder="Longitude" formControlName="longitude"></ion-input>
     </ion-item>
 
-    <p (click)="getCurrentPosition()" class="phone"><a>Use my location</a></p>
+    <!--p (click)="getCurrentPosition()" class="phone"><a>Use my location</a></p-->
 
   
     <ion-card class="upload2">
   
-      <span>(a) Is there a school within 100m radius?</span>
+      <span>(a) Is there school within 500m radius?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row>
@@ -111,7 +111,7 @@
       </ion-card-title>
       <hr>
   
-      <span>(b) Is there a place of worship within 100m radius?</span>
+      <span>(b) Is there a place of worship within 500m radius?</span>
       <ion-card-title class="general-name">
         <ion-grid>
           <ion-row>
@@ -156,8 +156,8 @@
     </ion-card-title>
     <hr>
 
-    
-    <span>(d) Is the correct ward councilor contacted?</span>
+    <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isGisFormValid()">Next</button>   
+    <!--span>(d) Is the correct ward councilor contacted?</span>
     <ion-card-title class="general-name">
       <ion-grid>
         <ion-row>
@@ -176,7 +176,7 @@
       
         </ion-row>
       </ion-grid>
-    </ion-card-title>
+    </ion-card-title-->
 
     <hr>
     </ion-card>

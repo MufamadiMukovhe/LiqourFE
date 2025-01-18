@@ -122,5 +122,13 @@ export class OutletsPage implements OnInit {
 
     await alert.present();
   }
- 
+  
+  filterOutlets() {
+    const search = this.searchTerm.trim().toLowerCase();
+    this.filteredOutlets = this.outlets.filter(outlet =>
+      outlet.organisationName?.toLowerCase().includes(search) ||
+      outlet.ecpNumber?.toLowerCase().includes(search)
+    );
+  }
+  
 }

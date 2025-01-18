@@ -277,6 +277,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/outlets/outlets.module').then( m => m.OutletsPageModule)
   },
 
+  {
+    path: 'thank-you3',
+    loadChildren: () => import('./pages/thank-you3/thank-you3.module').then( m => m.ThankYou3PageModule)
+  },
+
+
  
 
 

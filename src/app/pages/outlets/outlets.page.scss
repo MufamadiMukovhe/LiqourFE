@@ -219,4 +219,6 @@ ion-card {
     padding-left: 10px; /* Adjust padding for better alignment */
     font-size: 16px; /* Make the font size suitable for visibility */
   }
-  
+  ::ng-deep pagination-controls .ngx-pagination .current {
+    background-color: #822B23 ;
+}

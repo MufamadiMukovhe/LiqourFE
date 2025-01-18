@@ -232,9 +232,30 @@ ion-input{
     margin-top: -5px;
     margin-bottom: -5px;
   }
+  .green-trail {
+    filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(800%) hue-rotate(70deg) brightness(90%) contrast(100%);
+  }
   .red-text {
-    color: #822B23;
+    color: green;
     font-weight: 600;
+  
+  }
+
+  .next-button{
+    background-color: #CFAA35;
+    border-radius: 30px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: inline-end;
+    margin-right: 3%;
+    height: 35px;
+    width: 75px;
   }
   .size{
     width: 25px;

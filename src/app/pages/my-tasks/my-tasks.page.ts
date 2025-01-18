@@ -65,6 +65,12 @@ export class MyTasksPage implements OnInit {
           }
           else{
             this.collect = response;
+            this.collect.sort((a, b) => {
+              const dateA = new Date(a.timestamp).getTime() || 0;
+              const dateB = new Date(b.timestamp).getTime() || 0;
+              return dateB - dateA;
+            });
+            
             console.log(this.collect)
           }
         

@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-thank-you-2',
-  templateUrl: './thank-you-2.page.html',
-  styleUrls: ['./thank-you-2.page.scss'],
+  selector: 'app-thank-you3',
+  templateUrl: './thank-you3.page.html',
+  styleUrls: ['./thank-you3.page.scss'],
 })
-export class ThankYou2Page implements OnInit {
-
+export class ThankYou3Page implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {

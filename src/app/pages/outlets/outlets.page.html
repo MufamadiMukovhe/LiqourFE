@@ -10,8 +10,8 @@
   <div class="dashboard-container">
     <p class="quick-action">Outlets</p>
     
-    <ion-item class="search-item">
-      <ion-input name="search" placeholder="Search Outlets" [(ngModel)]="searchTerm"  class="search-input">
+    <ion-item class="search-item" >
+      <ion-input name="search" placeholder="Search Outlets"[(ngModel)]="searchTerm" (ngModelChange)="filterOutlets()"class="search-input" >
         <ion-icon slot="start" src="../../../assets/Images/search.svg" name="search-outline" class="search-icon"></ion-icon>
       </ion-input>
     </ion-item>
@@ -42,10 +42,15 @@
           </ion-grid>
         </ion-card>
       </div>
+      
     </div>
     </div>
     <div class="mt-1 text-center" *ngIf="filteredOutlets.length >0">
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <pagination-controls 
+  style="font-size: 11px" 
+  (pageChange)="p = $event" 
+  [maxSize]="5">
+</pagination-controls>
   </div>
   
 </ion-content>

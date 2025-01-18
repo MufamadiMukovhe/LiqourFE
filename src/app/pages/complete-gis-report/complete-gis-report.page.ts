@@ -57,7 +57,7 @@ export class CompleteGisReportPage implements OnInit {
       schoolIn100m: ['', Validators.required],
       churchIn100m: ['', Validators.required],
       wardBoundriesIn100m: ['', Validators.required],
-      councilorContacted: ['', Validators.required]
+      //councilorContacted: ['', Validators.required]
     })
   }
 
@@ -109,7 +109,7 @@ export class CompleteGisReportPage implements OnInit {
     this.http.post(url, formData).subscribe(response => {
       console.log(response);
       this.spinner.hide();
-      this.router.navigate(['/thank-you'])
+      this.router.navigate(['/thank-you3'])
       
     }, error => {
       console.log(error);
@@ -245,8 +245,12 @@ export class CompleteGisReportPage implements OnInit {
 
       console.log(this.latitude);
       console.log(this.longitude);
+      this.gisReportForm.patchValue({
+        latitude: this.latitude,
+        longitude: this.longitude
+      });
 
-      if(this.latitude<=-31 && this.latitude>=-34 && this.longitude>=24 && this.longitude<=34)
+     /* if(this.latitude<=-31 && this.latitude>=-34 && this.longitude>=24 && this.longitude<=34)
         {
         this.gisReportForm.patchValue({
           latitude: this.latitude,
@@ -259,9 +263,9 @@ export class CompleteGisReportPage implements OnInit {
           latitude: "Out of bounds",
           longitude: "Out of bounds"
         });
-        
+       
      
-      }
+      }*/
     } catch (err) {
       console.error('Error getting location', err);
     }

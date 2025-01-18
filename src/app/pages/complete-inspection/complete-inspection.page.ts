@@ -83,23 +83,24 @@ export class CompleteInspectionPage implements OnInit {
     
   ) {
     this.completeReportForm = this.fb.group({
+      caseName: [''],
+      complianceRegulation5: [''],
       contactPerson: ['', Validators.required],
-      sections:[[]],
-      //inspectionDate: ['', Validators.required],
       appointmentSet: ['', Validators.required],
       consultedOrFound: ['', Validators.required],
-      applicantIndicatedPersonAtPremises: ['', Validators.required],
-      canPersonBeFound: [Validators.required],
+      applicantIndicatedPersonAtPremises: [''],
+      canPersonBeFound: [''],
       interestInLiquorTrade: ['', Validators.required],
       issuedComplience: ['', Validators.required],
       complaintsReceived: ['', Validators.required],
+      complaintsReceivedMentioned: ['', Validators.required],
       rightToOccupy: ['', Validators.required],
       leaseAttached: ['', Validators.required],
+      latitude: ['', [Validators.required ]],
+      longitude: ['', [Validators.required]],
       situatedInRightAddress: ['', Validators.required],
       inLineWithSubmittedApplication: ['', Validators.required],
       premisesSuitable: ['', Validators.required],
-      latitude:['',Validators.required, ],
-      longitude:['',Validators.required, ],
       ablutionFacilityInOrder: ['', Validators.required],
       readyForBusiness: ['', Validators.required],
       formServedToCorrectWardCommittee: ['', Validators.required],
@@ -107,48 +108,52 @@ export class CompleteInspectionPage implements OnInit {
       wardCommiteeReport: ['', Validators.required],
       communityConsultation: ['', Validators.required],
       educationalInstitution: ['', Validators.required],
-      formServedAtEducationInstitution: ['', Validators.required],
+      formServedAtEducationInstitution: [''],
       placeOfWorship: ['', Validators.required],
-      formServedAtPlaceOfWorship: ['', Validators.required],
+      formServedAtPlaceOfWorship: [''],
       recommendation: ['', Validators.required],
-      comments: ['', Validators.required],
-      //comments1:['', Validators.required],
-      formObjectionsInspection:['', Validators.required],
-      formObjectionsReceived:['', Validators.required],
-      formApplicantRespondedToObjections:['', Validators.required],
-      complianceSectionC:['', Validators.required],
-      complianceSectionB:['', Validators.required],
-      complianceSectionA:['', Validators.required],
-      ablutionFacilities:['', Validators.required],
-      storageRoom:['', Validators.required],
-      demarcatedDrinkingArea:['', Validators.required],
-      displayAreaShelves:['', Validators.required],
-      counterPointOfSake:['', Validators.required],
-      buildingStructureAndMeansOfCommunication:['', Validators.required],
-      rightToOccupyPremises:['', Validators.required],
-      applicant:['', Validators.required],
-        /**Comments */
-        formApplicantRespondedToObjectionsComment:[''],
-        formObjectionsReceivedComment:[''],
-        formObjectionsInspectionComment:[''],
-        formServedAtPlaceOfWorshipComment:[''],
-        placeOfWorshipComment:[''],
-        formServedAtEducationInstitutionComment:[''],
-        educationalInstitutionComment:[''],
-        communityConsultationComment:[''],
-        wardCommiteeReportComment:[''],
-        confirmedByCouncillorComment:[''],
-        formServedToCorrectWardCommitteeComment:[''],
-        readyForBusinessComment:[''],
-        ablutionFacilityInOrderComment:[''],
-        premisesSuitableComment:[''],
-        inLineWithSubmittedApplicationComment:[''],
-        situatedInRightAddressComment:[''],
-        leaseAttachedComment:[''],
-        rightToOccupyComment:[''],
-        complaintsReceivedComment:[''],issuedComplienceComment:[''],interestInLiquorTradeComment:[''],canPersonBeFoundComment:[''],
-        applicantIndicatedPersonAtPremisesComment:[''],consultedOrFoundComment:[''],appointmentSetComment:['']
+      comments: [''],
+      comments1: [''],
+      formObjectionsInspection: [''],
+      formObjectionsReceived: [''],
+      formApplicantRespondedToObjections: [''],
+      complianceSectionC: ['',Validators.required],
+      complianceSectionB: ['',Validators.required],
+      complianceSectionA: ['',Validators.required],
+      ablutionFacilities: ['',Validators.required],
+      storageRoom: ['',Validators.required],
+      demarcatedDrinkingArea: ['',Validators.required],
+      displayAreaShelves: ['',Validators.required],
+      counterPointOfSake: ['',Validators.required],
+      applicantB: ['',Validators.required],
+      applicantC: ['',Validators.required],
+      planOfPremisesAndDimensions: ['',Validators.required],
+      listAllRecommendations: [''],
+      buildingStructureAndMeansOfCommunication: ['',Validators.required],
+      rightToOccupyPremises: ['',Validators.required],
+      applicant: ['',Validators.required],
+      formApplicantRespondedToObjectionsComment: [''],
+      formObjectionsReceivedComment: [''],
+      formObjectionsInspectionComment: [''],
+      formServedAtPlaceOfWorshipComment: [''],
+      placeOfWorshipComment: [''],
+      formServedAtEducationInstitutionComment: [''],
+      educationalInstitutionComment: [''],
+      communityConsultationComment: [''],
+      wardCommiteeReportComment: [''],
+      confirmedByCouncillorComment: [''],
+      formServedToCorrectWardCommitteeComment: [''],
+      readyForBusinessComment: [''],
+      ablutionFacilityInOrderComment: [''],
+      premisesSuitableComment: [''],
+      inLineWithSubmittedApplicationComment: [''],
+      situatedInRightAddressComment: [''],
+      leaseAttachedComment: [''],
+      rightToOccupyComment: [''],
+      complaintsReceivedComment: [''], issuedComplienceComment: [''], interestInLiquorTradeComment: [''], canPersonBeFoundComment: [''],
+      applicantIndicatedPersonAtPremisesComment: [''], consultedOrFoundComment: [''], appointmentSetComment: ['']
     })
+
 
   
   }
@@ -456,10 +461,10 @@ export class CompleteInspectionPage implements OnInit {
   }
   //comment Valid
   isCommentForm():boolean {
-    const commentsFields= [ 'applicant','rightToOccupyPremises','buildingStructureAndMeansOfCommunication','counterPointOfSake','displayAreaShelves','demarcatedDrinkingArea','storageRoom','ablutionFacilities','complianceSectionA','complianceSectionB','complianceSectionC'];
+    const commentsFields= ['applicantB','applicantC', 'applicant','rightToOccupyPremises','buildingStructureAndMeansOfCommunication','counterPointOfSake','displayAreaShelves','demarcatedDrinkingArea','storageRoom','ablutionFacilities','complianceSectionA','complianceSectionB','complianceRegulation5','listAllRecommendations'];
     return  commentsFields.every(field=>this.completeReportForm.get(field)?.valid);
   }
-  //Documentation Valid
+  //Documentation ValiduildingStructureAndMeansOfCommunication
   isDocumentationFormValid(): boolean {
     const documentationFields = ['rightToOccupy', 'leaseAttached', 'situatedInRightAddress', 'inLineWithSubmittedApplication', 'premisesSuitable','ablutionFacilityInOrder', 'readyForBusiness'];
     return documentationFields.every(field => this.completeReportForm.get(field)?.valid);
@@ -956,7 +961,7 @@ export class CompleteInspectionPage implements OnInit {
     });
     await actionSheet.present();
   }
-  compulsoryPhotosCaptured: boolean[] = new Array(12).fill(false);  // Only 2 compulsory photos
+  compulsoryPhotosCaptured: boolean[] = new Array(2).fill(false);  // Only 2 compulsory photos
   availableDescriptions: string[] = ['Front View', 'Front & Left Side View','Front & Right Side View','Back View','Back & Left Side','Back & Right-side','Drinking Area View','Counter View','Shelves Area view','Storage Area View','Toilet Front View','Toilet Inside View', 'Other'];  
 
   selectedDescriptions: Set<string> = new Set(); // Use a Set to keep track of selected descriptions
@@ -987,7 +992,7 @@ async selectImage(source: CameraSource) {
       this.selectedDescriptions.add(description);
 
       const compulsoryIndex = this.availableDescriptions.indexOf(description);
-      if (compulsoryIndex >= 0 && compulsoryIndex < 12) {
+      if (compulsoryIndex >= 0 && compulsoryIndex < 2) {
         this.compulsoryPhotosCaptured[compulsoryIndex] = true;
       }
 
