@@ -114,7 +114,9 @@ caseNo: any;
     const recommendationFields = ['recommendation', 'comments'];
     return recommendationFields.every(field => this.recommendationForm.get(field)?.valid);
   }
-
+isFormValid():boolean{
+  return this.isInspectionReportGeneral() && this.isComplianceValid() && this.isRecommendationValid();
+}
   
 
   healthCheckForm!: FormGroup;
@@ -185,11 +187,12 @@ caseNo: any;
         this.showAlert('success', 'Post Registration Inspection Successfully completed');
         console.log("sucesss");
         setTimeout(() => {
-          this.route.navigateByUrl('/outlets')
+          this.route.navigateByUrl('/my-tasks')
         }, 5000);
       }, error: (error: any) => {
         this.spinner.hide();
         //this.toast.showError(error)
+        this.showAlert('errror', error);
         console.log(error);
       }
     })

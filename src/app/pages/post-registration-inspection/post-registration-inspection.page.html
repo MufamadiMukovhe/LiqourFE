@@ -38,7 +38,7 @@
       </div>
      
 
-      <ion-button class="buttonClass2" (click)="submitComplianceInspection()">
+      <ion-button class="buttonClass2" (click)="submitComplianceInspection()" [disabled]="!isFormValid()" >
         Submit
       </ion-button>
     </ion-card>

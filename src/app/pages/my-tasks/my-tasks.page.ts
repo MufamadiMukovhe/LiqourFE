@@ -53,7 +53,7 @@ export class MyTasksPage implements OnInit {
         if(this.role==='INSPECTOR')
           {
             //this.collect = response;
-            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report'|| item.action ==='Complete Report Query'|| item.action ==='Inspector Serve Section 22(6) Notice');
+            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report'|| item.action ==='Complete Report Query'|| item.action ==='Inspector Serve Section 22(6) Notice'||item.action === 'Description of Premises'||item.action === 'Issue Section 54 Compliance Notice');
 
 
           
@@ -123,9 +123,14 @@ export class MyTasksPage implements OnInit {
           case 'Inspector Serve Section 22(6) Notice':
           this.route.navigate([`/section/${caseId}/`])
           break;
-    
-           
+        case 'Description of Premises':
+            this.route.navigate([`/premises-description/${caseId}/`])
+            break;
+        case 'Issue Section 54 Compliance Notice':
+              this.route.navigate([`/compliance-notice/${caseId}/`])
+              break;
 
+            
       }
     }
 

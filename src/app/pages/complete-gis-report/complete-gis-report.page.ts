@@ -25,6 +25,8 @@ export class CompleteGisReportPage implements OnInit {
   selectedRadioValue: string | null = null; 
   inputVisible: boolean = true; 
 
+  latitude?: string;
+  longitude?: string;
   @ViewChild('fileInput', { static: false })
   fileInput!: ElementRef<HTMLInputElement>;
 
@@ -58,6 +60,7 @@ export class CompleteGisReportPage implements OnInit {
       churchIn100m: ['', Validators.required],
       wardBoundriesIn100m: ['', Validators.required],
       //councilorContacted: ['', Validators.required]
+      commentsByQa: ['']
     })
   }
 
@@ -78,7 +81,7 @@ export class CompleteGisReportPage implements OnInit {
   }
     //Gis Form Valid
     isGisFormValid(): boolean {
-      const gisFormFields = ['latitude', 'latitude', 'schoolIn100m','churchIn100m','wardBoundriesIn100m'];
+      const gisFormFields = ['longitude', 'latitude', 'schoolIn100m','churchIn100m','wardBoundriesIn100m'];
       const areFieldsValid = gisFormFields.every(field => this.gisReportForm.get(field)?.valid);
       return areFieldsValid;
     }
@@ -100,7 +103,7 @@ export class CompleteGisReportPage implements OnInit {
 
     this.reportDoc = this.reportFiles[0];
 
-    formData.append('report', this.report);
+    formData.append('greport', this.report);
     
 
 
@@ -234,14 +237,12 @@ export class CompleteGisReportPage implements OnInit {
   }
 
 
-  latitude?: number;
-  longitude?: number;
 
   async getCurrentPosition() {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
-      this.latitude = coordinates.coords.latitude;
-      this.longitude = coordinates.coords.longitude;
+      this.latitude = coordinates.coords.latitude+'';
+      this.longitude = coordinates.coords.longitude+'';
 
       console.log(this.latitude);
       console.log(this.longitude);

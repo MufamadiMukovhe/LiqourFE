@@ -1,5 +1,5 @@
 <ion-content>
-  <form>
+  <form  [formGroup]="changeOfNameForm" >
   
 
     <div *ngIf="currentForm === 'landing'">
@@ -33,23 +33,31 @@
  
 
       <div class="header-content">
-        <ion-img *ngIf="isRecommendationValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isRecommendationValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isRecommendationValid()">
+        <ion-img *ngIf="isFixturesValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isFixturesValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isFixturesValid()">
           FIXTURES, FITTINGS AND FURNITURE
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
       <div class="header-content">
-        <ion-img *ngIf="isRecommendationValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
-        <ion-img *ngIf="!isRecommendationValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
-        <ion-card-title (click)="toggleForms('relevent')" [class.red-text]="isRecommendationValid()">
+        <ion-img *ngIf="isRelevantValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isRelevantValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('relevent')" [class.red-text]="isRelevantValid()">
           ANY OTHER RELEVANT PHYSICAL ASPECT
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
+      <div class="header-content">
+        <ion-img *ngIf="isRecommendeValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isRecommendeValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('recommendations')" [class.red-text]="isRecommendeValid()">
+          RECOMMENDATION
+        </ion-card-title>
+        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      </div>
 
-      <ion-button class="buttonClass2">
+      <ion-button class="buttonClass2" (click)="submitChangeOfName()"[disabled]="!isFormValid()" >
         Submit
       </ion-button>
     </ion-card>
@@ -66,36 +74,37 @@
       
         <div class="collapsible-body">
 
-    <label >Building walls</label>
-    <textarea 
-    placeholder="e.g. Brick, plastered and painted" style="height: 100px; background-color: #fff;"
-    formControlName="constructionBuildingWalls"
-    class="form-control mb-3  mt-3"></textarea>
-
-     <br/>
-    <label for="finishingsRoof">Roof</label>
-    <textarea formControlName="finishingsRoof" placeholder="e.g. Asbestos/Corrugated iron/Roof sheeting" style="height: 100px; background-color: #fff;"
-    id="finishingsRoof" class="form-control mb-3  mt-3"></textarea>
-
-    <br/>
-    <label for="finishingsCeiling">finingCeiling</label>
-    <textarea formControlName="finishingsCeiling" placeholder="e.g. Knotty pine/Wooded/hardboard" style="height: 100px; background-color: #fff;"
-    id="finishingsCeiling" class="form-control mb-3  mt-3"></textarea>
-
-    <br/>
-    <label for="finishingsWindows">Windows</label>
-    <textarea formControlName="finishingsWindows" placeholder="e.g. Wooden frames/iron/aluminum" style="height: 100px; background-color: #fff;"
-    id="finishingsWindows" class="form-control mb-3  mt-3"></textarea>
-
-    <br/>
-    <label for="finishingsDoors">Doors</label>
-    <textarea formControlName="finishingsDoors" placeholder="e.g. Wooden/Steel/Glass" style="height: 100px; background-color: #fff;"
-    id="finishingsDoors" class="form-control mb-3  mt-3"></textarea>
-
-    <br/>
-    <label for="finishingsFloorCovering">Floor Covering</label>
-    <textarea formControlName="finishingsFloorCovering" placeholder="e.g. Concrete/Wooden /Carpet/Tiles" style="height: 100px; background-color: #fff;"
-    id="finishingsFloorCovering" class="form-control mb-3  mt-3"></textarea>
+          <label >Building walls</label>
+          <textarea 
+          placeholder="e.g. Brick, plastered and painted" style="height: 100px; background-color: #fff;"
+          formControlName="constructionBuildingWalls"
+          class="form-control mb-3  mt-3"></textarea>
+      
+           <br/>
+          <label for="finishingsRoof">Roof</label>
+          <textarea formControlName="finishingsRoof" placeholder="e.g. Asbestos/Corrugated iron/Roof sheeting" style="height: 100px; background-color: #fff;"
+          id="finishingsRoof" class="form-control mb-3  mt-3"></textarea>
+      
+          <br/>
+          <label for="finishingsCeiling">Ceiling</label>
+          <textarea formControlName="finishingsCeiling" placeholder="e.g. Knotty pine/Wooded/hardboard" style="height: 100px; background-color: #fff;"
+          id="finishingsCeiling" class="form-control mb-3  mt-3"></textarea>
+      
+          <br/>
+          <label for="finishingsWindows">Windows</label>
+          <textarea formControlName="finishingsWindows" placeholder="e.g. Wooden frames/iron/aluminum" style="height: 100px; background-color: #fff;"
+          id="finishingsWindows" class="form-control mb-3  mt-3"></textarea>
+      
+          <br/>
+          <label for="finishingsDoors">Doors</label>
+          <textarea formControlName="finishingsDoors" placeholder="e.g. Wooden/Steel/Glass" style="height: 100px; background-color: #fff;"
+          id="finishingsDoors" class="form-control mb-3  mt-3"></textarea>
+      
+          <br/>
+          <label for="finishingsFloorCovering">Floor Covering</label>
+          <textarea formControlName="finishingsFloorCovering" placeholder="e.g. Concrete/Wooden /Carpet/Tiles" style="height: 100px; background-color: #fff;"
+          id="finishingsFloorCovering" class="form-control mb-3  mt-3"></textarea>
+          
     </div>
     <button class="next-button" (click)="toggleForms('compliance')" [disabled]="!isInspectionReportGeneral()">Next</button>
     <br>
@@ -107,7 +116,7 @@
         <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
         <h1 class="header-text" style="color: black;">CONSTRUCTION </h1>
       </div>
-    
+      <div class="collapsible-body">
       <label for="constructionBuildingWalls">Building walls</label>
       <textarea formControlName="constructionBuildingWalls" placeholder="e.g. Brick, plastered and painted" style="height: 100px; background-color: #fff;"
       id="constructionBuildingWalls" class="form-control mb-3  mt-3"></textarea>
@@ -138,7 +147,8 @@
       id="constructionAdequateAblutionFacilities" class="form-control mb-3  mt-3"></textarea>
     
   
-     
+    </div>
+    
     <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isComplianceValid()">Next</button>
     </div>
     <div *ngIf="currentForm === 'recommendation'">
@@ -147,37 +157,41 @@
         <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
         <h1 class="header-text" style="color: black;">FIXTURES, FITTINGS AND FURNITURE</h1>
       </div>
+      <div class="collapsible-body">
       <label for="fixturesBarCounter">Bar Counter</label>
-      <textarea formControlName="fixturesBarCounter" placeholder="e.g. Concrete/Wooden/Other (please specify)" style="height: 100px; background-color: #fff;"
-      id="fixturesBarCounter" class="form-control mb-3  mt-3"></textarea>
-  
-      <br/>
-      <label for="fixturesDisplayShelving">Display Shelving</label>
-      <textarea formControlName="fixturesDisplayShelving" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
-      id="fixturesDisplayShelving" class="form-control mb-3  mt-3"></textarea>
-  
-      <br/>
-      <label for="fixturesBarStools">Bar Stools</label>
-      <textarea formControlName="fixturesBarStools" placeholder="e.g. Wrought iron/Wooden/Other (please specify)" style="height: 100px; background-color: #fff;"
-      id="fixturesBarStools" class="form-control mb-3  mt-3"></textarea>
-  
-      <br/>
-      <label for="fixturesTables">Tables</label>
-      <textarea formControlName="fixturesTables" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
-      id="fixturesTables" class="form-control mb-3  mt-3"></textarea>
-  
-      <br/>
-      <label for="fixturesChairs">Chairs</label>
-      <textarea formControlName="fixturesChairs" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
-      id="fixturesChairs" class="form-control mb-3  mt-3"></textarea>
-  
-      <br/>
-      <label for="fixturesLightFittings">Light fittings</label>
-      <textarea formControlName="fixturesLightFittings" placeholder="Ordinary/other" style="height: 100px; background-color: #fff;"
-      id="fixturesLightFittings" class="form-control mb-3  mt-3"></textarea>
-      
+    <textarea formControlName="fixturesBarCounter" placeholder="e.g. Concrete/Wooden/Other (please specify)" style="height: 100px; background-color: #fff;"
+    id="fixturesBarCounter" class="form-control mb-3  mt-3"></textarea>
+
+    <br/>
+    <label for="fixturesDisplayShelving">Display Shelving</label>
+    <textarea formControlName="fixturesDisplayShelving" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
+    id="fixturesDisplayShelving" class="form-control mb-3  mt-3"></textarea>
+
+    <br/>
+    <label for="fixturesBarStools">Bar Stools</label>
+    <textarea formControlName="fixturesBarStools" placeholder="e.g. Wrought iron/Wooden/Other (please specify)" style="height: 100px; background-color: #fff;"
+    id="fixturesBarStools" class="form-control mb-3  mt-3"></textarea>
+
+    <br/>
+    <label for="fixturesTables">Tables</label>
+    <textarea formControlName="fixturesTables" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
+    id="fixturesTables" class="form-control mb-3  mt-3"></textarea>
+
+    <br/>
+    <label for="fixturesChairs">Chairs</label>
+    <textarea formControlName="fixturesChairs" placeholder="e.g. Wooden/Steel/Other (please specify)" style="height: 100px; background-color: #fff;"
+    id="fixturesChairs" class="form-control mb-3  mt-3"></textarea>
+
+    <br/>
+    <label for="fixturesLightFittings">Light fittings</label>
+    <textarea formControlName="fixturesLightFittings" placeholder="Ordinary/other" style="height: 100px; background-color: #fff;"
+    id="fixturesLightFittings" class="form-control mb-3  mt-3"></textarea>
+    
+
+    
+      </div>
   <br>
-  <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendationValid()">Next</button>
+  <button class="next-button" (click)="toggleForms('relevent')" [disabled]="!isFixturesValid()">Next</button>
   <br>
   <br>
   
@@ -185,10 +199,10 @@
  
     </div>
     <div *ngIf="currentForm === 'relevent'">
-  
+      <div class="collapsible-body">
       <div class="header-container">
         <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
-        <h1 class="header-text" style="color: black;">FIXTURES, FITTINGS AND FURNITURE</h1>
+        <h1 class="header-text" style="color: black;">ANY OTHER RELEVANT PHYSICAL ASPECT</h1>
       </div>
 
       <div class="collapsible-body">
@@ -196,8 +210,51 @@
         <textarea formControlName="anyRelevantComment" placeholder="" style="height: 100px; background-color: #fff;"
         id="anyRelevantComment" class="form-control mb-3  mt-3"></textarea>
         </div>
+    
+    <br>
+    <button class="next-button" (click)="toggleForms('recommendations')" [disabled]="!isRelevantValid()">Next</button>
+    <br>
+    <br>
+      </div>
+    </div>
+    <div *ngIf="currentForm === 'recommendations'">
+  
+    <div class="header-container">
+      <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+      <h1 class="header-text" style="color: black;">Recommendation</h1>
+    </div>
+    <div style="padding: 5px;">
+      <h3  style="font-size: 15px;">The Application is recommended for</h3>
+    <ion-radio-group formControlName="recommendation" style="display: flex;" >
+      <!-- Compliant Option -->
+      <ion-item>
+        <ion-label>Compliant</ion-label>
+        <ion-radio slot="start" value="1" checked></ion-radio>
+      </ion-item>
+     
+      <!-- Not Compliant Option (conditionally displayed) -->
+      <ion-item *ngIf="!showFailedCompliance">
+        <ion-label>Not Compliant</ion-label>
+        <ion-radio slot="start" value="2"></ion-radio>
+      </ion-item>
+    
+      
+    </ion-radio-group>
+
+  </div>
+  <br>
+    <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
+    <br>
+    <br>
     </div>
   
   </form>
+  <ngx-spinner
+bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-pulse">
+<p style="color:white;font-size: 20px;text-align: center;">Please wait...</p>
+</ngx-spinner>
 </ion-content>
 <app-menu-footer></app-menu-footer>

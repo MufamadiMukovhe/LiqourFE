@@ -281,6 +281,15 @@ const routes: Routes = [
     path: 'thank-you3',
     loadChildren: () => import('./pages/thank-you3/thank-you3.module').then( m => m.ThankYou3PageModule)
   },
+  {
+    path: 'compliance-notice/:caseId',
+    loadChildren: () => import('./pages/compliance-notice/compliance-notice.module').then( m => m.ComplianceNoticePageModule)
+  },  {
+    path: 'saps-attach',
+    loadChildren: () => import('./pages/saps-attach/saps-attach.module').then( m => m.SapsAttachPageModule)
+  },
+
+
 
 
  
