@@ -1,5 +1,5 @@
 <ion-content>
-  <form  [formGroup]="changeOfNameForm" >
+  <form  [formGroup]="changeOfPlanForm" >
   
 
     <div *ngIf="currentForm === 'landing'">
@@ -64,11 +64,11 @@
         <h1 class="header-text" style="color: black;">Outlet Information</h1>
       </div>
   
-      <form [formGroup]="changeOfPlanForm">
+      
       <div class="collapsible-body">
         <ion-label>REFERENCE NUMBER</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" formControlName="ecpNumber" placeholder="REFERENCE NUMBER"></ion-input>
+      <ion-input class="custom-input" type="text" formControlName="referenceNumber" placeholder="REFERENCE NUMBER"></ion-input>
     </ion-item>
     <ion-label>BUSINESS NAME</ion-label>
     <ion-item>
@@ -85,7 +85,7 @@
         </div>
       
       
-      </form>
+    
     <button class="next-button" (click)="toggleForms('compliance')" [disabled]="!isInspectionReportGeneral()">Next</button>
     <br>
     <br>
@@ -104,7 +104,7 @@
                 <div class="file-upload" *ngFor="let item of fileItems; let i = index">
                     <div class="file-actions">
                         {{ item.label }}
-                        <a (click)="viewFile(item.key)"  style="margin-left: 10px;cursor: pointer;text-decoration: underline;">Preview</a>
+                        <a (click)="viewFile(item.key)"  style="margin-left: 10px;cursor: pointer;text-decoration: underline;">Download</a>
                     </div>
                 </div> 
             </ng-container>
@@ -138,7 +138,8 @@
     <ion-card *ngIf="reportFiles.length === 0" class="upload2">
       <span>No file uploaded</span>
     </ion-card>
-   
+    <br>
+    <button class="next-button" (click)="toggleForms('recommendations')" [disabled]="!isFixturesValid()">Next</button>
       </div>
   <br>
  

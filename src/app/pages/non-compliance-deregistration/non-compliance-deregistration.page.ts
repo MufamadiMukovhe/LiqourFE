@@ -121,22 +121,21 @@ export class NonComplianceDeregistrationPage implements OnInit {
 
 
   isInspectionReportGeneral():boolean{
-    const reportGeneral= ['ecpNumber','municipality','outletName'];
-    return true
-    
+    const reportGeneral= ['ecpNumber', 'municipality','outletName','ward'];
+     return reportGeneral.every(field => this.changeOfPlanForm.get(field)?.valid);
   }
 
   isComplianceValid(): boolean {
 
-    const complianceValid = ['questions'];
-    return true
+    const areNoticeFilesPresent = this.noticeFiles && this.noticeFiles.length > 0;
+    return areNoticeFilesPresent;
   
   }
 
-  isRecommendationValid(): boolean { 
+  isFormValid(): boolean { 
 
-    const recommendationFields = ['recommendation', 'comments'];
-    return true
+    return this.isComplianceValid() && this.isInspectionReportGeneral()
+    
   }
   toggleForms(form: string) {
     this.currentForm = form;
@@ -175,7 +174,7 @@ export class NonComplianceDeregistrationPage implements OnInit {
   }
   changeOfPlan = new ChangeOfName()
   submitChangePlan(): void {
-
+  this.spinner.show();
 
     console.log("JSON.stringify(this.changeOfPlan)=" + JSON.stringify(this.changeOfPlan));
 

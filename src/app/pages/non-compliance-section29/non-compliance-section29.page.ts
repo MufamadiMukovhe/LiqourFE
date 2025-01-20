@@ -22,7 +22,7 @@ export class NonComplianceSection29Page implements OnInit {
   currentForm: string = 'landing';
   registrationForm!: FormGroup;
   recommendationForm!: FormGroup;
-  changeOfNameForm!: FormGroup;
+  
   caseId: any;
 caseNo: any;
   outletId: any;
@@ -44,10 +44,10 @@ caseNo: any;
     this.changeOfPlanForm = this.fb.group({
       inspectionDate:['', Validators.required],
       recommendation: ['', Validators.required],
-      ecpNumber:[''],
-      municipality:[''],
-      outletName:[''],
-      ward:[''],
+      referenceNumber:['', Validators.required],
+      municipality:['', Validators.required],
+      outletName:['', Validators.required],
+      ward:['', Validators.required],
 
       prefferedNotificationMethod: ['', Validators.required],
       applicationPreparedByType2: ['Natural', Validators.required]
@@ -64,29 +64,7 @@ caseNo: any;
     this.getOutletInformation(this.outletId)
       
   
-    this.changeOfNameForm = this.fb.group({
-      constructionBuildingWalls: ['',Validators.required],
-      constructionRoof: ['',Validators.required],
-      constructionWindows: ['',Validators.required],
-      constructionDoors: ['',Validators.required],
-      constructionFloorCovering: ['',Validators.required],
-      constructionAdequateAblutionFacilities: ['',Validators.required],
-      
-      fixturesBarCounter: ['',Validators.required],
-      fixturesDisplayShelving: ['',Validators.required],
-      fixturesBarStools: ['',Validators.required],
-      fixturesTables: ['',Validators.required],
-      fixturesChairs: ['',Validators.required],
-      fixturesLightFittings: ['',Validators.required],
-
-      finishingsRoof: ['',Validators.required],
-      finishingsCeiling: ['',Validators.required],
-      finishingsWindows: ['',Validators.required],
-      finishingsDoors: ['',Validators.required],
-      finishingsFloorCovering: ['',Validators.required],
-      recommendation:['',Validators.required],
-      anyRelevantComment: ['',Validators.required]
-    });
+   
 
     
   }
@@ -95,8 +73,8 @@ caseNo: any;
    
   }
   isInspectionReportGeneral():boolean{
-    const reportGeneral= ['constructionBuildingWalls', 'finishingsRoof','finishingsCeiling','finishingsWindows','finishingsDoors','finishingsFloorCovering'];
-    return true
+    const reportGeneral= ['referenceNumber', 'municipality','outletName','ward'];
+     return reportGeneral.every(field => this.changeOfPlanForm.get(field)?.valid);
   }
   isRelevantValid():boolean{
      const relevent =['anyRelevantComment']
@@ -109,15 +87,13 @@ caseNo: any;
    return true
   }
   isRecommendeValid():boolean{
-    const recommendation=['recommendation']
-   // return recommendation.every(field => this.changeOfNameForm.get(field)?.valid);
-   return true
+    const reportGeneral= ['recommendation'];
+     return reportGeneral.every(field => this.changeOfPlanForm.get(field)?.valid);
   }
   isFixturesValid(): boolean { 
 
-    const fixtures = ['fixturesBarCounter', 'fixturesDisplayShelving','fixturesBarStools','fixturesTables','fixturesChairs','fixturesLightFittings'];
-    //return fixtures.every(field => this.changeOfNameForm.get(field)?.valid);
-    return true
+    const areNoticeFilesPresent = this.reportFiles && this.reportFiles.length > 0;
+    return areNoticeFilesPresent;
   }
   isFormValid():boolean{
     return this.isInspectionReportGeneral() && this.isRelevantValid() && this.isComplianceValid() && this.isRecommendeValid()&& this.isFixturesValid();

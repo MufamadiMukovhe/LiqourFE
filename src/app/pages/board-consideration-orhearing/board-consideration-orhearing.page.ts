@@ -23,7 +23,7 @@
     caseId: any;
     outletId: any;
     deregistration = new Deregistration();
-  
+    recommendation: any;
     fileItems: FileItem[] = [
       { label: 'Upload Section 28 Notice', key: 'section28Notice', file: null },
     ];
@@ -50,6 +50,7 @@
         this.outletId = params['caseId'];
         this.caseId = this.outletId;
         this.getOutletInformation(this.outletId);
+        this.getSection29Recommendation(this.outletId)
       });
     }
   
@@ -60,10 +61,10 @@
         period: [''],
         boardRecommendation: ['', Validators.required],
         rightToOccupy: ['', Validators.required],
-        ecpNumber: [''],
-        municipality: [''],
-        outletName: [''],
-        ward: [''],
+        referenceNumber: ['', Validators.required],
+        municipality: ['', Validators.required],
+        outletName: ['', Validators.required],
+        ward: ['', Validators.required],
         prefferedNotificationMethod: ['', Validators.required],
         applicationPreparedByType2: ['Natural', Validators.required],
       });
@@ -75,32 +76,29 @@
     }
     
     isInspectionReportGeneral():boolean{
-      const reportGeneral= ['ecpNumber', 'municipality:','outletName','ward'];
+      const reportGeneral= ['referenceNumber', 'municipality','outletName','ward'];
        return reportGeneral.every(field => this.changeOfPlanForm.get(field)?.valid);
     }
     isRelevantValid():boolean{
-       const relevent =['anyRelevantComment']
-      //return relevent.every(field => this.changeOfNameForm.get(field)?.valid);
+      
       return true
     }
     isComplianceValid(): boolean {
-     const compliance= ['constructionBuildingWalls','constructionRoof','constructionWindows','constructionDoors','constructionAdequateAblutionFacilities']
-     //return  compliance.every(field => this.changeOfNameForm.get(field)?.valid);
+     
      return true
     }
     isRecommendeValid():boolean{
-      const recommendation=['recommendation']
-     // return recommendation.every(field => this.changeOfNameForm.get(field)?.valid);
+      
      return true
     }
     isFixturesValid(): boolean { 
   
-      const fixtures = ['fixturesBarCounter', 'fixturesDisplayShelving','fixturesBarStools','fixturesTables','fixturesChairs','fixturesLightFittings'];
-      //return fixtures.every(field => this.changeOfNameForm.get(field)?.valid);
+      
       return true
     }
     isBoardValid():boolean{
-      return true
+      const Board=['boardRecommendation']
+      return Board.every(field => this.changeOfPlanForm.get(field)?.valid);
     }
     isFormValid():boolean{
       return this.isInspectionReportGeneral() && this.isRelevantValid() && this.isComplianceValid() && this.isRecommendeValid()&& this.isFixturesValid() &&this.isBoardValid();
@@ -173,7 +171,21 @@
         },
       });
     }
-  
+
+    private getSection29Recommendation(caseId: any): void {
+      this.spinner.show()
+      this.deregistrationService.getSection29Recommendation(caseId).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+           this.recommendation = res.recommendation;
+          this.changeOfPlanForm.patchValue(res);
+        }, error: (err: any) => {
+        
+          this.spinner.hide();
+        }
+      });
+      
+    }
     async presentAlertConfirmNotice(index: number) {
       const alert = await this.alertController.create({
         header: 'Confirm Deletion',

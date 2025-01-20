@@ -39,7 +39,8 @@
           Upload Section 29 Non Compliance Notice
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
-      </div>
+      </div> 
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isFixturesValid()"></ion-img>
    
       <div class="header-content">
         <ion-img *ngIf="isRecommendeValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
@@ -49,6 +50,7 @@
         </ion-card-title>
         <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
       </div>
+      <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isRecommendeValid()"></ion-img>
       <div class="header-content">
         <ion-img *ngIf="isBoardValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
         <ion-img *ngIf="!isBoardValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
@@ -73,28 +75,28 @@
         <h1 class="header-text" style="color: black;">Outlet Information</h1>
       </div>
   
-      <form>
+      
       <div class="collapsible-body">
         <ion-label>REFERENCE NUMBER</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" formControlName="ecpNumber" placeholder="REFERENCE NUMBER"></ion-input>
+      <ion-input class="custom-input" type="text" formControlName="referenceNumber" placeholder="REFERENCE NUMBER" readonly></ion-input>
     </ion-item>
     <ion-label>BUSINESS NAME</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" formControlName="outletName" placeholder="BUSINESS NAME"></ion-input>
+      <ion-input class="custom-input" type="text" formControlName="outletName" placeholder="BUSINESS NAME" readonly></ion-input>
     </ion-item>
     <ion-label>MUNICIPALITY</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" formControlName="municipality" placeholder="MUNICIPALITY"></ion-input>
+      <ion-input class="custom-input" type="text" formControlName="municipality" placeholder="MUNICIPALITY" readonly></ion-input>
     </ion-item>
     <ion-label>TOWN</ion-label>
     <ion-item>
-      <ion-input class="custom-input" type="text" formControlName="ward" placeholder="TOWN"></ion-input>
+      <ion-input class="custom-input" type="text" formControlName="ward" placeholder="TOWN" readonly></ion-input>
     </ion-item>
         </div>
       
       
-      </form>
+      
     <button class="next-button" (click)="toggleForms('compliance')" [disabled]="!isInspectionReportGeneral()">Next</button>
     <br>
     <br>
@@ -149,7 +151,7 @@
       </div>
       <br>
       <br>
-      <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isComplianceValid()">Next</button>
+      <button class="next-button" (click)="toggleForms('recommendations')" [disabled]="!isFixturesValid()">Next</button>
     </div>
 
  
@@ -164,17 +166,17 @@
         
       <div style="padding: 5px;">
           <div style="display: flex; gap: 10px;flex-direction: column;">
-              <div class="form-check">
+              <div class="form-check" *ngIf="recommendation == 1">
                   <input class="form-check-input" type="radio" formControlName="recommendation" value="1"
-                      id="flexRadioDefault1">
+                      id="flexRadioDefault1" >
                   <label class="form-check-label" for="flexRadioDefault1">Suspend</label>
               </div>
-              <div class="form-check">
+              <div class="form-check"*ngIf="recommendation == 2">
                   <input class="form-check-input" type="radio" formControlName="recommendation" value="2"
                       id="flexRadioDefault2">
                   <label class="form-check-label" for="flexRadioDefault2">Vary</label>
               </div>
-              <div class="form-check">
+              <div class="form-check" *ngIf="recommendation == 3">
                   <input class="form-check-input" type="radio" formControlName="recommendation" value="3"
                       id="flexRadioDefault2">
                   <label class="form-check-label" for="flexRadioDefault2">Revoke</label>
@@ -183,7 +185,7 @@
       </div>
   </div>
   <br>
-    <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
+    <button class="next-button" (click)="toggleForms('board')" [disabled]="!isRecommendeValid()">Next</button>
     <br>
     <br>
     </div>
@@ -209,8 +211,10 @@
         
               <!-- Text Area Appears When Suspend is Selected -->
               <div *ngIf="changeOfPlanForm.get('boardRecommendation')?.value === '1'" class="mt-2">
+                
+                <ion-label style="font-size: 15px;">Period allowed by which query notice must be responded to</ion-label>
                 <ion-item>
-                  <ion-label>Period allowed by which query notice must be responded to</ion-label>
+                  
                   <ion-select formControlName="period" placeholder="Select Period">
                     <ion-select-option value="30">30 Days</ion-select-option>
                     <ion-select-option value="60">60 Days</ion-select-option>
@@ -218,6 +222,7 @@
                     <ion-select-option value="120">120 Days</ion-select-option>
                   </ion-select>
                 </ion-item>
+                
                 
           
               </div>
@@ -240,10 +245,11 @@
           
                 
         </div>
-    </div>
-    <br>
-      <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
+        <br>
+      <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isBoardValid()">Next</button>
       <br>
+    </div>
+    
       <br>
       
   </form>
