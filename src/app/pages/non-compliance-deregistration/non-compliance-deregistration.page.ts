@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ChangeOfName } from 'src/app/model/model';
 import { AppointManagerService } from 'src/app/util/service/appoint-manager';
+import { DeregistrationService } from 'src/app/util/service/deregistration-service';
 
 @Component({
   selector: 'app-non-compliance-deregistration',
@@ -14,8 +16,11 @@ export class NonComplianceDeregistrationPage implements OnInit {
   currentForm: string = 'landing';
   noticeFiles: { name: string, size: number }[] = [];
   inputVisible: boolean = true;
-  
+  status:any;
   changeOfPlanForm!: FormGroup;
+  outletId: any;
+  noticeDoc: any;
+  fileItems: { label: string; key: string }[] = []; // Array for managing file items
   constructor(
     private alertController: AlertController,
     private routes: Router,
@@ -23,6 +28,7 @@ export class NonComplianceDeregistrationPage implements OnInit {
     private route: ActivatedRoute,
     private appointmentService: AppointManagerService, 
     private spinner: NgxSpinnerService,
+    private service: DeregistrationService
   ) { 
 
     this.changeOfPlanForm = this.formBuilder.group({
@@ -36,9 +42,21 @@ export class NonComplianceDeregistrationPage implements OnInit {
       prefferedNotificationMethod: ['', Validators.required],
       applicationPreparedByType2: ['Natural', Validators.required]
     });
+    this.route.params.subscribe(params => {
+      this.outletId = +params['caseId'];
+    });
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.outletId = params['caseId'];
+    });
+    this.route.queryParams.subscribe(params => {
+      const status = params['status'];
+      this.status = status;
+    });
+
+    this.getOutletInformation(this.outletId);//when using outletID
   }
   notice!: File;
   async onFileSelectedRecommendation(event: any) {
@@ -50,7 +68,15 @@ export class NonComplianceDeregistrationPage implements OnInit {
       } else {
         this.noticeFiles.push({ name: file.name, size: file.size });
       }
+     
       this.inputVisible = false; 
+        // Add the file to the fileItems array for rendering
+        this.fileItems = [
+          {
+            label: file.name,
+            key: URL.createObjectURL(file) // Create a URL for previewing the file
+          }
+        ];
     }
     
   }
@@ -96,21 +122,21 @@ export class NonComplianceDeregistrationPage implements OnInit {
 
   isInspectionReportGeneral():boolean{
     const reportGeneral= ['ecpNumber','municipality','outletName'];
-    return reportGeneral.every(field => this.changeOfPlanForm.get(field)?.valid);
+    return true
     
   }
 
   isComplianceValid(): boolean {
 
     const complianceValid = ['questions'];
-    return false
+    return true
   
   }
 
   isRecommendationValid(): boolean { 
 
     const recommendationFields = ['recommendation', 'comments'];
-    return false
+    return true
   }
   toggleForms(form: string) {
     this.currentForm = form;
@@ -119,14 +145,14 @@ export class NonComplianceDeregistrationPage implements OnInit {
   private getOutletInformation(caseId: any): void {
     this.spinner.show()
 
-    if( true){//BY CASE ID
+    if(this.status === 'Complete'){//BY CASE ID
       this.appointmentService.outletInfomationByCaseId(caseId).subscribe({
         next: (res: any) => {
           this.spinner.hide();
           
           this.changeOfPlanForm.patchValue(res);
         }, error: (err: any) => {
-          
+        
           this.spinner.hide();
         }
       });
@@ -147,9 +173,45 @@ export class NonComplianceDeregistrationPage implements OnInit {
    
     
   }
+  changeOfPlan = new ChangeOfName()
+  submitChangePlan(): void {
+
+
+    console.log("JSON.stringify(this.changeOfPlan)=" + JSON.stringify(this.changeOfPlan));
+
+    const formData = new FormData();
+    formData.append('nonComplianceDeregistration', new Blob([JSON.stringify(this.changeOfPlan)], { type: 'application/json' }));
+    this.noticeDoc = this.noticeFiles[0];
+    formData.append('section28Notice', this.notice);
+
+    this.service.initiateDeregistrationSection28(this.outletId, formData).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        this.showAlert('success', 'Application Captured');
+      
+        setTimeout(() => {
+          this.routes.navigateByUrl('/my-tasks')
+        }, 5000);
+      }, error: (err: any) => {
+        this.showAlert('success', err);
+      }
+    });
+
+  }//END SUBMIT
+
+
   navigateToBack() {
     setTimeout(() => {
       this.routes.navigate(['/outlets']); 
     }, 0);
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

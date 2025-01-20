@@ -1,0 +1,259 @@
+<ion-content>
+  <form  [formGroup]="changeOfPlanForm" >
+  
+
+    <div *ngIf="currentForm === 'landing'">
+      <div class="header-container">
+        <a class="back-arrow">
+          <img src="assets/Images/Back Icon.svg" alt="Back" (click)="navigateToBack()">
+        </a>
+        <h1 class="header-text">Non Compliance Deregistration - Board Consideration / Hearing</h1>
+      </div>
+      
+      <ion-card>
+        <div class="header-content">
+          <ion-img *ngIf="isInspectionReportGeneral()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isInspectionReportGeneral()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('general')" [class.red-text]="isInspectionReportGeneral()">
+            Outlet Information
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isComplianceValid()"></ion-img>
+      
+        <div class="header-content">
+          <ion-img *ngIf="isComplianceValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+          <ion-img *ngIf="!isComplianceValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+          <ion-card-title (click)="toggleForms('compliance')" [class.red-text]="isComplianceValid()">
+            Upload Section 28 Non Compliance Notice
+          </ion-card-title>
+          <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+        </div>
+        <ion-img src="../../../assets/Images/Step Trail.svg" class="step" [class.green-trail]="isComplianceValid()"></ion-img>
+ 
+
+      <div class="header-content">
+        <ion-img *ngIf="isFixturesValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isFixturesValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('recommendation')" [class.red-text]="isFixturesValid()">
+          Upload Section 29 Non Compliance Notice
+        </ion-card-title>
+        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      </div>
+   
+      <div class="header-content">
+        <ion-img *ngIf="isRecommendeValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isRecommendeValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('recommendations')" [class.red-text]="isRecommendeValid()">
+          Section 29 Submission Recommendation
+        </ion-card-title>
+        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      </div>
+      <div class="header-content">
+        <ion-img *ngIf="isBoardValid()" src="../../../assets/Images/Step Symbol Green.svg" class="size"></ion-img>
+        <ion-img *ngIf="!isBoardValid()" src="../../../assets/Images/Step Symbol.svg" class="size"></ion-img>
+        <ion-card-title (click)="toggleForms('board')" [class.red-text]="isBoardValid()">
+          Board Consideration / Hearing
+        </ion-card-title>
+        <ion-img src="../../../assets/Images/New Line.svg" class="vector"></ion-img>
+      </div>
+
+      
+      <ion-button class="buttonClass2" (click)="submitChangePlan()"[disabled]="!isFormValid()" >
+        Submit
+      </ion-button>
+    </ion-card>
+    </div>
+
+
+    <div *ngIf="currentForm === 'general'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Outlet Information</h1>
+      </div>
+  
+      <form>
+      <div class="collapsible-body">
+        <ion-label>REFERENCE NUMBER</ion-label>
+    <ion-item>
+      <ion-input class="custom-input" type="text" formControlName="ecpNumber" placeholder="REFERENCE NUMBER"></ion-input>
+    </ion-item>
+    <ion-label>BUSINESS NAME</ion-label>
+    <ion-item>
+      <ion-input class="custom-input" type="text" formControlName="outletName" placeholder="BUSINESS NAME"></ion-input>
+    </ion-item>
+    <ion-label>MUNICIPALITY</ion-label>
+    <ion-item>
+      <ion-input class="custom-input" type="text" formControlName="municipality" placeholder="MUNICIPALITY"></ion-input>
+    </ion-item>
+    <ion-label>TOWN</ion-label>
+    <ion-item>
+      <ion-input class="custom-input" type="text" formControlName="ward" placeholder="TOWN"></ion-input>
+    </ion-item>
+        </div>
+      
+      
+      </form>
+    <button class="next-button" (click)="toggleForms('compliance')" [disabled]="!isInspectionReportGeneral()">Next</button>
+    <br>
+    <br>
+  </div>
+    <div *ngIf="currentForm === 'compliance'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Upload Section 28 Non Compliance Notice</h1>
+      </div>
+      <div class="upload2">
+        <div style="padding: 5px;">
+        <!-- <app-file-upload [fileItems]="fileItems" (fileSelected)="onFileSelected($event)"></app-file-upload> -->
+
+            <!--<app-file-upload *ngIf="true" [fileItems]="fileItems" (fileSelected)="onFileSelected($event)"></app-file-upload>-->
+            <ng-container *ngIf="true">
+                <div class="file-upload" *ngFor="let item of fileItems; let i = index">
+                    <div class="file-actions">
+                        {{ item.label }}
+                        <a (click)="viewFile(item.key)"  style="margin-left: 10px;cursor: pointer;text-decoration: underline;">Download</a>
+                    </div>
+                </div> 
+            </ng-container>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isComplianceValid()">Next</button>
+    </div>
+    <div *ngIf="currentForm === 'recommendation'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Upload Section 29 Non Compliance Notice</h1>
+      </div>
+     
+      <div  class="upload2">
+        <div style="padding: 5px;">
+        <!-- <app-file-upload [fileItems]="fileItems" (fileSelected)="onFileSelected($event)"></app-file-upload> -->
+
+            <!--<app-file-upload *ngIf="true" [fileItems]="fileItems" (fileSelected)="onFileSelected($event)"></app-file-upload>-->
+            <ng-container *ngIf="true">
+                <div class="file-upload" *ngFor="let item of fileItems2; let i = index">
+                    <div class="file-actions">
+                        {{ item.label }}
+                        <a (click)="viewFile(item.key)"  style="margin-left: 10px;cursor: pointer;text-decoration: underline;">Download</a>
+                    </div>
+                </div> 
+            </ng-container>
+        </div>
+      </div>
+      <br>
+      <br>
+      <button class="next-button" (click)="toggleForms('recommendation')" [disabled]="!isComplianceValid()">Next</button>
+    </div>
+
+ 
+    
+    <div *ngIf="currentForm === 'recommendations'">
+  
+    <div class="header-container">
+      <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+      <h1 class="header-text" style="color: black;">Section 29 Submission Recommendation</h1>
+    </div>
+    <div class="upload2">
+        
+      <div style="padding: 5px;">
+          <div style="display: flex; gap: 10px;flex-direction: column;">
+              <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="recommendation" value="1"
+                      id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">Suspend</label>
+              </div>
+              <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="recommendation" value="2"
+                      id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">Vary</label>
+              </div>
+              <div class="form-check">
+                  <input class="form-check-input" type="radio" formControlName="recommendation" value="3"
+                      id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">Revoke</label>
+              </div>
+          </div>
+      </div>
+  </div>
+  <br>
+    <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
+    <br>
+    <br>
+    </div>
+  
+
+
+    <div *ngIf="currentForm === 'board'">
+  
+      <div class="header-container">
+        <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
+        <h1 class="header-text" style="color: black;">Board Consideration / Hearing</h1>
+      </div>
+      <div class="upload2">
+          
+        <div style="padding: 5px;">
+          <div style="display: flex; gap: 10px; flex-direction: column;">
+            <ion-radio-group formControlName="boardRecommendation">
+              <!-- Suspend Option -->
+              <ion-item>
+                <ion-label>Suspend</ion-label>
+                <ion-radio slot="start" value="1"></ion-radio>
+              </ion-item>
+        
+              <!-- Text Area Appears When Suspend is Selected -->
+              <div *ngIf="changeOfPlanForm.get('boardRecommendation')?.value === '1'" class="mt-2">
+                <ion-item>
+                  <ion-label>Period allowed by which query notice must be responded to</ion-label>
+                  <ion-select formControlName="period" placeholder="Select Period">
+                    <ion-select-option value="30">30 Days</ion-select-option>
+                    <ion-select-option value="60">60 Days</ion-select-option>
+                    <ion-select-option value="90">90 Days</ion-select-option>
+                    <ion-select-option value="120">120 Days</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                
+          
+              </div>
+        
+              <!-- Vary Option -->
+              <ion-item>
+                <ion-label>Vary</ion-label>
+                <ion-radio slot="start" value="2"></ion-radio>
+              </ion-item>
+        
+              <!-- Revoke Option -->
+              <ion-item>
+                <ion-label>Revoke</ion-label>
+                <ion-radio slot="start" value="3"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+        
+          </div>
+          </div>
+          
+                
+        </div>
+    </div>
+    <br>
+      <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
+      <br>
+      <br>
+      
+  </form>
+  
+  <ngx-spinner
+bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-pulse">
+<p style="color:white;font-size: 20px;text-align: center;">Please wait...</p>
+</ngx-spinner>
+</ion-content>
+<app-menu-footer></app-menu-footer>

@@ -1,0 +1,803 @@
+ion-card-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4A5568;
+    width: 80%;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .vector {
+    width: 12px;
+    height: 12px;
+  }
+  .step {
+  width: 45px !important;
+  margin-left: 1% !important;
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+  
+  }
+  .green-trail {
+  filter: brightness(0) saturate(100%) invert(40%) sepia(100%) saturate(800%) hue-rotate(70deg) brightness(90%) contrast(100%);
+  }
+  
+  .red-text {
+  color: green;
+  font-weight: 600;
+  
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+  }
+  .header-content3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+  }
+  .header-content2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .card {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4A5568;
+    font-family: 'Inter', sans-serif;
+    padding: 15px;
+  }
+  
+  select {
+    background-color: #fff;
+    height: 50px;
+    border-bottom: 1px solid #667085;
+    width: 100%;
+  }
+  
+  .inspection-report{
+    color:#667085;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 100px;
+    margin-left: 10px;
+  }
+  .upload {
+    border: 1px solid #EAECF0;
+    border-radius: 2px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    padding: 30px;
+    font-family: 'Inter',sans-serif;
+  }
+  .upload-image {
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+  width: calc(100% - 40px);
+  height: calc(100% - 220px) !important;
+  // height: 300px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: none;
+  }
+  
+  .upload2{
+    border: 1px solid #EAECF0;
+    border-radius: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    box-shadow: none;
+    font-family: 'Inter',sans-serif;
+  }
+  
+  .upload ion-img{
+    width: 25px;
+    height: 25px;
+  }
+  .upload span{
+    font-size: 14px;
+    font-weight: 600;
+    color:#822B23;
+  }
+  
+  .input-field
+  {
+    margin-bottom: 5%;
+    font-family: 'Inter', sans-serif;
+    
+  }
+  ion-input{
+    font-family: 'Inter', sans-serif;
+    color: #667085;
+  
+  }
+  
+  .general-name{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .buttons
+  {
+    display: flex;
+  }
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 30px;
+  }
+  
+  .back-Arrow {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    padding-left: 10px;
+   
+  }
+  
+  
+  .header-text {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+    padding-right: 10%;
+  }
+  
+  .radios{
+    display: flex;
+  }
+  label{
+    margin-right: 10px;
+  }
+  
+  ion-input, ion-select{
+    font-size: 11px;
+    --padding-start: 10px !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    width: 100%;
+  }
+  
+  textarea {
+    font-size: 14px;
+    padding: 10px !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    width: 100% !important;
+    resize: none;
+    border: 1px solid #b9b9b9;
+    height: 75px;
+    border-radius: 5px;
+    background-color: white !important;
+  }
+  
+  textarea:focus {
+    outline: none; 
+    border-color: #858585; 
+  }
+  
+  .next-button{
+    background-color: #CFAA35;
+    border-radius: 30px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: inline-end;
+    margin-right: 3%;
+    height: 35px;
+    width: 75px;
+  }
+  
+  .recommend-comments{
+    margin-top: 20px;
+  }
+  .recommend-comments1{
+    margin-top: 10px !important;
+  }
+  
+  ion-col input{
+    color: #CFAA35;
+    width: 20px;
+    height: 20px;
+  }
+  ion-radio {
+    --color: black;
+    --color-checked: #CFAA35;
+  }
+  .buttonClass2 {
+    --background: #822B23;
+    --color: #fff;
+    width: calc(100% - 30px);
+    height: 50px;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #822B23;
+    border-radius: 2px; 
+    --border-radius: 2px; 
+    text-transform: none; 
+    font-family: 'Inter', sans-serif; 
+    margin-bottom: 15px;
+    margin-left: 4.1%;
+  }
+  
+  .location{
+    margin-right: 15px !important;
+  }
+  
+  .custom-input {
+    min-width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  ion-input, ion-select {
+    font-size: 11px;
+    --padding-start: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    width: 100%;
+  }
+  
+  ion-select{
+    margin-top: 10px;
+    background-color: #ffffff;
+    border: 1px solid #858585;
+    border-radius: 2px;
+    height: 50px; 
+    width: calc(100%) !important; /* Account for padding of the container */
+    --highlight-background: transparent;
+    font-family: 'Inter', sans-serif; 
+    padding-right: 15px !important;
+  }
+  
+  ion-label{
+   
+    font-size: 12px !important;
+    margin-left: 17px;
+  }
+  
+  
+  
+  
+  
+  .upload3 {
+    max-height: 400px; 
+    overflow-y: scroll; 
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #e0e0e0;
+    border: 1px solid #EAECF0;
+    border-radius: 2px;
+    box-shadow: none;
+    margin: 20px;
+    text-align: center;
+    height: 400px !important;
+    box-shadow: none;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .photos-card{
+    max-height: 60%; 
+    overflow-y: scroll; 
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #e0e0e0;
+    border: 1px solid #EAECF0;
+    box-shadow: none;
+    height: 430px !important;
+    overflow-y: auto;
+    position: relative;
+    overflow-y: scroll; 
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #e0e0e0;
+  }
+  
+  .upload3::-webkit-scrollbar {
+    width: 12px; /* Adjust width as needed */
+  }
+  
+  .upload3::-webkit-scrollbar-track {
+    background: #e0e0e0; /* Background of the scrollbar track */
+  }
+  
+  .upload3::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounding of the scrollbar thumb */
+    border: 3px solid #e0e0e0; /* Padding around the thumb */
+  }
+  
+  .scrollable-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .single-uploaded-photo {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  
+  .disp
+  {
+    display: contents;
+  }
+  
+  .image-description {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content.show {
+    display: block;
+  }
+  
+  .no-photo-text {
+    text-align: center;
+    margin: 16px 0;
+    margin-top: 50%;
+  }
+  
+  
+  .add-ticket-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    position: relative;
+    bottom: -200px !important;
+  
+  }
+  
+  
+  .add-ticket-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    margin-right: 20px;
+    float: inline-end;
+    margin-left: 84%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+  
+  }
+  
+  .buttonClass {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
+  
+  .last-input{
+    margin-bottom: 10px;
+  }
+  
+  .image {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .custom-alert {
+    font-family: 'Inter', sans-serif !important;
+    background-color: #666;
+  }
+  
+  .custom-alert .secondary-button {
+    color: #666;
+  }
+  
+  .custom-alert .primary-button {
+    color: #f00;
+  }
+  
+  
+  
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 160px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    z-index: 1000;
+    margin-right: 10px;
+    margin-top: 10%;
+  }
+  
+  .dropdown-content ion-item {
+    text-decoration: none;
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+  
+  .dropdown-content ion-item:hover {
+    font-weight: 600;
+  }
+  
+  .dropdown-content.show {
+    display: block;
+  }
+  /* global.scss */
+  
+  .custom-alert .alert-wrapper {
+  --background-color: #fff; /* Background color of the alert */
+  }
+  
+  .custom-alert .alert-title {
+  --color: #d13131; /* Color of the alert title */
+  }
+  
+  .custom-alert .alert-message {
+  --color: #666; /* Color of the alert message */
+  }
+  
+  .custom-alert .alert-button {
+  --color: #a80d2c; /* Color of the alert buttons */
+  }
+  
+  .custom-alert .alert-button.danger {
+  --color: #dc3545; /* Color of the danger (delete) button */
+  }
+  
+  .custom-input {
+  min-width: 100%;
+  margin-bottom: 8px;
+  }
+  
+  ion-input, ion-select {
+  font-size: 11px;
+  --padding-start: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  width: 100%;
+  }
+  
+  ion-select{
+  margin-top: 10px;
+  background-color: #ffffff;
+  border: 1px solid #858585;
+  border-radius: 2px;
+  height: 50px; 
+  width: calc(100%) !important; /* Account for padding of the container */
+  --highlight-background: transparent;
+  font-family: 'Inter', sans-serif; 
+  padding-right: 15px !important;
+  }
+  
+  
+  .custom-input {
+  background-color: white;
+  }
+  
+  .custom-input::placeholder {
+  color: rgba(0, 0, 0, 0.5); /* Optional: Adjust placeholder text color for better contrast */
+  }
+  
+  
+  ::ng-deep .datepickerTwo {
+  background:lightblue;
+  border-radius: 4px;
+  }
+  
+  ::ng-deep .datepickerTwo .mat-calendar-body-today:not(.mat-calendar-body-selected){
+  border-color:darkblue;
+  }
+  
+  .size{
+  width: 25px;
+  height: 25px;
+  }
+  /* Remove hover effect from ion-item and its children */
+  ion-item:hover, ion-item:hover ion-label, ion-item:hover ion-radio {
+  --background-hover: none !important;
+  --border-color-hover: transparent !important;
+  --color-hover: inherit !important;
+  }
+  
+  .radios ion-item {
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Align items vertically */
+  margin-bottom: -10px; /* Adjust vertical spacing between items */
+  }
+  
+  .radios ion-radio {
+  
+  }
+  
+  
+  
+  .vertical-radios {
+  display: flex;
+  flex-direction: column;
+  }
+  
+  .radioss {
+  display: flex;
+  align-items: center;
+  margin-bottom: 7px; 
+  }
+  
+  
+  
+  .small-input {
+  width: 150px; /* Adjust the width as needed */
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --inner-padding: 0;
+  }
+  
+  .single-uploaded-photo {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+  }
+  
+  .image-description {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+  }
+  
+  .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  }
+  
+  .dropdown-content.show {
+  display: block;
+  }
+  ion-input::part(placeholder) {
+  font-size: 0.5px !important; /* Use !important to ensure it overrides other styles */
+  }
+  
+  .checkmart {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgb(40, 38, 38);
+  position: relative;
+  cursor: pointer;
+  margin-left: 10px;
+  top: 3px;
+  border-radius: 1px;
+  
+  }
+  
+  .checkmart:checked {
+  background-color: #CFAA35;
+  border-color: #CFAA35;
+  }
+  
+  .checkmart:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  }
+  
+  .check{
+  margin-left: 15px; 
+  }
+  
+  .flex{
+  display: flex;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  /* Custom CSS for scrollable alert */
+  .scrollable-alert .alert-radio-group {
+  max-height: 200px; /* Adjust height as needed */
+  overflow-y: auto;
+  }
+  
+  /* Custom CSS for highlighting selected descriptions in red */
+  .selected-description {
+  color: red !important;
+  font-weight: bold;
+  }
+  
+  
+  /* General styles for the form */
+  form {
+    padding: 10px;
+   
+    
+    border-radius: 8px;
+  }
+  
+  /* Table styles */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-bordered td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+  }
+  
+  .table td {
+    vertical-align: top;
+    font-size: 0.9rem;
+  }
+  
+  /* Form control styles */
+  .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Labels for radio buttons */
+  label {
+    font-size: 0.85rem;
+    margin-right: 1rem;
+  }
+  
+  /* Responsive styles for mobile */
+  @media (max-width: 768px) {
+    /* Stack table rows for mobile */
+    .table,
+    .table tr,
+    .table td {
+        display: block;
+        width: 100%;
+    }
+  
+    /* Add spacing between inputs */
+    .table td {
+        margin-bottom: 1rem;
+    }
+  
+    /* Adjust font size for smaller screens */
+    .form-control {
+        font-size: 0.85rem;
+    }
+  
+   
+  }
+  
+  /* Placeholder styles for better UX */
+  .form-control::placeholder {
+    color: #888;
+    font-style: italic;
+  }
+  
+  /* General Styling */
+  .health-check-form {
+    margin: 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .btn-primary-submit {
+    background-color: #822B23;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-primary-submit:hover {
+    background-color: #822B23;
+  }
+  
+  
+  .table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .custom-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .custom-table td {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Responsive Styling for Mobile */
+  @media (max-width: 768px) {
+    .custom-table th,
+    .custom-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+  
+    .btn-primary-submit {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+  
+    .table-container {
+        border: none;
+    }
+  }
+  
+  ion-input::part(placeholder) {
+    color: #15736e !important;
+    font-family: 'Arial', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+  }
+  
+  
+  
+  

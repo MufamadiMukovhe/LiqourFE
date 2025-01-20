@@ -284,10 +284,20 @@ const routes: Routes = [
   {
     path: 'compliance-notice/:caseId',
     loadChildren: () => import('./pages/compliance-notice/compliance-notice.module').then( m => m.ComplianceNoticePageModule)
-  },  {
+  },
+  {
     path: 'saps-attach',
     loadChildren: () => import('./pages/saps-attach/saps-attach.module').then( m => m.SapsAttachPageModule)
   },
+  {
+    path: 'non-compliance-section29/:caseId',
+    loadChildren: () => import('./pages/non-compliance-section29/non-compliance-section29.module').then( m => m.NonComplianceSection29PageModule)
+  },
+  {
+    path: 'board-consideration-orhearing/:caseId',
+    loadChildren: () => import('./pages/board-consideration-orhearing/board-consideration-orhearing.module').then( m => m.BoardConsiderationORHearingPageModule)
+  },
+
 
 
 
