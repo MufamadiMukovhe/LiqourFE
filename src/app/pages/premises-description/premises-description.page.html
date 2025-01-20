@@ -205,8 +205,8 @@
         <h1 class="header-text" style="color: black;">ANY OTHER RELEVANT PHYSICAL ASPECT</h1>
       </div>
 
-      <div class="collapsible-body">
-        <label for="anyRelevantComment">Comment</label>
+      <div class="upload2">
+        <span for="anyRelevantComment">Comment</span>
         <textarea formControlName="anyRelevantComment" placeholder="" style="height: 100px; background-color: #fff;"
         id="anyRelevantComment" class="form-control mb-3  mt-3"></textarea>
         </div>
@@ -223,6 +223,7 @@
       <a><img src="assets/Images/Back Icon.svg" class="backArrow" (click)="toggleForms('landing')"></a>
       <h1 class="header-text" style="color: black;">Recommendation</h1>
     </div>
+    <div class="upload2">
     <div style="padding: 5px;">
       <h3  style="font-size: 15px;">The Application is recommended for</h3>
     <ion-radio-group formControlName="recommendation" style="display: flex;" >
@@ -242,6 +243,7 @@
     </ion-radio-group>
 
   </div>
+</div>
   <br>
     <button class="next-button" (click)="toggleForms('landing')" [disabled]="!isRecommendeValid()">Next</button>
     <br>
