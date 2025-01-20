@@ -27,6 +27,8 @@ export class MyTasksPage implements OnInit {
     private http: HttpClient,private spinner: NgxSpinnerService, private helper: HelperService) { }
 
   ngOnInit() {
+  
+  
     this.spinner.show();
     let url = "/api/general/get-inbox";
     let token = localStorage.getItem("userToken") 
@@ -58,18 +60,24 @@ export class MyTasksPage implements OnInit {
 
           
             this.collect = this.collect.filter(item => item.status!=='Complete')
-
+ // Sort by descending assignDate or timestamp
+ this.collect.sort((a, b) => {
+  const dateA = new Date(a.assignDate).getTime() || 0;
+  const dateB = new Date(b.assignDate).getTime() || 0;
+  return dateB - dateA;
+});
             console.log(this.collect);
             
 
           }
           else{
             this.collect = response;
-            this.collect.sort((a, b) => {
-              const dateA = new Date(a.timestamp).getTime() || 0;
-              const dateB = new Date(b.timestamp).getTime() || 0;
-              return dateB - dateA;
-            });
+            // Sort by descending assignDate or timestamp
+  this.collect.sort((a, b) => {
+    const dateA = new Date(a.assignDate).getTime() || 0;
+    const dateB = new Date(b.assignDate).getTime() || 0;
+    return dateB - dateA;
+  });
             
             console.log(this.collect)
           }

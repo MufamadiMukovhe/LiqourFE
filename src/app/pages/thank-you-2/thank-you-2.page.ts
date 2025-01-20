@@ -13,7 +13,9 @@ export class ThankYou2Page implements OnInit {
   ngOnInit() {
 
     setTimeout(() => {
-      this.router.navigate(['/my-tasks']);
+      this.router.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+        this.router.navigate([this.router.url]);
+      });;
     }, 5000);
   }
 

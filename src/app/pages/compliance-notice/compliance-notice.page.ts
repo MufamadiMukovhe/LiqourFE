@@ -161,7 +161,10 @@ export class ComplianceNoticePage implements OnInit {
         console.log("sucesss");
         this.showAlert('success', 'Description of Premises Captured');
         setTimeout(() => {
-          this.route.navigateByUrl('/my-tasks')
+          this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+            this.route.navigate([this.route.url]);
+     
+          });
         }, 5000);
       }, error: (err: any) => {
         console.log("error");
@@ -169,7 +172,11 @@ export class ComplianceNoticePage implements OnInit {
         this.spinner.hide();
         this.showAlert('success', 'Description of Premises Captured');
         setTimeout(() => {
-          this.route.navigateByUrl('/my-tasks')
+
+          this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+            this.route.navigate([this.route.url]);
+            
+          });
         }, 5000);
       }
     });

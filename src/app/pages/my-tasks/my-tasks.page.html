@@ -33,7 +33,10 @@
               <span>CaseID: {{task.caseId}}</span>
             </div>
             <div class="info-time">
-              <span>Due: {{task.dueDate}}</span>
+              <span>Assign: {{ task.assignDate | date: 'yyyy-MM-dd hh:mm a' }}</span>
+              <br>
+              <span>Due: {{ task.dueDate | date: 'yyyy-MM-dd hh:mm a' }}</span>
+
               <br>
               <span>Action: {{task.action}}</span>
             </div>

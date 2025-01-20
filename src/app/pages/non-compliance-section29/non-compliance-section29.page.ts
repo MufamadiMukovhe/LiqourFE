@@ -137,7 +137,9 @@ caseNo: any;
         this.showAlert('success', 'Application Captured');
       
         setTimeout(() => {
-          this.route.navigateByUrl('/my-tasks')
+          this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+            this.route.navigate([this.route.url]);
+          });
         }, 5000);
       }, error: (err: any) => {
         this.spinner.hide();

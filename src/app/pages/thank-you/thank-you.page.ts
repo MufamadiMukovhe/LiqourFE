@@ -14,7 +14,10 @@ export class ThankYouPage implements OnInit {
   ngOnInit() {
 
     setTimeout(() => {
-      this.router.navigateByUrl('/inspections');
+      
+      this.router.navigateByUrl('/inspections', { skipLocationChange: true }).then(() => {
+        this.router.navigate([this.router.url]);
+      });
     }, 5000);
   }
 

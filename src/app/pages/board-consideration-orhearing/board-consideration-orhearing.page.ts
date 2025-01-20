@@ -123,7 +123,9 @@
         next: () => {
           this.spinner.hide();
           this.showAlert('Success', 'Application captured successfully!');
-          this.route.navigate(['/my-tasks'], { queryParams: { refresh: new Date().getTime() } });
+          this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+            this.route.navigate([this.route.url]);
+          });
 
         },
         error: () => {
