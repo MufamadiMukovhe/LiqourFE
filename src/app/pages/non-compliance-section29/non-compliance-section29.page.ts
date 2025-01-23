@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import { AlertController } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ChangeOfName, Deregistration, FileItem, Message } from 'src/app/model/model';
@@ -164,33 +165,28 @@ caseNo: any;
     { label: 'Upload Section 29 Notice', key: 'section29Notice', file: null },
   ]
 
-  viewFile(fileName: any): void {
+  viewFile(fileName: string): void {
     this.spinner.show();
     this.service.getFile1(this.caseId, fileName).subscribe({
       next: (response: Blob) => {
         this.spinner.hide();
-        if (response instanceof Blob) {
-          const blob = new Blob([response], { type: 'application/pdf' });
-          const blobUrl = window.URL.createObjectURL(blob);
-  
-          // Create a temporary link element for downloading
-          const downloadLink = document.createElement('a');
-          downloadLink.href = blobUrl;
-          downloadLink.download = fileName; // Set the desired file name
-          document.body.appendChild(downloadLink); // Append link to the body
-          downloadLink.click(); // Trigger the download
-          document.body.removeChild(downloadLink); // Clean up the DOM
-          window.URL.revokeObjectURL(blobUrl); // Revoke the object URL
-        } else {
-          console.error('Error: Response is not a Blob');
-        }
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
       },
-      error: (error) => {
+      error: () => {
         this.spinner.hide();
-        console.error('Error downloading file:', error);
-      }
+        this.showAlert('Error', 'Failed to download file.');
+      },
     });
   }
+
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,

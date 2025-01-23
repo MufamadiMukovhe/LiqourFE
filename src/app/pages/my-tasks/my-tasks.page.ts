@@ -1,16 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { headers, headersSecure } from 'src/app/util/service/const';
-import { HelperService } from 'src/app/util/service/helper.service';
-//import * as jwt_decode from 'jwt-decode';
+
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment.prod';
-
-
-
-
 
 @Component({
   selector: 'app-my-tasks',
@@ -20,74 +14,76 @@ import { environment } from 'src/environments/environment.prod';
 export class MyTasksPage implements OnInit {
   collect: any[] = [];
   loading: boolean = true; // Add loading state
-  decodedToken:any;
-  role:any;
-  tok:any;
-  constructor(private route: Router, 
-    private http: HttpClient,private spinner: NgxSpinnerService, private helper: HelperService) { }
+  decodedToken: any;
+  role: any;
+  tok: any;
+
+  constructor(
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient,
+    private spinner: NgxSpinnerService
+  ) {
+    // Listen to route changes
+    this.route.events.subscribe((event) => {
+      if (event instanceof NavigationEnd && event.urlAfterRedirects.includes('/my-tasks')) {
+        this.loadTasks(); // Refresh data on navigation
+      }
+    });
+  }
 
   ngOnInit() {
-  
-  
+    this.loadTasks(); // Initial data load
+  }
+
+  loadTasks() {
     this.spinner.show();
-    let url = "/api/general/get-inbox";
-    let token = localStorage.getItem("userToken") 
-    const newHeader={
-      "Authorization":"Bearer "+token, 
-      "Accept":"*/*"
-    }
+    const url = '/api/general/get-inbox';
+    const token = localStorage.getItem('userToken');
+    const newHeader = {
+      Authorization: 'Bearer ' + token,
+      Accept: '*/*',
+    };
 
-    this.tok=localStorage.getItem('uToken');
-    //this.decodedToken=JSON.parse(this.tok);
+    this.tok = localStorage.getItem('uToken');
+    this.decodedToken = jwtDecode(this.tok);
+    this.role = this.decodedToken.scope;
 
-    console.log(this.tok);
-    
-      this.decodedToken=jwtDecode(this.tok)
-      
-      this.role=this.decodedToken.scope;
-      console.log(this.role);
-      
-      
-    
-    this.http.get<any[]>(environment.eclbDomain+"api/general/get-inbox", { headers: newHeader }).subscribe(
-      response => {
+    this.http.get<any[]>(`${environment.eclbDomain}api/general/get-inbox`, { headers: newHeader }).subscribe(
+      (response) => {
+        if (this.role === 'INSPECTOR') {
+          this.collect = response.filter((item) =>
+            [
+              'Complete Report',
+              'Complete Inspection Report',
+              'Inspector Serve Summons',
+              'Inspector Serve Section 22(5) Notice',
+              'Complete Supplementary Report',
+              'Complete Report Query',
+              'Inspector Serve Section 22(6) Notice',
+              'Description of Premises',
+              'Issue Section 54 Compliance Notice',
+              'Upload Section 29 Non Compliance Notice',
+              'Board Consideration OR Hearing',
+            ].includes(item.action)
+          );
 
-        if(this.role==='INSPECTOR')
-          {
-            //this.collect = response;
-            this.collect = response.filter(item => item.action === 'Complete Report' || item.action === 'Complete Inspection Report' || item.action === 'Inspector Serve Summons' || item.action === 'Inspector Serve Section 22(5) Notice' || item.action === 'Complete Supplementary Report'|| item.action ==='Complete Report Query'|| item.action ==='Inspector Serve Section 22(6) Notice'||item.action === 'Description of Premises'||item.action === 'Issue Section 54 Compliance Notice'||item.action==='Upload Section 29 Non Compliance Notice'||item.action==='Board Consideration OR Hearing');
+          this.collect = this.collect.filter((item) => item.status !== 'Complete');
+        } else {
+          this.collect = response;
+        }
 
+        // Sort by descending assignDate
+        this.collect.sort((a, b) => {
+          const dateA = new Date(a.assignDate).getTime() || 0;
+          const dateB = new Date(b.assignDate).getTime() || 0;
+          return dateB - dateA;
+        });
 
-          
-            this.collect = this.collect.filter(item => item.status!=='Complete')
- // Sort by descending assignDate or timestamp
- this.collect.sort((a, b) => {
-  const dateA = new Date(a.assignDate).getTime() || 0;
-  const dateB = new Date(b.assignDate).getTime() || 0;
-  return dateB - dateA;
-});
-            console.log(this.collect);
-            
-
-          }
-          else{
-            this.collect = response;
-            // Sort by descending assignDate or timestamp
-  this.collect.sort((a, b) => {
-    const dateA = new Date(a.assignDate).getTime() || 0;
-    const dateB = new Date(b.assignDate).getTime() || 0;
-    return dateB - dateA;
-  });
-            
-            console.log(this.collect)
-          }
-        
-        
         this.spinner.hide();
       },
-      error => {
-        console.log(error);
-      
+      (error) => {
+        console.error(error);
         this.spinner.hide();
       }
     );
@@ -97,57 +93,33 @@ export class MyTasksPage implements OnInit {
     this.route.navigate(['dashboard']);
   }
 
-  navigateToTask(action: any, caseId:any, appType:any)
-    {
-      
-      switch (action) {
-        case 'Attach and / or Verify WC Report':
-          this.route.navigate(['']);
-          break;
-        case 'Pre-Registration Inspection':
-          this.route.navigate(['']);
-          break;
-        case 'Complete Report':
-          case 'Complete Supplementary Report':
-            case 'Complete Report Query':
-          this.route.navigate([`/complete-inspection/${caseId}/${appType}`]);
-          break;
-        case 'Verify Application':
-          this.route.navigate(['']);
-          break;
-        case 'Complete GIS Report':
-          this.route.navigate([`/complete-gis-report/${caseId}`])
-          break;
-        case 'Complete Inspection Report':
-          this.route.navigate([`/complete-inspection/${caseId}/${appType}`]);
-          break;
-        case 'Inspector Serve Summons':
-          this.route.navigate([`/summons/${caseId}`])
-          break;
-        case 'Inspector Serve Section 22(6) Notice':
-          this.route.navigate([`/section/${caseId}/`])
-          break;
-        case 'Inspector Serve Section 22(5) Notice':
-          case 'Inspector Serve Section 22(6) Notice':
-          this.route.navigate([`/section/${caseId}/`])
-          break;
-        case 'Description of Premises':
-            this.route.navigate([`/premises-description/${caseId}/`])
-            break;
-        case 'Issue Section 54 Compliance Notice':
-              this.route.navigate([`/compliance-notice/${caseId}/`])
-              break;
-         case 'Upload Section 29 Non Compliance Notice':
-              this.route.navigate([`/non-compliance-section29/${caseId}/`])
-                break;
-
-        case 'Board Consideration OR Hearing':
-              this.route.navigate([`/board-consideration-orhearing/${caseId}/`])
-                  break;
-              
-              
-      }
+  navigateToTask(action: any, caseId: any, appType: any) {
+    const routes: { [key: string]: string } = {
+      'Attach and / or Verify WC Report': '',
+      'Pre-Registration Inspection': '',
+      'Complete Report': `/complete-inspection/${caseId}/${appType}`,
+      'Complete Supplementary Report': `/complete-inspection/${caseId}/${appType}`,
+      'Complete Report Query': `/complete-inspection/${caseId}/${appType}`,
+      'Verify Application': '',
+      'Complete GIS Report': `/complete-gis-report/${caseId}`,
+      'Complete Inspection Report': `/complete-inspection/${caseId}/${appType}`,
+      'Inspector Serve Summons': `/summons/${caseId}`,
+      'Inspector Serve Section 22(5) Notice': `/section/${caseId}/`,
+      'Inspector Serve Section 22(6) Notice': `/section/${caseId}/`,
+      'Description of Premises': `/premises-description/${caseId}/`,
+      'Issue Section 54 Compliance Notice': `/compliance-notice/${caseId}/`,
+      'Upload Section 29 Non Compliance Notice': `/non-compliance-section29/${caseId}/`,
+      'Board Consideration OR Hearing': `/board-consideration-orhearing/${caseId}/`,
+    };
+  
+    if (routes[action]) {
+      this.route.navigate([routes[action]]);
+    } else {
+      console.warn(`No route found for action: ${action}`);
+      // Optionally, navigate to a default route or show an error message
+      // this.route.navigate(['/default-route']);
     }
-
-    
+  }
+  
+  
 }

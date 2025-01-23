@@ -19,6 +19,7 @@ import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-foot
     ReactiveFormsModule,
     MenuFooterPageModule,
     NgxSpinnerModule,
+
   ],
   declarations: [NonComplianceSection29Page]
 })

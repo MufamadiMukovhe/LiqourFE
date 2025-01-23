@@ -44,7 +44,7 @@ export class ViewComplaintPage implements OnInit {
         console.log(error)
       });
 
-      let url1 = environment+"api/general/get-complain/"+this.referenceNo;
+      let url1 = environment.eclbDomain+"api/general/get-complain/"+this.referenceNo;
       this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
         console.log(response)
         this.complains =response.comments;

@@ -65,7 +65,6 @@ const dbConfig: DBConfig  = {
     NetworkService,
     DatePipe,
     SQLite,
-  
     MenuController, { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }, provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]

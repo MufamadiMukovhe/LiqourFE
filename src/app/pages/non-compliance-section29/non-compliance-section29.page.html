@@ -101,6 +101,7 @@
 
             <!--<app-file-upload *ngIf="true" [fileItems]="fileItems" (fileSelected)="onFileSelected($event)"></app-file-upload>-->
             <ng-container *ngIf="true">
+              
                 <div class="file-upload" *ngFor="let item of fileItems; let i = index">
                     <div class="file-actions">
                         {{ item.label }}
