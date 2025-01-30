@@ -17,6 +17,9 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { DatabaseSQLiteService } from 'src/app/util/service/database-sqlite.service';
 import { Location } from '@angular/common';
+import { GeneralService } from 'src/app/util/service/general-service';
+import { FormModel } from 'src/app/model/model';
+import { finalize } from 'rxjs';
 
 
 
@@ -30,7 +33,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./complete-inspection.page.scss'],
 })
 export class CompleteInspectionPage implements OnInit {
-
+  case: any;
   selectedOption: string = '';
   reportFiles: { name: string, size: number }[] = [];
   noticeFiles: { name: string, size: number }[] = [];
@@ -42,7 +45,7 @@ export class CompleteInspectionPage implements OnInit {
   isPhotoAvailable:boolean=false;
   test: String = '';
   isHidden: boolean = true;
-
+  application = new FormModel();
   selectedSections: any[] = [];
 
   imageSources: { src: string, description: string }[] = [];
@@ -61,6 +64,7 @@ export class CompleteInspectionPage implements OnInit {
   inspectionReport: any;
   reportDoc: any;
   noticeDoc: any;
+  formGroup: any;
 
   constructor(
     private router: Router,
@@ -79,7 +83,7 @@ export class CompleteInspectionPage implements OnInit {
     private geolocationService: GeolocationService,
     private imageStorageService: StorageService,
     private location: Location,
-    
+    private service:GeneralService
     
   ) {
     this.completeReportForm = this.fb.group({
@@ -186,11 +190,14 @@ export class CompleteInspectionPage implements OnInit {
       });
     });
 
-
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.case = queryParams.get('case');
+      this.getApplication(this.caseNo, this.case);
+    });
   
     this.getCurrentPosition();
     this.getCameraPermission;
-
+       this.getApplication(this.caseNo,this.case)
     //this.loadFileByCaseId();
   }
 
@@ -938,13 +945,13 @@ export class CompleteInspectionPage implements OnInit {
       header: 'Select Image Source',
       buttons: [
         //Commented Out the Photos
-        /*{
+        {
           text: 'Photos',
           icon: 'image',
           handler: () => {
             this.selectImage(CameraSource.Photos);
           }
-        },*/
+        },
         {
           text: 'Camera',
           icon: 'camera',
@@ -961,7 +968,7 @@ export class CompleteInspectionPage implements OnInit {
     });
     await actionSheet.present();
   }
-  compulsoryPhotosCaptured: boolean[] = new Array(2).fill(false);  // Only 2 compulsory photos
+  compulsoryPhotosCaptured: boolean[] = new Array(12).fill(false);  // Only 2 compulsory photos
   availableDescriptions: string[] = ['Front View', 'Front & Left Side View','Front & Right Side View','Back View','Back & Left Side','Back & Right-side','Drinking Area View','Counter View','Shelves Area view','Storage Area View','Toilet Front View','Toilet Inside View', 'Other'];  
 
   selectedDescriptions: Set<string> = new Set(); // Use a Set to keep track of selected descriptions
@@ -992,7 +999,7 @@ async selectImage(source: CameraSource) {
       this.selectedDescriptions.add(description);
 
       const compulsoryIndex = this.availableDescriptions.indexOf(description);
-      if (compulsoryIndex >= 0 && compulsoryIndex < 2) {
+      if (compulsoryIndex >= 0 && compulsoryIndex < 12) {
         this.compulsoryPhotosCaptured[compulsoryIndex] = true;
       }
 
@@ -1316,5 +1323,39 @@ async showAlert(message: string) {
   }
   
 
+  private getApplication(caseId: any, caseNam: any): void {
+    // Show the spinner at the start
+    this.spinner.show();
+  
+    this.service.getApplicationInformation1(caseId).pipe(
+      finalize(() => {
+        // Always hide the spinner after the observable completes
+        this.spinner.hide();
+      })
+    ).subscribe({
+      next: (res: any) => {
+       
+        this.application = res;
+  
+
+         
+      const contactPersonValue =
+      res.applicantFullName?.trim() ||
+      res.companyName?.trim() ||
+      res.trustName?.trim() ||
+      ''; 
+        if (res && res.applicantFullName) {
+          this.completeReportForm.get('applicant')?.setValue(contactPersonValue);
+        }
+  
+      },
+      error: (error: any) => {
+        console.error('Error fetching application information:', error);
+  
+        
+      }
+    });
+  }
+  
   
 }

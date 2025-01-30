@@ -117,7 +117,7 @@ export class SectionPage implements OnInit {
 
   navigatoToBack()
   {
-    this.aRoute.navigate(['/my-task'])
+    this.aRoute.navigate(['/my-tasks'])
 
   }
 
