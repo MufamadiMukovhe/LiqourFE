@@ -296,7 +296,11 @@ const routes: Routes = [
   {
     path: 'board-consideration-orhearing/:caseId',
     loadChildren: () => import('./pages/board-consideration-orhearing/board-consideration-orhearing.module').then( m => m.BoardConsiderationORHearingPageModule)
+  },  {
+    path: 'offline-password',
+    loadChildren: () => import('./pages/offline-password/offline-password.module').then( m => m.OfflinePasswordPageModule)
   },
+
 
 
 

@@ -10,6 +10,7 @@ import { DashboardPage } from './dashboard.page';
 import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-footer.module';
 import { MenuHeaderPageModule } from 'src/app/headerFooter/menu-header/menu-header.module';
 import { RouterModule } from '@angular/router';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
     DashboardPageRoutingModule,
    MenuFooterPageModule,
    MenuHeaderPageModule,
+    NgxSpinnerModule.forRoot()
    
   ],
   declarations: [DashboardPage],

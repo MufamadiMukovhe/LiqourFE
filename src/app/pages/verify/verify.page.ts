@@ -24,6 +24,7 @@ export class VerifyPage implements OnInit {
   isFirstLogin: boolean = false;
   sharedData: string='';
   myOtp: any;
+  firstLogin: string | null | undefined;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -47,6 +48,7 @@ export class VerifyPage implements OnInit {
 
     this.sharedData = this.dataService.getData();
     this.myOtp = localStorage.getItem('otp');
+     this.firstLogin = localStorage.getItem('firstLogin');
   }
 
   handleKeydown(event: KeyboardEvent, currentIndex: number) {
@@ -108,9 +110,11 @@ export class VerifyPage implements OnInit {
 
         setTimeout(async () => {
           this.spinner.hide();
-          if (this.isFirstLogin) {
-            await this.router.navigate(['/pin-creation']);
+          if (!this.firstLogin) {
+            localStorage.setItem('firstLogin', 'true');
+            await this.router.navigate(['/offline-password']);
           } else {
+            localStorage.removeItem('firstLogin');
             await this.router.navigate(['/dashboard']);
           }
         }, 2000);

@@ -23,6 +23,8 @@ export class SigninPage implements OnInit {
   alertType!: string;
   alertMessage!: string;
   showAlert!: boolean;
+  email: string = '';
+  password: string = '';
 
   constructor(
     private router: Router,
@@ -51,46 +53,79 @@ export class SigninPage implements OnInit {
       },
       (error) => console.error('Failed loading the version:', error)
     );
+
+   
   }
 
-  email: string = '';
-  password: string = '';
+
+  checkOffline() {
+    if (navigator.onLine) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   public login(): void {
-
-
+    this.spinner.show();
     if (this.loginForm.invalid) {
       console.error('Form is invalid');
       return;
     }
-
+  
     this.email = this.loginForm.get('email')?.value;
     this.password = this.loginForm.get('password')?.value;
+  
+    // Convert email to username (remove @domain if present)
+    if (this.email?.includes('@')) {
+      let num = this.email.indexOf("@");
+      this.email = this.email.substring(0, num);
+    }
+  
+    // Check if the device is offline
+if (!navigator.onLine) {
+  console.log('Offline mode detected');
+
+    // Retrieve the stored username and password from localStorage
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('offlinePassword');
 
 
-    if (this.email ==null) {
-      console.error('Email is undefined or empty');
+  if (storedUsername) {
+    console.log('Using stored username:', storedUsername);
+  } else {
+    console.warn('No stored username found.');
+  }
+  if (storedUsername && storedPassword) {
+    console.log('Using stored username and password:', storedUsername, storedPassword);
+   // Check if the stored username and password match the input credentials
+   if (this.email === storedUsername && this.password === storedPassword) {
+    console.log('Offline login successful');
+
+    setTimeout(() => {
+      this.spinner.hide();
+      this.router.navigate(['dashboard']); // Navigate to dashboard without OTP
+      this.loginForm.reset();
+    }, 2000);
+
+    return;
+  } else {
+        console.error('Offline login failed - Invalid credentials');
+        this.showAlertMessage('error', 'Invalid username or password for offline mode.');
+        this.spinner.hide();
+        return;
+      }
+    }else {
+      console.warn('No stored username or password found.');
+      this.showAlertMessage('error', 'No stored credentials found for offline login.');
+      this.spinner.hide();
       return;
     }
-    else if(this.email.includes('@'))
-    {
-      
-      let num=this.email.indexOf("@");
-
-      this.email=this.email.substring(0,num)
-      
-    }
-
-    this.spinner.show();
-    this.auth.username = this.email;
-
-    this.getOpt();
-      
-   
-   
-
-
   }
+  
+    this.getOpt(); // Request OTP for online login
+  }
+  
 
   private getOpt(): void {
     const auth2 = {

@@ -692,25 +692,12 @@ export class CompleteInspectionPage implements OnInit {
 
 
         console.log(error);
-        this.spinner.hide();
-      
-        this.offlineService.saveReport(formData, this.caseNo).then(
-          () => {
-            // Handle successful response
-            console.log('Report saved successfully');
-          },
-          (error) => {
-            // Handle error response
-            console.error('Error saving report', error);
-          }
-        );
+          this.offlineService.saveReport(formData, this.caseNo);
+       
       
       }
     
-     );//}else
-    // {
-    //   alert("Your coordinates are not within Eastern Cape")
-    // }
+     );
 
 
 
@@ -945,18 +932,19 @@ export class CompleteInspectionPage implements OnInit {
       header: 'Select Image Source',
       buttons: [
         //Commented Out the Photos
-        {
-          text: 'Photos',
-          icon: 'image',
-          handler: () => {
-            this.selectImage(CameraSource.Photos);
-          }
-        },
+       
         {
           text: 'Camera',
           icon: 'camera',
           handler: () => {
             this.selectImage(CameraSource.Camera);
+          }
+        },
+        {
+          text: 'Photos',
+          icon: 'image',
+          handler: () => {
+            this.selectImage(CameraSource.Photos);
           }
         },
         {
@@ -968,7 +956,7 @@ export class CompleteInspectionPage implements OnInit {
     });
     await actionSheet.present();
   }
-  compulsoryPhotosCaptured: boolean[] = new Array(12).fill(false);  // Only 2 compulsory photos
+  compulsoryPhotosCaptured: boolean[] = new Array(0).fill(false);  // Only 2 compulsory photos
   availableDescriptions: string[] = ['Front View', 'Front & Left Side View','Front & Right Side View','Back View','Back & Left Side','Back & Right-side','Drinking Area View','Counter View','Shelves Area view','Storage Area View','Toilet Front View','Toilet Inside View', 'Other'];  
 
   selectedDescriptions: Set<string> = new Set(); // Use a Set to keep track of selected descriptions
@@ -999,7 +987,7 @@ async selectImage(source: CameraSource) {
       this.selectedDescriptions.add(description);
 
       const compulsoryIndex = this.availableDescriptions.indexOf(description);
-      if (compulsoryIndex >= 0 && compulsoryIndex < 12) {
+      if (compulsoryIndex >= 0 && compulsoryIndex < 0) {
         this.compulsoryPhotosCaptured[compulsoryIndex] = true;
       }
 
@@ -1324,12 +1312,12 @@ async showAlert(message: string) {
   
 
   private getApplication(caseId: any, caseNam: any): void {
-    // Show the spinner at the start
+   
     this.spinner.show();
   
     this.service.getApplicationInformation1(caseId).pipe(
       finalize(() => {
-        // Always hide the spinner after the observable completes
+       
         this.spinner.hide();
       })
     ).subscribe({
@@ -1344,9 +1332,9 @@ async showAlert(message: string) {
       res.companyName?.trim() ||
       res.trustName?.trim() ||
       ''; 
-        if (res && res.applicantFullName) {
+        /*if (res && res.applicantFullName) {
           this.completeReportForm.get('applicant')?.setValue(contactPersonValue);
-        }
+        }*/
   
       },
       error: (error: any) => {

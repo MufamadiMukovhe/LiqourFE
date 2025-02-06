@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from 'src/app/util/service/helper.service';
 
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { AlertService } from 'src/app/util/service/services/alert.service';
+import { OfflineService } from 'src/app/util/service/services/offline.service';
+import { Network } from '@capacitor/network';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,23 +14,60 @@ import { AlertService } from 'src/app/util/service/services/alert.service';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+  isNetworkOnline = new BehaviorSubject<boolean>(false); // Tracks network status
 
-  
-  constructor(private route: Router,private helper: HelperService, private alertService: AlertService) { }
+  constructor(private route: Router,private helper: HelperService, private alertService: AlertService,private offlineService: OfflineService,  private spinner: NgxSpinnerService ) { }
 
   private currentIndex: number = 0;
   private slides: HTMLElement[] = []; 
   private dots: HTMLElement[] = [];
 
-   ngOnInit() {
-   
+  ngOnInit() {
+
+     // Check network status
+     this.checkNetworkStatus();
     this.alertService.checkPendingAlert();
     this.slides = Array.from(document.querySelectorAll('.slide')) as HTMLElement[];
     this.dots = Array.from(document.querySelectorAll('.dot')) as HTMLElement[];
     this.startSlideShow();
+
+  
+  
+    this.startSlideShow(); 
+       
+
   }
 
+  ionViewWillEnter() {
+    this.trySendReports(); 
+  }
 
+  private checkNetworkStatus() {
+    // Listen for network changes
+    Network.addListener('networkStatusChange', (status) => {
+      console.log('Network status changed:', status.connected);
+      this.isNetworkOnline.next(status.connected);
+      this.trySendReports(); // Attempt to send reports when online
+    });
+
+    // Get initial network status
+    Network.getStatus().then((status) => {
+      console.log('Initial network status:', status.connected);
+      this.isNetworkOnline.next(status.connected); 
+      this.trySendReports(); // Attempt to send reports when online
+    }).catch(error => {
+      console.error('Error getting initial network status:', error);
+    });
+  }
+
+  private trySendReports() {
+    // Only attempt to send reports if the network is online
+    if (this.isNetworkOnline.getValue()) {
+      this.offlineService.trySendReports(); // Trigger sending reports through OfflineService
+    }
+  }
+
+  
 
 
   private startSlideShow() {

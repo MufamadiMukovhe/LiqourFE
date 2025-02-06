@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is 
+import { jwtDecode } from 'jwt-decode';
 import { HelperService } from 'src/app/util/service/helper.service';
 import { CommunicationService } from 'src/app/util/service/shared/communication.service';
 
@@ -15,6 +15,7 @@ export class MenuHeaderPage implements OnInit {
   usernameWithDots: string = '';
   isDashboard: boolean = false;
   profileImage: any;
+  username: string | undefined;
 
   constructor(
     private router: Router,
@@ -31,10 +32,35 @@ export class MenuHeaderPage implements OnInit {
         this.isDashboard = this.router.url === '/dashboard'; // Check if current route is dashboard
       }
     });
+
+    this.loadUsernameOffline(); // Load username when offline
   }
 
+  /**
+   * Load username when offline
+   */
+  loadUsernameOffline() {
+    if (!navigator.onLine) {
+      const storedUsername = localStorage.getItem('username') || 'Guest';
+      this.username = storedUsername;
+
+      // Ensure we don't call replace() on null
+      this.usernameWithSpaces = storedUsername ? storedUsername.replace(/\./g, ' ') : 'Guest';
+      this.usernameWithDots = storedUsername ? storedUsername.replace(/ /g, '.') : 'Guest';
+    }
+  }
+
+  /**
+   * Load username when online from the token
+   */
   loadUsername() {
     let token = localStorage.getItem('userToken');
+
+    if (!navigator.onLine) {
+      this.loadUsernameOffline(); // If offline, use stored username
+      return;
+    }
+
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
@@ -42,31 +68,15 @@ export class MenuHeaderPage implements OnInit {
 
         this.usernameWithSpaces = originalUsername.replace(/\./g, ' ');
         this.usernameWithDots = originalUsername.replace(/ /g, '.');
-        //this.fetchProfilePictureByEmail(); // Call the method correctly
       } catch (error) {
         console.error('Error decoding token:', error);
       }
     }
   }
 
- /* fetchProfilePictureByEmail() {
-    this.http.get(`http://localhost:8081/api/user/profile-image/${this.usernameWithDots}`, {
-      responseType: 'blob'
-    }).subscribe(
-      (response: Blob) => {
-        console.log(this.usernameWithDots);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          this.profileImage = reader.result; // Store the image data in the profileImage property
-        };
-        reader.readAsDataURL(response);
-      },
-      error => {
-        console.error('Error fetching profile image:', error);
-      }
-    );
-  }*/
-
+  /**
+   * Navigate to the dashboard
+   */
   toDashboard() {
     if (this.router.url === '/complaints') {
       this.communicationService.triggerNavigateToDashboard();

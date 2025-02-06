@@ -12,7 +12,6 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class MyTasksPage implements OnInit {
   collect: any[] = [];
-  loading: boolean = true; 
   decodedToken: any;
   role: any;
   tok: any;
@@ -23,7 +22,6 @@ export class MyTasksPage implements OnInit {
     private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
-    // Refresh data when navigating back to '/my-tasks'
     this.route.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.urlAfterRedirects.includes('/my-tasks')) {
         this.loadTasks();
@@ -34,7 +32,9 @@ export class MyTasksPage implements OnInit {
   ngOnInit() {
     this.loadTasks();
   }
-
+  ionViewWillEnter() {
+    this.loadTasks();
+  }
   loadTasks() {
     this.spinner.show();
     const token = localStorage.getItem('userToken');
@@ -46,31 +46,45 @@ export class MyTasksPage implements OnInit {
       "Expires": "0"
     });
 
+      // Check if the app is online before decoding the token
+  if (navigator.onLine) {
+
     this.tok = localStorage.getItem('uToken');
     this.decodedToken = jwtDecode(this.tok);
     this.role = this.decodedToken.scope;
-
-    // **Online Mode**: Fetch tasks from the server
-    if (navigator.onLine) {
-      this.http.get<any[]>(`${environment.eclbDomain}api/general/get-inbox`, { headers: newHeader }).subscribe(
-        (response) => {
-          this.processTasks(response);
-          localStorage.setItem('tasksData', JSON.stringify(this.collect)); // Save data for offline use
-          this.spinner.hide();
-        },
-        (error) => {
-          console.error('Error fetching tasks:', error);
-          this.spinner.hide();
-          this.loadOfflineData(); // If online fetch fails, load offline data
-        }
-      );
-    } else {
-      this.loadOfflineData(); // **Offline Mode**: Load data from localStorage
-    }
+    
   }
 
-  // **Process tasks based on user role**
+    this.http.get<any[]>(`${environment.eclbDomain}api/general/get-inbox`, { headers: newHeader }).subscribe(
+      (response) => {
+        this.spinner.hide();
+        this.processTasks(response);
+        localStorage.setItem('tasksData', JSON.stringify(this.collect));
+        
+      },
+      (error) => {
+
+        console.error('Error fetching tasks:', error);
+        this.spinner.hide();
+        const offlineData2 = localStorage.getItem('tasksData');
+            if (offlineData2) {
+            this.collect = JSON.parse(offlineData2);
+           console.log('Loaded offline tasks:', this.collect);
+          } else {
+              console.warn('No offline data available.');
+              this.collect = [];
+            }
+
+       
+      }
+    );
+  }
+
+
   processTasks(response: any[]) {
+   
+
+
     if (this.role === 'INSPECTOR') {
       this.collect = response.filter((item) =>
         [
@@ -93,7 +107,7 @@ export class MyTasksPage implements OnInit {
       this.collect = response;
     }
 
-    // **Sort tasks by descending `assignDate`**
+  
     this.collect.sort((a, b) => {
       const dateA = new Date(a.assignDate).getTime() || 0;
       const dateB = new Date(b.assignDate).getTime() || 0;
@@ -101,18 +115,7 @@ export class MyTasksPage implements OnInit {
     });
   }
 
-  // **Load tasks from localStorage when offline**
-  loadOfflineData() {
-    const offlineData = localStorage.getItem('tasksData');
-    if (offlineData) {
-      this.collect = JSON.parse(offlineData);
-      console.log('Loaded offline tasks:', this.collect);
-    } else {
-      console.warn('No offline data available.');
-    }
-
-    this.spinner.hide();
-  }
+  
 
   navigateToBack() {
     this.route.navigate(['dashboard']);

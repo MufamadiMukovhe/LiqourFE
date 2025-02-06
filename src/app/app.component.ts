@@ -1,12 +1,15 @@
 import { Component, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { MenuController, Platform } from '@ionic/angular';
+import { AlertController, MenuController, Platform } from '@ionic/angular';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { NetworkService } from './util/service/network.service';
 import { OfflineService } from 'src/app/util/service/services/offline.service';
 import { Subscription } from 'rxjs';
 import { Network } from '@capacitor/network'; // Import Network
 import { Storage } from '@ionic/storage-angular';
+import { VersionControlService } from './util/version-control.service';
+import { VersionService } from './util/service/services/version.service';
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({
@@ -21,6 +24,7 @@ export class AppComponent {
   isOnline: boolean = true;
   private subscriptions: Subscription[] = [];
   alertController: any;
+  appVersion: any;
   
   constructor(
     private menu: MenuController,
@@ -30,7 +34,10 @@ export class AppComponent {
     private networkService: NetworkService,
     private offlineService: OfflineService,
     private renderer: Renderer2,
-    private storage: Storage
+    private storage: Storage,
+    private versionService: VersionService,
+    private alertCtrl: AlertController,
+    private verControl: VersionControlService
     
   ) {
     this.router.events.subscribe((event) => {
@@ -121,7 +128,7 @@ export class AppComponent {
   }
 
   async ngOnInit() {
-
+    //this.checkAppVersion();
     await this.storage.create();
   
     this.subscriptions.push(
@@ -154,6 +161,63 @@ export class AppComponent {
   }
 
   
-
+  checkAppVersion() {
+    this.versionService.getLatestVersion().subscribe(
+      async (data) => {
+        const latestVersion = data.latestVersion;
+        const downloadUrl = data.downloadUrl;
+  
+        // Ensure we fetch the current app version before proceeding
+        this.verControl.getAppVersion().subscribe(
+          async (version) => {
+            this.appVersion = version;
+            console.log('Current App Version:', this.appVersion); 
+  
+            const currentVersion = this.appVersion;
+            console.log(currentVersion)
+            console.log(`Current Version: ${currentVersion}, Latest Version: ${latestVersion}`);
+  
+            if (this.isOutdated(currentVersion, latestVersion)) {
+              const alert = await this.alertCtrl.create({
+                header: 'Update Required',
+                message: 'A new version of the app is available. Please update to continue using the app.',
+                backdropDismiss: false,
+                buttons: [
+                  {
+                    text: 'Update Now',
+                    handler: () => {
+                      window.location.href = downloadUrl; // Redirect to app store or download link
+                    }
+                  }
+                ]
+              });
+  
+              await alert.present();
+            }
+          },
+          (error) => console.error('Failed loading the app version:', error)
+        );
+      },
+      (error) => {
+        console.error('Error checking app version:', error);
+      }
+    );
+  }
+  
+  // Correctly compare version numbers
+  private isOutdated(currentVersion: string, latestVersion: string): boolean {
+    const currentParts = currentVersion.split('.').map(Number);
+    const latestParts = latestVersion.split('.').map(Number);
+  
+    for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
+      const current = currentParts[i] || 0;
+      const latest = latestParts[i] || 0;
+      if (current < latest) return true;
+      if (current > latest) return false;
+    }
+  
+    return false;
+  }
+  
   
 }

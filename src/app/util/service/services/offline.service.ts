@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
-import { Network } from '@capacitor/network';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from './alert.service';
 import { environment } from 'src/environments/environment.prod';
-
-
+import { Network } from '@capacitor/network';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfflineService {
   private storageInitialized = false;
-  private networkStatus = new BehaviorSubject<boolean>(true);
+  private isSendingReports = new BehaviorSubject<boolean>(false);
+  public isSendingReports$ = this.isSendingReports.asObservable();
 
-  constructor(private storage: Storage, private http: HttpClient,private alertService: AlertService) {
+  constructor(
+    private storage: Storage, 
+    private http: HttpClient, 
+    private alertService: AlertService,
+    private router: Router,  
+    private spinner: NgxSpinnerService  
+  ) {
     this.init();
     this.monitorNetworkStatus();
   }
@@ -24,116 +31,134 @@ export class OfflineService {
     try {
       await this.storage.create();
       this.storageInitialized = true;
-      console.log('Storage initialized successfully.');
+      console.log('Storage initialized.');
     } catch (error) {
       console.error('Error initializing storage:', error);
     }
   }
 
   monitorNetworkStatus() {
-    Network.addListener('networkStatusChange', status => {
-      this.networkStatus.next(status.connected);
+    Network.addListener('networkStatusChange', async status => {
       console.log('Network status changed:', status.connected);
-      if (status.connected) {
-        this.sendPendingReports();
+      if (status.connected && this.isUserOnDashboard()) {
+        await this.sendPendingReports();
       }
     });
 
-    Network.getStatus().then(status => {
-      this.networkStatus.next(status.connected);
+    Network.getStatus().then(async status => {
       console.log('Initial network status:', status.connected);
-      if (status.connected) {
-        this.sendPendingReports();
-      }
     }).catch(error => {
       console.error('Error getting initial network status:', error);
     });
   }
 
+  private isUserOnDashboard(): boolean {
+    return this.router.url.includes('/dashboard');
+  }
+
   async saveReport(report: FormData, caseNo: string) {
+    this.spinner.show();
+  
     if (this.storageInitialized) {
       try {
         const serializedReport = await serializeFormData(report);
-        await this.storage.set('report', serializedReport);
-        await this.storage.set('caseNo', caseNo);
-        console.log('Report saved locally:', serializedReport);
-
-        if (this.networkStatus.getValue()) {
-          this.sendReport(serializedReport, caseNo);
+  
+        let caseReports = await this.storage.get('caseReports') || []; // Get existing or default to an empty array
+  
+        if (!Array.isArray(caseReports)) {
+          caseReports = []; // Ensure it's an array
         }
+  
+        caseReports.push({ report: serializedReport, caseNo });
+  
+        await this.storage.set('caseReports', caseReports);
+  
+        this.spinner.hide();
+        this.router.navigate(['/thank-you']);
+  
+        console.log('Report saved locally:', serializedReport);
       } catch (error) {
         console.error('Error saving report:', error);
+        this.spinner.hide();
       }
     } else {
       console.error('Storage is not initialized.');
+      this.spinner.hide();
     }
+  }
+  
+
+  public async trySendReports() {
+    if (this.isUserOnDashboard() && this.isNetworkOnline()) {
+      this.spinner.show();
+      await this.sendPendingReports();
+      this.spinner.hide();
+    }
+  }
+
+  private isNetworkOnline(): boolean {
+    return navigator.onLine;
   }
 
   private async sendPendingReports() {
+    if (this.isSendingReports.getValue()) return;
+  
+    this.isSendingReports.next(true);
+  
     try {
-      const report = await this.storage.get('report');
-      const caseNo = await this.storage.get('caseNo');
-
-      if (report && caseNo) {
-        this.sendReport(report, caseNo);
-      } else {
-        console.log('No pending reports to send.');
+      // Retrieve all saved reports from storage
+      let caseReports = await this.storage.get('caseReports');
+  
+      // Ensure caseReports is an array
+      if (!Array.isArray(caseReports)) {
+        console.log('No reports found or data is not an array.');
+        return;
       }
+  
+      for (const reportData of caseReports) {
+        const { report, caseNo } = reportData;  // Destructure properly
+        if (report && caseNo) {
+          await this.sendReport(report, caseNo);
+        }
+      }
+  
+      // Clear storage after sending all reports
+      await this.storage.remove('caseReports');
+      console.log('All pending reports sent successfully.');
+  
     } catch (error) {
       console.error('Error sending pending reports:', error);
+    } finally {
+      this.isSendingReports.next(false);
     }
   }
+  
 
-  private async sendReport(report: any, caseNo: string) {
+  private async sendReport(report: any, caseId: string) {
+    this.spinner.show();
     try {
       const formData = deserializeFormData(report);
+      console.log(`Sending report for case ${caseId}`);
 
-      // Log the contents of the FormData object
-      console.log('FormData contents:');
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-
-      this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseNo}`, formData).subscribe(
-        response => {
-          console.log('Report sent successfully', response);
-          this.alertService.showAlert('Success', 'Inspection Complete.');
-          this.clearStoredReport();
-        },
-        error => {
-          console.error('Error sending report:', error);
-        }
-      );
+      await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
+      this.alertService.showAlert('Success', 'Inspection Complete.');
+      console.log(`Report for case ${caseId} sent.`);
+      this.spinner.hide()
     } catch (error) {
-      console.error('Error during report sending:', error);
-    }
-  }
-
-  private async clearStoredReport() {
-    try {
-      await this.storage.remove('report');
-      await this.storage.remove('caseNo');
-      console.log('Stored report cleared.');
-    } catch (error) {
-      console.error('Error clearing stored report:', error);
+      console.error(`Error sending report for case ${caseId}:`, error);
+      this.spinner.hide()
+      throw error;
+    } finally {
+      this.spinner.hide();
     }
   }
 }
 
-// Utility functions
-function getFormDataEntries(formData: FormData): [string, FormDataEntryValue][] {
-  const entries: [string, FormDataEntryValue][] = [];
-  formData.forEach((value, key) => {
-    entries.push([key, value]);
-  });
-  return entries;
-}
-
+// Utility functions for handling FormData
 async function serializeFormData(formData: FormData): Promise<any> {
   const obj: any = {};
-  const entries = getFormDataEntries(formData);
-
-  for (const [key, value] of entries) {
+  
+  formData.forEach(async (value, key) => {
     if (value instanceof File) {
       obj[key] = {
         fileName: value.name,
@@ -144,8 +169,24 @@ async function serializeFormData(formData: FormData): Promise<any> {
     } else {
       obj[key] = value;
     }
-  }
+  });
+
   return obj;
+}
+
+
+function deserializeFormData(serializedData: any): FormData {
+  const formData = new FormData();
+  for (const key in serializedData) {
+    if (serializedData[key]?.fileName) {
+      const blob = dataURLToBlob(serializedData[key].fileContent);
+      const file = new File([blob], serializedData[key].fileName, { type: serializedData[key].fileType });
+      formData.append(key, file);
+    } else {
+      formData.append(key, serializedData[key]);
+    }
+  }
+  return formData;
 }
 
 function readFileAsDataURL(file: File): Promise<string> {
@@ -155,20 +196,6 @@ function readFileAsDataURL(file: File): Promise<string> {
     reader.onerror = error => reject(error);
     reader.readAsDataURL(file);
   });
-}
-
-function deserializeFormData(serializedData: any): FormData {
-  const formData = new FormData();
-  for (const key in serializedData) {
-    if (serializedData[key].fileName) {
-      const blob = dataURLToBlob(serializedData[key].fileContent);
-      const file = new File([blob], serializedData[key].fileName, { type: serializedData[key].fileType });
-      formData.append(key, file);
-    } else {
-      formData.append(key, serializedData[key]);
-    }
-  }
-  return formData;
 }
 
 function dataURLToBlob(dataURL: string): Blob {
