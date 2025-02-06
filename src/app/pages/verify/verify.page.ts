@@ -123,7 +123,7 @@ export class VerifyPage implements OnInit {
         console.error('Error validating OTP:', error);
         setTimeout(() => {
           this.spinner.hide();
-          let errorMessage = 'Invalids OTP';
+          let errorMessage = 'Invalid OTP';
           this.showAlertMessage('error', errorMessage);
         }, 2000);
       },
