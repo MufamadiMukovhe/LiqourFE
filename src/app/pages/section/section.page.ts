@@ -8,6 +8,7 @@ import { headers, headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertController } from '@ionic/angular';
+import { ServeNoticeService } from 'src/app/util/service/services/serve-notice.service';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class SectionPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,private router: ActivatedRoute, private spinner: NgxSpinnerService, private http: HttpClient, private aRoute: Router ,  private alertController: AlertController,
+    private serveNotice:ServeNoticeService
   ) {
     this.sectionForm = this.fb.group({
       receivedBy: ['', Validators.required],
@@ -76,10 +78,12 @@ export class SectionPage implements OnInit {
       
       
     }, error => {
-
-      console.log(error);
-      this.spinner.hide();
-     this.showAlert('Failed', 'Something went wrong. please Try again');
+      if (navigator.onLine) {
+        this.showAlert('failed', 'Something went wrong. Please try again');
+        this.spinner.hide();
+      } else {
+      this.serveNotice.saveNotice( formData,this.caseNo)
+      }
     })
 
 
@@ -153,4 +157,7 @@ export class SectionPage implements OnInit {
     await alert.present();
   }
 
+
+ 
 }
+

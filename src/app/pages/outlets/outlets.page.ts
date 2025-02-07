@@ -7,7 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Outlets } from 'src/app/model/model';
 import { OutletService } from 'src/app/util/service/outlet-service';
 import { environment } from 'src/environments/environment.prod';
-
+import { Storage } from '@ionic/storage-angular';
 @Component({
   selector: 'app-outlets',
   templateUrl: './outlets.page.html',
@@ -21,7 +21,7 @@ export class OutletsPage implements OnInit {
   searchTerm: string = '';
 
 
-  constructor(private route: Router, private http: HttpClient, private spinner: NgxSpinnerService,  private service: OutletService,private alertController: AlertController,private router: Router) {}
+  constructor(private route: Router, private http: HttpClient, private spinner: NgxSpinnerService,  private service: OutletService,private alertController: AlertController,private router: Router,private storage: Storage) {}
 
   ngOnInit() {
     this.loadData();
@@ -50,17 +50,36 @@ export class OutletsPage implements OnInit {
   private getOutlets(): void {
     this.spinner.show()
     this.service.getOutlets().subscribe({
-      next: (res: Outlets[]) => {
+      next: async (res: Outlets[]) => {
         this.spinner.hide()
+
         this.outlets = res.sort((a, b) => 
           new Date(b.frwkCreatedTimestamp).getTime() - new Date(a.frwkCreatedTimestamp).getTime()
         );
         this.filteredOutlets = this.outlets;
-        console.log(this.outlets)
-      }, error: (error: any) => {
-        this.spinner.hide();
+
        
+          // Store filtered outlets in storage
+        await this.storage.set('outletData', this.filteredOutlets);
+        console.log('Data stored:', this.filteredOutlets);
+        
+        console.log(this.outlets)
+      }, error: async (error: any) => {
+        
+
+        // Attempt to retrieve data from storage if the API call fails
+      const savedData = await this.storage.get('outletData');
+      if (savedData) {
+        this.outlets = savedData;
+        this.filteredOutlets = savedData;
+
+        this.spinner.hide();
+        console.log('Loaded data from storage:', savedData);
+      } else {
+        console.error('No saved data found in storage');
       }
+    }
+  
     })
   }
 

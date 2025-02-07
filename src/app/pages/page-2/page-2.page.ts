@@ -7,6 +7,8 @@ import SignaturePad from 'signature_pad';
 import { headers, headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
 import { AlertController } from '@ionic/angular';
+import { OfflineSummonService } from 'src/app/util/service/services/offline-summon.service';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-page-2',
@@ -28,6 +30,8 @@ export class Page2Page implements OnInit {
     private spinner: NgxSpinnerService,
     private http: HttpClient,
     private aRoute: Router,
+    private offlineSummon:OfflineSummonService,
+    private storage:Storage
   ) {
     this.page2Form = this.fb.group({
       receivedBy: ['', Validators.required],
@@ -68,12 +72,20 @@ export class Page2Page implements OnInit {
 
     this.http.put(url, formData).subscribe(async response => {
       this.spinner.hide();
+       
       await this.showAlert('Complete', 'Summon served');
       this.aRoute.navigate([`/summons/${this.caseNo}`]);
+
     }, async error => {
       console.log(error);
-      this.spinner.hide();
-      await this.showAlert('Error', 'Something went wrong');
+      
+      if (navigator.onLine) {
+        this.showAlert('failed', 'Something went wrong. Please try again');
+        this.spinner.hide();
+      } else {
+      this.offlineSummon.savesummon( formData,this.caseNo,this.summon)
+      }
+       
     });
   }
 

@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage-angular';
-import { BehaviorSubject } from 'rxjs';
-import { AlertService } from './alert.service';
-import { environment } from 'src/environments/environment.prod';
-import { Network } from '@capacitor/network';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Network } from '@capacitor/network';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
+import { AlertService } from './alert.service';
+import { Storage } from '@ionic/storage-angular';
 @Injectable({
   providedIn: 'root'
 })
-export class OfflineService {
+export class GisOfflineService {
+
   private storageInitialized = false;
-  private isSendingReports = new BehaviorSubject<boolean>(false);
-  public isSendingReports$ = this.isSendingReports.asObservable();
+  private isUploadingGis = new BehaviorSubject<boolean>(false);
+  public isUploadingGis$ = this.isUploadingGis.asObservable();
 
   constructor(
     private storage: Storage, 
@@ -41,7 +41,7 @@ export class OfflineService {
     Network.addListener('networkStatusChange', async status => {
       console.log('Network status changed:', status.connected);
       if (status.connected && this.isUserOnDashboard()) {
-        await this.sendPendingReports();
+        await this.uploadPendingGis();
       }
     });
 
@@ -55,40 +55,41 @@ export class OfflineService {
   private isUserOnDashboard(): boolean {
     return this.router.url.includes('/dashboard');
   }
-  async saveReport(report: FormData, caseNo: string) {
+
+  async saveGis(gisreport: FormData, gisCaseNo: string) {
     this.spinner.show();
   
     if (this.storageInitialized) {
       try {
-        // Serialize the form data
-        const serializedReport = await serializeFormData(report);
+        // Serialize the GIS form data
+        const serializedGis = await serializeFormData(gisreport);
   
-        let caseReports = await this.storage.get('caseReports') || []; // Get existing or default to an empty array
+        let storedGis = await this.storage.get('storedGis') || [];
   
-        if (!Array.isArray(caseReports)) {
-          caseReports = []; // Ensure it's an array
+        if (!Array.isArray(storedGis)) {
+          storedGis = []; // Ensure it's an array
         }
   
-        caseReports.push({ report: serializedReport, caseNo });
+        storedGis.push({ gisData: serializedGis, gisCaseNo });
   
-        // Wait for 7 seconds to simulate a delay for ensuring all data is prepared
+        // Wait for 7 seconds to simulate delay for ensuring all data is prepared
         await new Promise(resolve => setTimeout(resolve, 7000));
   
         // Save the data after the delay
-        await this.storage.set('caseReports', caseReports);
+        await this.storage.set('storedGis', storedGis);
   
         // Make sure the data is saved by re-fetching and checking
-        const savedData = await this.storage.get('caseReports');
+        const savedData = await this.storage.get('storedGis');
         if (savedData && savedData.length > 0) {
           this.spinner.hide();
-          this.router.navigate(['/thank-you']);
-          console.log('Report saved locally:', savedData);
+          this.router.navigate(['/offline-thank-you']);
+          console.log('GIS data saved locally:', savedData);
         } else {
           console.error('Data was not saved correctly.');
           this.spinner.hide();
         }
       } catch (error) {
-        console.error('Error saving report:', error);
+        console.error('Error saving GIS data:', error);
         this.spinner.hide();
       }
     } else {
@@ -98,11 +99,10 @@ export class OfflineService {
   }
   
   
-
-  public async trySendReports() {
+  public async tryUploadGis() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
       this.spinner.show();
-      await this.sendPendingReports();
+      await this.uploadPendingGis();
       this.spinner.hide();
     }
   }
@@ -111,58 +111,65 @@ export class OfflineService {
     return navigator.onLine;
   }
 
-  private async sendPendingReports() {
-    if (this.isSendingReports.getValue()) return;
+  private async uploadPendingGis() {
+    if (this.isUploadingGis.getValue()) return;
   
-    this.isSendingReports.next(true);
+    this.isUploadingGis.next(true);
   
     try {
-      // Retrieve all saved reports from storage
-      let caseReports = await this.storage.get('caseReports');
-  
-      // Ensure caseReports is an array
-      if (!Array.isArray(caseReports)) {
-        console.log('No reports found or data is not an array.');
+      let storedGis = await this.storage.get('storedGis');
+      console.log(storedGis)
+      if (!Array.isArray(storedGis)) {
+        console.log('No GIS data found or data is not an array.');
         return;
       }
   
-      for (const reportData of caseReports) {
-        const { report, caseNo } = reportData;  // Destructure properly
-        if (report && caseNo) {
-          await this.sendReport(report, caseNo);
+      for (const gisRecord of storedGis) {
+        const { gisData, gisCaseNo } = gisRecord;
+        if (gisData && gisCaseNo) {
+          await this.uploadGis(gisData, gisCaseNo);
         }
       }
   
-      // Clear storage after sending all reports
-      await this.storage.remove('caseReports');
-      console.log('All pending reports sent successfully.');
+      await this.storage.remove('storedGis');
+      console.log('All pending GIS data uploaded successfully.');
   
     } catch (error) {
-      console.error('Error sending pending reports:', error);
+      console.error('Error uploading pending GIS data:', error);
     } finally {
-      this.isSendingReports.next(false);
+      this.isUploadingGis.next(false);
     }
   }
   
-
-  private async sendReport(report: any, caseId: string) {
+  private async uploadGis(gisreport: any, gisCaseId: string) {
     this.spinner.show();
     try {
-      const formData = deserializeFormData(report);
-      console.log(`Sending report for case ${caseId}`);
+      const formData = deserializeFormData(gisreport);
+      console.log(`Uploading GIS data for case ${gisCaseId}`);
 
-      await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
-      this.alertService.showAlert('Success', 'Inspection Complete.');
-      console.log(`Report for case ${caseId} sent.`);
-      this.spinner.hide()
+      await this.http.post(`${environment.eclbDomain}api/general/save-gis-report/${gisCaseId}`, formData).toPromise();
+      this.alertService.showAlert('Success', 'GIS Upload Complete.');
+      console.log(`GIS data for case ${gisCaseId} uploaded.`);
+      this.spinner.hide();
     } catch (error) {
-      console.error(`Error sending report for case ${caseId}:`, error);
-      this.spinner.hide()
+      console.error(`Error uploading GIS data for case ${gisCaseId}:`, error);
+      this.spinner.hide();
       throw error;
     } finally {
       this.spinner.hide();
     }
   }
+
+
+  public async clearStoredGis() {
+    try {
+      await this.storage.remove('storedGis');
+      console.log('Stored GIS data cleared.');
+    } catch (error) {
+      console.error('Error clearing GIS data:', error);
+    }
+  }
+  
 }
 
 // Utility functions for handling FormData
@@ -184,7 +191,6 @@ async function serializeFormData(formData: FormData): Promise<any> {
 
   return obj;
 }
-
 
 function deserializeFormData(serializedData: any): FormData {
   const formData = new FormData();
@@ -219,3 +225,4 @@ function dataURLToBlob(dataURL: string): Blob {
   }
   return new Blob([ab], { type: mimeString });
 }
+

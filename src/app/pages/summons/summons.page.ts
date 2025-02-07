@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
@@ -14,7 +15,10 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class SummonsPage implements OnInit {
 
-  constructor(private dateP: DatePipe, private spinner:NgxSpinnerService, private http: HttpClient, private router: ActivatedRoute, private route: Router)
+  constructor(private dateP: DatePipe, private spinner:NgxSpinnerService, private http: HttpClient, 
+    private router: ActivatedRoute,
+     private route: Router,
+     private storage:Storage)
    { }
 
    caseNo:any
@@ -35,23 +39,38 @@ public formattedDate(date:any){
 }
 
  
-public getSummons(caseId:any)
-{
-  let urlSummons =environment.eclbDomain+"api/general/get-summons/"+caseId
+public async getSummons(caseId: any) {
+  let urlSummons = environment.eclbDomain + "api/general/get-summons/" + caseId;
 
   this.spinner.show();
 
-  this.http.get<any>(urlSummons, {headers: headersSecure}).subscribe(response=>
-  {
+  this.http.get<any>(urlSummons, { headers: headersSecure }).subscribe(
+    async (response) => {
+      console.log(response);
 
-    console.log(response);
+      this.collectSummons = response;
+      
+      // Save response to local storage for future fallback
+      await this.storage.set(`summons_${caseId}`, response);
 
-    this.collectSummons=response;
-    this.spinner.hide();
-    
- })
+      this.spinner.hide();
+    },
+    async (error) => {
+      console.error("Error fetching summons:", error);
+      this.spinner.hide();
 
+      // Fallback: Retrieve saved summons from local storage
+      const savedSummons = await this.storage.get(`summons_${caseId}`);
+      if (savedSummons) {
+        console.log("Using saved summons data:", savedSummons);
+        this.collectSummons = savedSummons;
+      } else {
+        console.log("No saved summons data available.");
+      }
+    }
+  );
 }
+
 
   public onSubmit(summon:any): void {
     this.spinner.show();

@@ -5,7 +5,15 @@ ion-card-title {
     width: 80%;
     font-family: 'Inter', sans-serif;
 }
-
+ion-col input{
+  color: #CFAA35;
+  width: 20px;
+  height: 20px;
+}
+ion-radio {
+  --color: black;
+  --color-checked: #CFAA35;
+}
 
 .vector {
     width: 12px;

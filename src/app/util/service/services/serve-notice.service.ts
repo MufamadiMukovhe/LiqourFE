@@ -1,27 +1,27 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage-angular';
-import { BehaviorSubject } from 'rxjs';
-import { AlertService } from './alert.service';
-import { environment } from 'src/environments/environment.prod';
-import { Network } from '@capacitor/network';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Network } from '@capacitor/network';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
+import { AlertService } from './alert.service';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OfflineService {
+export class ServeNoticeService {
   private storageInitialized = false;
-  private isSendingReports = new BehaviorSubject<boolean>(false);
-  public isSendingReports$ = this.isSendingReports.asObservable();
+  private isSendingNotices = new BehaviorSubject<boolean>(false);
+  public isSendingNotices$ = this.isSendingNotices.asObservable();
 
   constructor(
-    private storage: Storage, 
-    private http: HttpClient, 
+    private storage: Storage,
+    private http: HttpClient,
     private alertService: AlertService,
-    private router: Router,  
-    private spinner: NgxSpinnerService  
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {
     this.init();
     this.monitorNetworkStatus();
@@ -38,57 +38,60 @@ export class OfflineService {
   }
 
   monitorNetworkStatus() {
-    Network.addListener('networkStatusChange', async status => {
+    Network.addListener('networkStatusChange', async (status) => {
       console.log('Network status changed:', status.connected);
       if (status.connected && this.isUserOnDashboard()) {
-        await this.sendPendingReports();
+        await this.sendPendingNotices();
       }
     });
 
-    Network.getStatus().then(async status => {
-      console.log('Initial network status:', status.connected);
-    }).catch(error => {
-      console.error('Error getting initial network status:', error);
-    });
+    Network.getStatus()
+      .then(async (status) => {
+        console.log('Initial network status:', status.connected);
+      })
+      .catch((error) => {
+        console.error('Error getting initial network status:', error);
+      });
   }
 
   private isUserOnDashboard(): boolean {
     return this.router.url.includes('/dashboard');
   }
-  async saveReport(report: FormData, caseNo: string) {
+
+  async saveNotice(formData: FormData, caseNo: string) {
     this.spinner.show();
   
     if (this.storageInitialized) {
       try {
-        // Serialize the form data
-        const serializedReport = await serializeFormData(report);
+        // Serialize the notice form data
+        const serializedNotice = await serializeFormData(formData);
   
-        let caseReports = await this.storage.get('caseReports') || []; // Get existing or default to an empty array
+        let storedNotices = (await this.storage.get('notices')) || [];
   
-        if (!Array.isArray(caseReports)) {
-          caseReports = []; // Ensure it's an array
+        if (!Array.isArray(storedNotices)) {
+          storedNotices = []; // Ensure it's an array
         }
   
-        caseReports.push({ report: serializedReport, caseNo });
+        storedNotices.push({ formData: serializedNotice, caseNo });
   
-        // Wait for 7 seconds to simulate a delay for ensuring all data is prepared
+        // Wait for 7 seconds to ensure all data is ready
         await new Promise(resolve => setTimeout(resolve, 7000));
   
         // Save the data after the delay
-        await this.storage.set('caseReports', caseReports);
+        await this.storage.set('notices', storedNotices);
   
-        // Make sure the data is saved by re-fetching and checking
-        const savedData = await this.storage.get('caseReports');
+        // Validate if the data was saved successfully
+        const savedData = await this.storage.get('notices');
         if (savedData && savedData.length > 0) {
           this.spinner.hide();
-          this.router.navigate(['/thank-you']);
-          console.log('Report saved locally:', savedData);
+          this.router.navigate(['/offline-thank-you']);
+          console.log('Notice saved locally:', savedData);
         } else {
           console.error('Data was not saved correctly.');
           this.spinner.hide();
         }
       } catch (error) {
-        console.error('Error saving report:', error);
+        console.error('Error saving notice:', error);
         this.spinner.hide();
       }
     } else {
@@ -97,12 +100,18 @@ export class OfflineService {
     }
   }
   
-  
-
-  public async trySendReports() {
+  public async clearStoredGis() {
+    try {
+      await this.storage.remove('notices');
+      console.log('Stored GIS data cleared.');
+    } catch (error) {
+      console.error('Error clearing GIS data:', error);
+    }
+  }
+  public async trySendNotices() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
       this.spinner.show();
-      await this.sendPendingReports();
+      await this.sendPendingNotices();
       this.spinner.hide();
     }
   }
@@ -111,53 +120,50 @@ export class OfflineService {
     return navigator.onLine;
   }
 
-  private async sendPendingReports() {
-    if (this.isSendingReports.getValue()) return;
-  
-    this.isSendingReports.next(true);
-  
+  private async sendPendingNotices() {
+    if (this.isSendingNotices.getValue()) return;
+
+    this.isSendingNotices.next(true);
+
     try {
-      // Retrieve all saved reports from storage
-      let caseReports = await this.storage.get('caseReports');
-  
-      // Ensure caseReports is an array
-      if (!Array.isArray(caseReports)) {
-        console.log('No reports found or data is not an array.');
+      let storedNotices = await this.storage.get('notices');
+
+      if (!Array.isArray(storedNotices)) {
+        console.log('No notices found or data is not an array.');
         return;
       }
-  
-      for (const reportData of caseReports) {
-        const { report, caseNo } = reportData;  // Destructure properly
-        if (report && caseNo) {
-          await this.sendReport(report, caseNo);
+
+      for (const noticeData of storedNotices) {
+        const { formData, caseNo } = noticeData;
+        if (formData && caseNo ) {
+          await this.sendNotice(formData, caseNo);
         }
       }
-  
-      // Clear storage after sending all reports
-      await this.storage.remove('caseReports');
-      console.log('All pending reports sent successfully.');
-  
+
+      await this.storage.remove('notices');
+      console.log('All pending notices sent successfully.');
     } catch (error) {
-      console.error('Error sending pending reports:', error);
+      console.error('Error sending pending notices:', error);
     } finally {
-      this.isSendingReports.next(false);
+      this.isSendingNotices.next(false);
     }
   }
-  
 
-  private async sendReport(report: any, caseId: string) {
+  private async sendNotice(formData: any, caseId: string) {
     this.spinner.show();
     try {
-      const formData = deserializeFormData(report);
-      console.log(`Sending report for case ${caseId}`);
+      const formDataObject = deserializeFormData(formData);
+      console.log(formDataObject)
+      console.log(`Sending notice for case ${caseId}`);
 
-      await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
-      this.alertService.showAlert('Success', 'Inspection Complete.');
-      console.log(`Report for case ${caseId} sent.`);
-      this.spinner.hide()
+      await this.http
+        .put(`${environment.eclbDomain}api/general/update-section-notice/${caseId}`, formDataObject)
+        .toPromise();
+
+      this.alertService.showAlert('Success', 'Notice Submitted.');
+      console.log(`Notice for case ${caseId} sent.`);
     } catch (error) {
-      console.error(`Error sending report for case ${caseId}:`, error);
-      this.spinner.hide()
+      console.error(`Error sending notice for case ${caseId}:`, error);
       throw error;
     } finally {
       this.spinner.hide();
@@ -168,7 +174,7 @@ export class OfflineService {
 // Utility functions for handling FormData
 async function serializeFormData(formData: FormData): Promise<any> {
   const obj: any = {};
-  
+
   formData.forEach(async (value, key) => {
     if (value instanceof File) {
       obj[key] = {
@@ -184,7 +190,6 @@ async function serializeFormData(formData: FormData): Promise<any> {
 
   return obj;
 }
-
 
 function deserializeFormData(serializedData: any): FormData {
   const formData = new FormData();
@@ -204,7 +209,7 @@ function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
   });
 }

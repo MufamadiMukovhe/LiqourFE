@@ -10,6 +10,8 @@ import { ViewImagePage } from '../view-image/view-image.page';
 import { environment } from 'src/environments/environment.prod';
 import { Geolocation } from '@capacitor/geolocation';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { OfflineService } from 'src/app/util/service/services/offline.service';
+import { GisOfflineService } from 'src/app/util/service/services/gis-offline.service';
 
 @Component({
   selector: 'app-complete-gis-report',
@@ -51,7 +53,9 @@ export class CompleteGisReportPage implements OnInit {
     private route: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private offlineService:OfflineService,
+    private  gisOffine:GisOfflineService
   ) {
     this.gisReportForm = this.fb.group({
       latitude: ['', Validators.required],
@@ -116,7 +120,14 @@ export class CompleteGisReportPage implements OnInit {
       
     }, error => {
       console.log(error);
-      this.spinner.hide();
+      if (navigator.onLine) {
+        this.showAlert1('failed', 'Something went wrong. Please try again');
+        this.spinner.hide();
+      } else {
+      this.gisOffine.saveGis(formData, this.caseNo);
+      }
+
+
     });
   }
 
@@ -141,7 +152,12 @@ export class CompleteGisReportPage implements OnInit {
   }
 
   triggerFileInput() {
-    this.fileInput.nativeElement.click();
+   
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = ".docx, .pdf"; // Adjust as needed for file types
+    fileInput.onchange = (event: Event) => this.onFileSelected(event);
+    fileInput.click();
   }
 
   report!: File;
@@ -272,6 +288,13 @@ export class CompleteGisReportPage implements OnInit {
     }
   }
 
- 
+  async showAlert1(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 }
 

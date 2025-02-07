@@ -76,17 +76,17 @@ export class SigninPage implements OnInit {
     this.email = this.loginForm.get('email')?.value;
     this.password = this.loginForm.get('password')?.value;
   
-    // Convert email to username (remove @domain if present)
+    
     if (this.email?.includes('@')) {
       let num = this.email.indexOf("@");
       this.email = this.email.substring(0, num);
     }
   
-    // Check if the device is offline
+    
 if (!navigator.onLine) {
   console.log('Offline mode detected');
 
-    // Retrieve the stored username and password from localStorage
+    
     const storedUsername = localStorage.getItem('username');
     const storedPassword = localStorage.getItem('offlinePassword');
 
@@ -104,7 +104,7 @@ if (!navigator.onLine) {
 
     setTimeout(() => {
       this.spinner.hide();
-      this.router.navigate(['dashboard']); // Navigate to dashboard without OTP
+      this.router.navigate(['dashboard']);
       this.loginForm.reset();
     }, 2000);
 
@@ -123,7 +123,7 @@ if (!navigator.onLine) {
     }
   }
   
-    this.getOpt(); // Request OTP for online login
+    this.getOpt(); 
   }
   
 

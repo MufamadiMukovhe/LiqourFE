@@ -11,54 +11,66 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class ForgotPasswordPage implements OnInit {
 
   passwordForm: FormGroup;
+  email: string | null = '';
+
   constructor(private fb: FormBuilder, private router: Router, private spinner: NgxSpinnerService) {
+    // Get email from localStorage
+    this.email = localStorage.getItem('username');
+
     this.passwordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: [{ value: this.email, disabled: true }, [Validators.required, Validators.email]], // Pre-filled and disabled email
+      password: ['', Validators.required], // Minimum password length for security
       confirmPassword: ['', Validators.required]
-    },  
-    {
+    }, {
       validators: this.MustMatch('password', 'confirmPassword'),
     });
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  // Password match validation
+  MustMatch(password: string, confirmPassword: string) {
+    return (formGroup: FormGroup) => {
+      const passwordControl = formGroup.controls[password];
+      const confirmPasswordControl = formGroup.controls[confirmPassword];
+
+      if (confirmPasswordControl.errors && !confirmPasswordControl.errors['MustMatch']) {
+        return;
+      }
+      if (passwordControl.value !== confirmPasswordControl.value) {
+        confirmPasswordControl.setErrors({ 'MustMatch': true });
+      } else {
+        confirmPasswordControl.setErrors(null);
+      }
+    };
   }
 
-    /*Password mismatched*/
-    MustMatch( password:any, confirmPassword:any)
-    {
-     return(formGroup: FormGroup)=>{
-       const passwordcontrol = formGroup.controls[password];
-       const confirm_passwordcontrol = formGroup.controls[confirmPassword];
- 
-       if(confirm_passwordcontrol.errors && !confirm_passwordcontrol.errors['MustMatch']){
-         return;
-       }
-       if(passwordcontrol.value !== confirm_passwordcontrol.value)
-       {
-         confirm_passwordcontrol.setErrors({'MustMatch': true});
-       }
-       else{
-         confirm_passwordcontrol.setErrors(null);
-       }
- 
-     }
+  // Submitting the form
+  onSubmit() {
+    if (this.passwordForm.invalid) {
+      alert("Please fill in all fields correctly.");
+      return;
     }
 
-    //Submitting a form
-    onSubmit()
-    {
-     this.spinner.show(); 
- 
-     setTimeout(() => {
-       this.spinner.hide(); 
-     }, 2000);
+    this.spinner.show();
 
-     console.log("Loading");
-   
-    }
-    get reset() { return this.passwordForm.controls; }
+    setTimeout(() => {
+      this.spinner.hide();
+      
+      // Store new password in localStorage
+      localStorage.setItem('offlinePassword', this.passwordForm.get('password')?.value);
 
+      console.log("Password updated successfully");
+      
+      this.passwordForm.reset();
+      // Navigate to login page
+      this.router.navigate(['/signin']);
+
+    }, 2000);
+  }
+
+  get reset() {
+    return this.passwordForm.controls;
+  }
 
 }

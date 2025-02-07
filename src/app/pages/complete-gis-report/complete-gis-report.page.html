@@ -92,20 +92,26 @@
       <span>(a) Is there school within 500m radius?</span>
       <ion-card-title class="general-name">
         <ion-grid>
-          <ion-row>
-            <ion-col>
+          <ion-row class="horizontal-radios">
+            <ion-col >
+              <ion-radio-group formControlName="schoolIn100m">
+                <ion-row class="horizontal-radios">
+                  <ion-col >
               <div class="radios">
-                <input type="radio" id="yes_appt" name="schoolIn100m" value="1" formControlName="schoolIn100m">
+                <ion-radio  id="yes_appt" name="schoolIn100m" value="1"></ion-radio>
                 <label for="yes_appt">Yes</label>
               </div>
             </ion-col>
             <ion-col>
               <div class="radios">
-                <input type="radio" id="no_appt" name="schoolIn100m" value="2" formControlName="schoolIn100m">
+                <ion-radio id="no_appt" name="schoolIn100m" value="2"></ion-radio>
                 <label for="no_appt">No</label>
               </div>
             </ion-col>
             
+          </ion-row>
+              </ion-radio-group>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card-title>
@@ -114,22 +120,28 @@
       <span>(b) Is there a place of worship within 500m radius?</span>
       <ion-card-title class="general-name">
         <ion-grid>
-          <ion-row>
-            <ion-col>
+          <ion-row class="horizontal-radios">
+            <ion-col >
+              <ion-radio-group formControlName="churchIn100m">
+                <ion-row class="horizontal-radios">
+                  <ion-col >
               <div class="radios">
-                <input type="radio" id="yes_person" name="churchIn100m" value="1" formControlName="churchIn100m">
+                <ion-radio id="yes_person" name="churchIn100m" value="1" ></ion-radio>
                 <label for="yes_person">Yes</label>
               </div>
             </ion-col>
             <ion-col>
               <div class="radios">
-                <input type="radio" id="no_person" name="churchIn100m" value="2" formControlName="churchIn100m">
+                <ion-radio id="no_person" name="churchIn100m" value="2" ></ion-radio>
                 <label for="no_person">No</label>
               </div>
             </ion-col>
           
           </ion-row>
-        </ion-grid>
+        </ion-radio-group>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
       </ion-card-title>
       <hr>
   
@@ -137,22 +149,29 @@
     <span>(c) Is the premises within the correct ward?</span>
     <ion-card-title class="general-name">
       <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div class="radios">
-              <input type="radio" id="yes_indicated" name="wardBoundriesIn100m" value="1" formControlName="wardBoundriesIn100m">
+        <ion-row class="horizontal-radios">
+          <ion-col >
+            <ion-radio-group formControlName="wardBoundriesIn100m">
+              <ion-row class="horizontal-radios">
+                <ion-col >
+                <div class="radios">
+              <ion-radio id="yes_indicated" name="wardBoundriesIn100m" value="1" ></ion-radio>
               <label for="yes_indicated">Yes</label>
             </div>
           </ion-col>
           <ion-col>
             <div class="radios">
-              <input type="radio" id="no_indicated" name="wardBoundriesIn100m" value="2" formControlName="wardBoundriesIn100m">
+              <ion-radio id="no_indicated" name="wardBoundriesIn100m" value="2"></ion-radio>
               <label for="no_indicated">No</label>
             </div>
           </ion-col>
       
         </ion-row>
+            </ion-radio-group>
+          </ion-col>
+          </ion-row>
       </ion-grid>
+    
     </ion-card-title>
     <hr>
 

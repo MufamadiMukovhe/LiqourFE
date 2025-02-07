@@ -692,8 +692,12 @@ export class CompleteInspectionPage implements OnInit {
 
 
         console.log(error);
+        if (navigator.onLine) {
+          this.showAlert1('failed', 'Something went wrong. Please try again');
+          this.spinner.hide();
+        } else {
           this.offlineService.saveReport(formData, this.caseNo);
-       
+        }
       
       }
     
@@ -1114,7 +1118,14 @@ async showAlert(message: string) {
   });
   await alert.present();
 }
- 
+async showAlert1(header: string, message: string) {
+  const alert = await this.alertController.create({
+    header,
+    message,
+    buttons: ['OK']
+  });
+  await alert.present();
+}
 
 
   

@@ -300,6 +300,10 @@ const routes: Routes = [
     path: 'offline-password',
     loadChildren: () => import('./pages/offline-password/offline-password.module').then( m => m.OfflinePasswordPageModule)
   },
+  {
+    path: 'offline-thank-you',
+    loadChildren: () => import('./pages/offline-thank-you/offline-thank-you.module').then( m => m.OfflineThankYouPageModule)
+  },
 
 
 
