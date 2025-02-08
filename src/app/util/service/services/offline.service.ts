@@ -152,9 +152,10 @@ export class OfflineService {
       console.log(`Sending report for case ${caseId}`);
 
       await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
+      this.spinner.hide()
       this.alertService.showAlert('Success', 'Inspection Complete.');
       console.log(`Report for case ${caseId} sent.`);
-      this.spinner.hide()
+      
     } catch (error) {
       console.error(`Error sending report for case ${caseId}:`, error);
       this.spinner.hide()

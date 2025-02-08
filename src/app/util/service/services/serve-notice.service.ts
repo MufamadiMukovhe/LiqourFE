@@ -159,7 +159,7 @@ export class ServeNoticeService {
       await this.http
         .put(`${environment.eclbDomain}api/general/update-section-notice/${caseId}`, formDataObject)
         .toPromise();
-
+        this.spinner.hide();
       this.alertService.showAlert('Success', 'Notice Submitted.');
       console.log(`Notice for case ${caseId} sent.`);
     } catch (error) {

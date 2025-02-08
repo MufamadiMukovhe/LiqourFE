@@ -684,17 +684,18 @@ export class CompleteInspectionPage implements OnInit {
       let url = environment.eclbDomain+"api/general/complete-inspection-report/" + this.caseNo;
 
       this.http.post(url, formData).subscribe(response => {
-
-        this.router.navigate(['/thank-you'])
         this.spinner.hide();
+        this.router.navigate(['/thank-you'])
+       
         
       }, error => {
 
 
         console.log(error);
         if (navigator.onLine) {
-          this.showAlert1('failed', 'Something went wrong. Please try again');
           this.spinner.hide();
+          this.showAlert1('failed', 'Something went wrong. Please try again');
+         
         } else {
           this.offlineService.saveReport(formData, this.caseNo);
         }

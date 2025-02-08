@@ -148,9 +148,10 @@ export class GisOfflineService {
       console.log(`Uploading GIS data for case ${gisCaseId}`);
 
       await this.http.post(`${environment.eclbDomain}api/general/save-gis-report/${gisCaseId}`, formData).toPromise();
+      this.spinner.hide();
       this.alertService.showAlert('Success', 'GIS Upload Complete.');
       console.log(`GIS data for case ${gisCaseId} uploaded.`);
-      this.spinner.hide();
+      
     } catch (error) {
       console.error(`Error uploading GIS data for case ${gisCaseId}:`, error);
       this.spinner.hide();

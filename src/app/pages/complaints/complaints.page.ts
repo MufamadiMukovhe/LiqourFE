@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { CommunicationService } from 'src/app/util/service/shared/communication.service';
 import { environment } from 'src/environments/environment.prod';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-complaints',
@@ -27,7 +28,8 @@ export class ComplaintsPage implements OnInit, OnDestroy {
     private eRef: ElementRef,
     private http: HttpClient,
     private spinner: NgxSpinnerService,
-    private communicationService: CommunicationService // Fixed injection
+    private communicationService: CommunicationService ,// Fixed injection
+    private storage:Storage
   ) {
     this.subscription = this.route.events.subscribe(event => {
       if (event instanceof NavigationEnd && event.urlAfterRedirects === '/complaints') {
@@ -53,7 +55,7 @@ export class ComplaintsPage implements OnInit, OnDestroy {
     };
 
     this.http.get<any>(url, { headers: newHeader }).subscribe(
-      response => {
+      async response => {
         console.log(response);
         this.collect = response;
         this.filteredCollect = response;
@@ -63,16 +65,35 @@ export class ComplaintsPage implements OnInit, OnDestroy {
           this.filteredCollect.sort((a, b) => new Date(b.dateComplaintLogged).getTime() - new Date(a.dateComplaintLogged).getTime());
           this.filteredCollect = this.filteredCollect || []
 
+        // Store complaints in Ionic Storage for offline use
+        await this.storage.set("savedComplaints", this.filteredCollect);
 
         this.spinner.hide();
         this.loading = false;
         
       },
-      error => {
-        console.log(error);
-        this.spinner.hide();
-        this.loading = false;
-      }
+      async error => {
+        // User is offline, use locally stored complaints from Ionic Storage
+    const savedComplaints = await this.storage.get("savedComplaints");
+
+    if (savedComplaints) {
+      this.collect = savedComplaints;
+      this.filteredCollect = this.collect;
+      this.referenceNumbers = this.collect.map((item: any) => item.referenceNumber);
+
+      this.filteredCollect.sort((a, b) => 
+        new Date(b.dateComplaintLogged).getTime() - new Date(a.dateComplaintLogged).getTime()
+      );
+
+      console.log("Loaded complaints from Ionic Storage:", this.collect);
+    } else {
+      console.log("No offline complaints found.");
+    }
+
+    this.spinner.hide();
+    this.loading = false;
+  }
+      
     );
 
     

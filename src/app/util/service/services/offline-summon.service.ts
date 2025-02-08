@@ -162,7 +162,7 @@ export class OfflineSummonService {
       await this.http
         .put(`${environment.eclbDomain}api/general/update-summons/${caseId}/${summon}`, formDataObject)
         .toPromise();
-
+        this.spinner.hide();
       this.alertService.showAlert('Success', 'summon Submitted.');
       console.log(`summon for case ${caseId} sent.`);
     } catch (error) {

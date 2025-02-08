@@ -226,6 +226,26 @@ ion-input{
     --color: black;
     --color-checked: #CFAA35;
   }
+
+  .custom-checkbox {
+    --border-color-checked: #CFAA35!important;
+    --checkbox-background-checked: #CFAA35 !important;
+    --checkmark-color: white !important; /* Optional */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    cursor: pointer;
+    margin-left: 10px;
+    top: 3px;
+    border-radius: 1px;
+  }
+  
+  
+  
+
   .buttonClass2 {
     --background: #822B23;
     --color: #fff;
@@ -603,7 +623,6 @@ ion-input::part(placeholder) {
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 2px solid rgb(40, 38, 38);
   position: relative;
   cursor: pointer;
   margin-left: 10px;

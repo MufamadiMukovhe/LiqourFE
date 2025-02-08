@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { headersSecure } from 'src/app/util/service/const';
 import { environment } from 'src/environments/environment.prod';
 
@@ -14,7 +15,10 @@ export class ViewComplaintPage implements OnInit {
   complains:string="";
   inspector: string="";
 
-  constructor(private aRoute: Router, private eRef: ElementRef, private http:HttpClient, private route: ActivatedRoute) {}
+  constructor(private aRoute: Router, private eRef: ElementRef, private http:HttpClient, private route: ActivatedRoute,
+    private storage:Storage
+    
+  ) {}
 
   referenceNo:any;
 
@@ -22,48 +26,83 @@ export class ViewComplaintPage implements OnInit {
 
   collectObj:any
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(param => {
-
-      let token = localStorage.getItem("userToken") 
-    const newHeader={
-      "Authorization":"Bearer "+token, 
-      "Accept":"*/*"
-    }
-
+  async ngOnInit() {
+    this.route.paramMap.subscribe(async (param) => {
       this.referenceNo = param.get('referenceNumber');
-
-      let url = environment.eclbDomain+"api/general/get-complaint-details/"+this.referenceNo;
-      
-      this.http.get<any>(url,{headers: newHeader}).subscribe(response => {
-        console.log(response)
-        this.collect=response;
-
-        this.collectObj=response;
-      }, error => {
-        console.log(error)
-      });
-
-      let url1 = environment.eclbDomain+"api/general/get-complain/"+this.referenceNo;
-      this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
-        console.log(response)
-        this.complains =response.comments;
-
-        
-
-        this.ecpNumber=response.ecpNumber;
-        this.inspector= response.inspector
-       
-        console.log(this.complains)
-        console.log(this.ecpNumber);
-
-      }, error => {
-        console.log(error)
-      });
+      let token = localStorage.getItem("userToken");
+  
+      const newHeader = {
+        "Authorization": "Bearer " + token,
+        "Accept": "*/*"
+      };
+  
+      let url = environment.eclbDomain + "api/general/get-complaint-details/" + this.referenceNo;
+      let url1 = environment.eclbDomain + "api/general/get-complain/" + this.referenceNo;
+  
+      if (navigator.onLine) {
+        // User is online, fetch from API
+        this.http.get<any>(url, { headers: newHeader }).subscribe(
+          async (response) => {
+            console.log(response);
+            this.collect = response;
+            this.collectObj = response;
+  
+            // Store complaint details in Ionic Storage
+            await this.storage.set(`complaintDetails_${this.referenceNo}`, response);
+          },
+          (error) => {
+            console.log(error);
+            this.loadOfflineData(); // Load offline data if API fails
+          }
+        );
+  
+        this.http.get<any>(url1, { headers: newHeader }).subscribe(
+          async (response) => {
+            console.log(response);
+            this.complains = response.comments;
+            this.ecpNumber = response.ecpNumber;
+            this.inspector = response.inspector;
+  
+            // Store complaint comments in Ionic Storage
+            await this.storage.set(`complaintComments_${this.referenceNo}`, response);
+          },
+          (error) => {
+            console.log(error);
+            this.loadOfflineData(); // Load offline data if API fails
+          }
+        );
+      } else {
+        // User is offline, load from storage
+        this.loadOfflineData();
+      }
     });
-
-
   }
+  
+  // Separate function to handle loading offline data
+  async loadOfflineData() {
+    console.log("Loading offline data...");
+    
+    const storedComplaintDetails = await this.storage.get(`complaintDetails_${this.referenceNo}`);
+    const storedComplaintComments = await this.storage.get(`complaintComments_${this.referenceNo}`);
+  
+    if (storedComplaintDetails) {
+      this.collect = storedComplaintDetails;
+      this.collectObj = storedComplaintDetails;
+      console.log("Loaded complaint details from Ionic Storage:", this.collect);
+    } else {
+      console.log("No offline complaint details found.");
+    }
+  
+    if (storedComplaintComments) {
+      this.complains = storedComplaintComments.comments;
+      this.ecpNumber = storedComplaintComments.ecpNumber;
+      this.inspector = storedComplaintComments.inspector;
+      console.log("Loaded complaint comments from Ionic Storage:", this.complains);
+    } else {
+      console.log("No offline complaint comments found.");
+    }
+  }
+  
   extractCommentText(comment: string): string {
     const parts = comment.split(' - ');
     return parts[0] || ''; 

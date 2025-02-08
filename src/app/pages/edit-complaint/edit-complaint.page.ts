@@ -6,6 +6,7 @@ import { headers, headersSecure } from 'src/app/util/service/const';
 import { AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { environment } from 'src/environments/environment.prod';
+import { Storage } from '@ionic/storage-angular';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class EditComplaintPage implements OnInit {
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private aRoute: Router, private eRef: ElementRef,private spinner: NgxSpinnerService,
     private alertController: AlertController,
-    private navController: NavController
+    private navController: NavController,
+    private storage:Storage
   ) {}
 
   reference: string = "";
@@ -47,16 +49,17 @@ export class EditComplaintPage implements OnInit {
     let urlForInspectors=environment.eclbDomain+"api/general/get-complaints-info";
 
     this.http.get(urlForInspectors, { headers: newHeader }).subscribe(
-      (response: any) => {
+      async (response: any) => {
         if (response && response.inspectors) {
           this.inspectors = response.inspectors;
           console.log(this.inspectors);
-          
+          await this.storage.set("inspectors", response.inspectors);
           
         }
       },
       (error) => {
         console.log(error);
+        this.loadOfflineInspectors(); // Load offline data if API fails
       }
     );
 
@@ -93,11 +96,13 @@ export class EditComplaintPage implements OnInit {
 
 
       }, error => {
-        console.log(error)
+     
+        console.log(error);
+        this.loadOfflineData(); // Load offline data if API fails
       });
 
       let url1 = environment.eclbDomain+"api/general/get-complain/"+this.referenceNo;
-      this.http.get<any>(url1,{headers: newHeader}).subscribe(response => {
+      this.http.get<any>(url1,{headers: newHeader}).subscribe(async response => {
         console.log(response)
         this.complains =response.comments;
         this.localMunicipality=response.localMunicipality;
@@ -108,6 +113,8 @@ export class EditComplaintPage implements OnInit {
        
          this.history=this.complains
 
+          // Store complaint details in Ionic Storage
+          await this.storage.set(`complaintDetails_${this.referenceNo}`, response);
       }, error => {
         console.log(error)
       });
@@ -167,5 +174,52 @@ export class EditComplaintPage implements OnInit {
       }
     );
   }
-  
+
+// Function to load offline complaint data
+async loadOfflineData() {
+  console.log("Loading offline complaint data...");
+
+  const storedComplaintDetails = await this.storage.get(`complaintDetails_${this.referenceNo}`);
+  const storedComplaintComments = await this.storage.get(`complaintComments_${this.referenceNo}`);
+
+  if (storedComplaintDetails) {
+    this.reference = storedComplaintDetails.referenceNumber;
+    this.strAddress = storedComplaintDetails.addressOfOutlet;
+    this.offOutlet = storedComplaintDetails.outletName;
+    this.town = storedComplaintDetails.areaOfOutlet;
+    this.districMunicipalty = storedComplaintDetails.regionOfOutlet;
+    this.localMunicipality = storedComplaintDetails.localMunicipality;
+    this.comment = storedComplaintDetails.comment;
+    this.history = storedComplaintDetails.commentHistory;
+    this.description = storedComplaintDetails.descriptionOfComplaint;
+    console.log("Loaded complaint details from Ionic Storage:", storedComplaintDetails);
+  } else {
+    console.log("No offline complaint details found.");
+  }
+
+  if (storedComplaintComments) {
+    this.complains = storedComplaintComments.comments;
+    this.localMunicipality = storedComplaintComments.localMunicipality;
+    this.ecpNo = storedComplaintComments.ecpNumber;
+    this.status = storedComplaintComments.status;
+    this.selectedInspector = storedComplaintComments.inspector;
+    this.history = this.complains;
+    console.log("Loaded complaint comments from Ionic Storage:", storedComplaintComments);
+  } else {
+    console.log("No offline complaint comments found.");
+  }
+}
+
+  // Function to load offline inspector data
+async loadOfflineInspectors() {
+  console.log("Loading offline inspectors...");
+
+  const storedInspectors = await this.storage.get("inspectors");
+  if (storedInspectors) {
+    this.inspectors = storedInspectors;
+    console.log("Loaded inspectors from Ionic Storage:", this.inspectors);
+  } else {
+    console.log("No offline inspectors found.");
+  }
+}
 }

@@ -79,8 +79,9 @@ export class SectionPage implements OnInit {
       
     }, error => {
       if (navigator.onLine) {
-        this.showAlert('failed', 'Something went wrong. Please try again');
         this.spinner.hide();
+        this.showAlert('failed', 'Something went wrong. Please try again');
+        
       } else {
       this.serveNotice.saveNotice( formData,this.caseNo)
       }

@@ -80,8 +80,9 @@ export class Page2Page implements OnInit {
       console.log(error);
       
       if (navigator.onLine) {
-        this.showAlert('failed', 'Something went wrong. Please try again');
         this.spinner.hide();
+        this.showAlert('failed', 'Something went wrong. Please try again');
+       
       } else {
       this.offlineSummon.savesummon( formData,this.caseNo,this.summon)
       }

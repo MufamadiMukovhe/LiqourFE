@@ -121,8 +121,9 @@ export class CompleteGisReportPage implements OnInit {
     }, error => {
       console.log(error);
       if (navigator.onLine) {
-        this.showAlert1('failed', 'Something went wrong. Please try again');
         this.spinner.hide();
+        this.showAlert1('failed', 'Something went wrong. Please try again');
+      
       } else {
       this.gisOffine.saveGis(formData, this.caseNo);
       }

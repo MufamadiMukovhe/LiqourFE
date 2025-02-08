@@ -1350,15 +1350,19 @@
             <div *ngFor="let section of sections">
               <div class="flex">
                 <div style="margin-bottom: 10px;">
-                  <input 
-                    class="checkmart" 
-                    type="checkbox" 
-                    [checked]="section.show" 
-                    (change)="toggleSection(section)"
-                  >
-                  <label class="check">{{ section.name }}</label>
+                 
+                  <ion-checkbox 
+                    
+                    class="custom-checkbox" 
+                    [(ngModel)]="section.show" 
+                    (ionChange)="toggleSection(section)">
+                  </ion-checkbox>
+               
+                  <ion-label class="check">{{ section.name }}</ion-label>
                 </div>
               </div>
+            
+            
           
               <!-- Notes Textarea -->
               <div *ngIf="section.show">
