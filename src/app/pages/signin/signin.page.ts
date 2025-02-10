@@ -206,4 +206,5 @@ if (!navigator.onLine) {
       this.router.navigate(['forgot-password']);
     }, 2000);
   }
+
 }

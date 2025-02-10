@@ -150,25 +150,27 @@ export class ServeNoticeService {
   }
 
   private async sendNotice(formData: any, caseId: string) {
-    this.spinner.show();
+    this.spinner.show(); // Show spinner before starting
+  
     try {
       const formDataObject = deserializeFormData(formData);
-      console.log(formDataObject)
+      console.log(formDataObject);
       console.log(`Sending notice for case ${caseId}`);
-
+  
       await this.http
         .put(`${environment.eclbDomain}api/general/update-section-notice/${caseId}`, formDataObject)
         .toPromise();
-        this.spinner.hide();
+  
       this.alertService.showAlert('Success', 'Notice Submitted.');
       console.log(`Notice for case ${caseId} sent.`);
     } catch (error) {
       console.error(`Error sending notice for case ${caseId}:`, error);
-      throw error;
+      this.alertService.showAlert('Error', 'Failed to submit notice. Please try again.');
     } finally {
-      this.spinner.hide();
+      this.spinner.hide(); // Ensure the spinner hides only once after success or failure
     }
   }
+  
 }
 
 // Utility functions for handling FormData

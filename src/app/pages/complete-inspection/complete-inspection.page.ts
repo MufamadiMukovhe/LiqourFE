@@ -155,7 +155,8 @@ export class CompleteInspectionPage implements OnInit {
       leaseAttachedComment: [''],
       rightToOccupyComment: [''],
       complaintsReceivedComment: [''], issuedComplienceComment: [''], interestInLiquorTradeComment: [''], canPersonBeFoundComment: [''],
-      applicantIndicatedPersonAtPremisesComment: [''], consultedOrFoundComment: [''], appointmentSetComment: ['']
+      applicantIndicatedPersonAtPremisesComment: [''], consultedOrFoundComment: [''], appointmentSetComment: [''],
+      sections: [[]]  // Ensure sections is an array
     })
 
 
@@ -390,6 +391,9 @@ export class CompleteInspectionPage implements OnInit {
       }
     }
 
+  // Patch the form after updating selectedSections
+  this.completeReportForm.patchValue({ sections: this.selectedSections });
+
   }
 
   
@@ -412,6 +416,7 @@ export class CompleteInspectionPage implements OnInit {
         section.notes = '';
       }
     }
+    this.completeReportForm.patchValue({ sections: this.selectedSections });
   }
 
 
@@ -660,7 +665,7 @@ export class CompleteInspectionPage implements OnInit {
     formData.append('inspection', new Blob([JSON.stringify(this.inspectionReport)], { type: 'application/json' }));
 
     this.reportDoc = this.reportFiles[0];
-    formData.append('report', this.report);
+    formData.append('inspectionreport', this.report);
 
     this.noticeDoc = this.noticeFiles[0];
     formData.append('notice', this.notice);
@@ -686,7 +691,7 @@ export class CompleteInspectionPage implements OnInit {
       this.http.post(url, formData).subscribe(response => {
         this.spinner.hide();
         this.router.navigate(['/thank-you'])
-       
+        
         
       }, error => {
 

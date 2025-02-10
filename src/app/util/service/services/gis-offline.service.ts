@@ -142,24 +142,24 @@ export class GisOfflineService {
   }
   
   private async uploadGis(gisreport: any, gisCaseId: string) {
-    this.spinner.show();
+    this.spinner.show(); // Show spinner before upload starts
+  
     try {
       const formData = deserializeFormData(gisreport);
       console.log(`Uploading GIS data for case ${gisCaseId}`);
-
+  
       await this.http.post(`${environment.eclbDomain}api/general/save-gis-report/${gisCaseId}`, formData).toPromise();
-      this.spinner.hide();
+  
       this.alertService.showAlert('Success', 'GIS Upload Complete.');
       console.log(`GIS data for case ${gisCaseId} uploaded.`);
-      
     } catch (error) {
       console.error(`Error uploading GIS data for case ${gisCaseId}:`, error);
-      this.spinner.hide();
-      throw error;
+      this.alertService.showAlert('Error', 'GIS upload failed. Please try again.');
     } finally {
-      this.spinner.hide();
+      this.spinner.hide(); // Ensure spinner hides only once after success or failure
     }
   }
+  
 
 
   public async clearStoredGis() {

@@ -27,8 +27,9 @@ export class CompleteGisReportPage implements OnInit {
   selectedRadioValue: string | null = null; 
   inputVisible: boolean = true; 
 
-  latitude?: string;
-  longitude?: string;
+  
+  latitude: any;
+  longitude: any;
   @ViewChild('fileInput', { static: false })
   fileInput!: ElementRef<HTMLInputElement>;
 
@@ -256,39 +257,49 @@ export class CompleteGisReportPage implements OnInit {
 
 
   async getCurrentPosition() {
-    try {
-      const coordinates = await Geolocation.getCurrentPosition();
-      this.latitude = coordinates.coords.latitude+'';
-      this.longitude = coordinates.coords.longitude+'';
+    if (navigator.geolocation) {
+      const options: PositionOptions = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      };
 
-      console.log(this.latitude);
-      console.log(this.longitude);
-      this.gisReportForm.patchValue({
-        latitude: this.latitude,
-        longitude: this.longitude
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
 
-     /* if(this.latitude<=-31 && this.latitude>=-34 && this.longitude>=24 && this.longitude<=34)
-        {
-        this.gisReportForm.patchValue({
-          latitude: this.latitude,
-          longitude: this.longitude
-        });
-  }
-      else{
-        
-        this.gisReportForm.patchValue({
-          latitude: "Out of bounds",
-          longitude: "Out of bounds"
-        });
-       
-     
-      }*/
-    } catch (err) {
-      console.error('Error getting location', err);
+          
+          console.log('Latitude:', this.latitude);
+          console.log('Longitude:', this.longitude);
+
+          
+          this.gisReportForm.patchValue({
+            latitude: this.latitude,
+            longitude: this.longitude,
+          });
+        },
+        async (error: GeolocationPositionError) => {
+          console.error('Error getting location', error);
+
+          if (error.code === 1) {
+            await this.showAlert1('Permission Denied', 'Location access was denied.');
+          } else if (error.code === 2) {
+            await this.showAlert1('Position Unavailable', 'Unable to determine location.');
+          } else if (error.code === 3) {
+            await this.showAlert1('Timeout', 'Location request timed out.');
+          } else {
+            await this.showAlert1('Error', 'An unexpected error occurred while getting location.');
+          }
+        },
+        options
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      await this.showAlert1('Error', 'Geolocation is not supported by this browser.');
     }
   }
-
+ 
   async showAlert1(header: string, message: string) {
     const alert = await this.alertController.create({
       header,

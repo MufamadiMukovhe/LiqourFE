@@ -152,26 +152,28 @@ export class OfflineSummonService {
     }
   }
 
-  private async sendsummon(formData: any, caseId: string,summon:string) {
-    this.spinner.show();
+  private async sendsummon(formData: any, caseId: string, summon: string) {
+    this.spinner.show(); // Show spinner before the process starts
+  
     try {
       const formDataObject = deserializeFormData(formData);
-      console.log(formDataObject)
+      console.log(formDataObject);
       console.log(`Sending summon for case ${caseId}`);
-
+  
       await this.http
         .put(`${environment.eclbDomain}api/general/update-summons/${caseId}/${summon}`, formDataObject)
         .toPromise();
-        this.spinner.hide();
-      this.alertService.showAlert('Success', 'summon Submitted.');
-      console.log(`summon for case ${caseId} sent.`);
+  
+      this.alertService.showAlert('Success', 'Summon Submitted.');
+      console.log(`Summon for case ${caseId} sent.`);
     } catch (error) {
       console.error(`Error sending summon for case ${caseId}:`, error);
-      throw error;
+      this.alertService.showAlert('Error', 'Failed to submit summon. Please try again.');
     } finally {
-      this.spinner.hide();
+      this.spinner.hide(); // Ensure spinner hides only once after success or failure
     }
   }
+  
 
 
   async showAlert(header: string, message: string) {

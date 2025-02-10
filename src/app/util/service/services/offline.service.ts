@@ -146,24 +146,25 @@ export class OfflineService {
   
 
   private async sendReport(report: any, caseId: string) {
-    this.spinner.show();
+    this.spinner.show(); 
+  
     try {
       const formData = deserializeFormData(report);
       console.log(`Sending report for case ${caseId}`);
-
+  
       await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
-      this.spinner.hide()
+  
       this.alertService.showAlert('Success', 'Inspection Complete.');
       console.log(`Report for case ${caseId} sent.`);
-      
     } catch (error) {
       console.error(`Error sending report for case ${caseId}:`, error);
-      this.spinner.hide()
-      throw error;
+      this.alertService.showAlert('Error', 'Failed to send report. Please try again.');
     } finally {
-      this.spinner.hide();
+      this.spinner.hide(); // Hide spinner after request is done (success or failure)
     }
   }
+  
+  
 }
 
 // Utility functions for handling FormData
