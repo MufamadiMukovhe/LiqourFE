@@ -177,8 +177,14 @@ ion-col::before {
     align-items: center;
   }
   
- 
-
+  .offline-message {
+    background-color: #ffcc00;
+    color: #000;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
   
 
   

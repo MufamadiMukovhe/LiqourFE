@@ -207,4 +207,5 @@ if (!navigator.onLine) {
     }, 2000);
   }
 
+
 }

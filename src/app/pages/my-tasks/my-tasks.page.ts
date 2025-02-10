@@ -15,7 +15,7 @@ export class MyTasksPage implements OnInit {
   decodedToken: any;
   role: any;
   tok: any;
-
+  isOffline: boolean = !navigator.onLine; // Track offline status
   constructor(
     private route: Router,
     private activatedRoute: ActivatedRoute,
@@ -27,6 +27,10 @@ export class MyTasksPage implements OnInit {
         this.loadTasks();
       }
     });
+
+      // Listen for online/offline status changes
+      window.addEventListener('online', () => this.isOffline = false);
+      window.addEventListener('offline', () => this.isOffline = true);
   }
 
   ngOnInit() {

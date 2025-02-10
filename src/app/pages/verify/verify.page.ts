@@ -114,7 +114,8 @@ export class VerifyPage implements OnInit {
             localStorage.setItem('firstLogin', 'true');
             await this.router.navigate(['/offline-password']);
           } else {
-           
+           // localStorage.removeItem('firstLogin'); // for testiing 
+
             await this.router.navigate(['/dashboard']);
           }
         }, 2000);

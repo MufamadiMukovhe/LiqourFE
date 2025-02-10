@@ -13,7 +13,14 @@
       <p class="quick-action">My Tasks</p>
       <p class="new">New</p>
 
+
+      <div *ngIf="isOffline" class="offline-message">
+      You are working offline.
+      </div>
+
+
       <ion-card class="no-task-card">
+        
         <div *ngIf="collect.length == 0" class="center-content">
           <ion-img src="../../../assets/Images/Verify Email 2.svg" class="no-task-img"></ion-img>
           <p class="email-center new">No task available at the moment.</p>
