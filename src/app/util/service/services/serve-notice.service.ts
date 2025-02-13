@@ -110,9 +110,9 @@ export class ServeNoticeService {
   }
   public async trySendNotices() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
-      this.spinner.show();
+     // this.spinner.show();
       await this.sendPendingNotices();
-      this.spinner.hide();
+     // this.spinner.hide();
     }
   }
 

@@ -10,6 +10,7 @@ import { NonComplianceSection29Page } from './non-compliance-section29.page';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-footer.module';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,8 +19,7 @@ import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-foot
     NonComplianceSection29PageRoutingModule,
     ReactiveFormsModule,
     MenuFooterPageModule,
-    NgxSpinnerModule,
-
+    NgxSpinnerModule
   ],
   declarations: [NonComplianceSection29Page]
 })

@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Directory, Filesystem } from '@capacitor/filesystem';
-import { AlertController } from '@ionic/angular';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { AlertController, Platform } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ChangeOfName, Deregistration, FileItem, Message } from 'src/app/model/model';
 import { AppointManagerService } from 'src/app/util/service/appoint-manager';
 import { DeregistrationService } from 'src/app/util/service/deregistration-service';
 import { GeneralService } from 'src/app/util/service/general-service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
-
+import { Browser } from '@capacitor/browser'; // For opening files in the browser
 @Component({
   selector: 'app-non-compliance-section29',
   templateUrl: './non-compliance-section29.page.html',
@@ -38,8 +38,8 @@ caseNo: any;
     private routes: ActivatedRoute,
     private alertController:AlertController,
     private appointmentService: AppointManagerService, 
-   
-    private deregistrationService: DeregistrationService
+    private deregistrationService: DeregistrationService,
+    private platform: Platform
   ) {
 
     this.changeOfPlanForm = this.fb.group({
@@ -165,27 +165,138 @@ caseNo: any;
     { label: 'Upload Section 29 Notice', key: 'section29Notice', file: null },
   ]
 
-  viewFile(fileName: string): void {
-    this.spinner.show();
+  async viewFile(fileName: string): Promise<void> {
+    this.spinner.show(); // Show loading spinner
+  
     this.service.getFile1(this.caseId, fileName).subscribe({
-      next: (response: Blob) => {
-        this.spinner.hide();
-        const blob = new Blob([response], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+      next: async (response: Blob) => {
+        this.spinner.hide(); // Hide spinner once file is received
+  
+        if (response instanceof Blob) {
+          try {
+            // Ensure the file path does not contain duplicate directories
+            const filePath = `DOCUMENTS/section29/${fileName}.pdf`;
+  
+            console.log("✅ Corrected File URI:", filePath); // Debugging output
+  
+            const fileData = await this.saveFileLocally(response, filePath);
+  
+            // Open the file immediately
+            await this.openPDF(`${fileName}.pdf`);
+  
+          } catch (error) {
+            console.error('Error saving or opening file:', error);
+            this.showAlert('Error', 'Failed to open the file.');
+          }
+        } else {
+          console.error('Error: Response is not a Blob');
+          this.showAlert('Error', 'Failed to download file.');
+        }
       },
-      error: () => {
+      error: (error) => {
         this.spinner.hide();
+        console.error('Error downloading file:', error);
         this.showAlert('Error', 'Failed to download file.');
       },
     });
   }
+  
+  
+ 
+
+ 
+
+  
+ 
+
+
+
+  
+  
+ 
+async openPDF(fileName: string) {
+  try {
+    await this.platform.ready();  // Ensure the platform is ready
+
+    const filePath = `section29/${fileName}`;  // Set the path
+
+    // Get the file URI
+    const fileUri = await Filesystem.getUri({
+      path: filePath,
+      directory: Directory.Documents,
+    });
+
+    console.log('✅ File Path:', fileUri.uri);
+
+    // Open the PDF in the browser
+    await Browser.open({ url: fileUri.uri });
+    this.spinner.hide();
+    this.showAlert('sucess', 'sucesss');
+    console.log('✅ PDF Opened Successfully');
+  } catch (error) {
+    this.spinner.hide();
+    console.error('❌ Error Opening PDF:', error);
+    this.showAlert('Error', 'Failed to open PDF');
+  }
+}
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  // ✅ Function to Convert Blob to Base64
+  async convertBlobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  async saveFileLocally(blob: Blob, filePath: string): Promise<string> {
+  try {
+    const dirPath = filePath.substring(0, filePath.lastIndexOf('/')); // Extract directory path
+
+    // Ensure the directory exists before saving
+    await Filesystem.mkdir({
+      path: dirPath,
+      directory: Directory.Documents,
+      recursive: true, // Create parent directories if needed
+    }).catch(() => {
+      console.log("ℹ️ Directory already exists or could not be created");
+    });
+
+    // Convert Blob to Base64
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return new Promise((resolve, reject) => {
+      reader.onloadend = async () => {
+        const base64Data = reader.result as string;
+
+        // Write the file to storage
+        await Filesystem.writeFile({
+          path: filePath,
+          data: base64Data.split(',')[1], // Remove base64 prefix
+          directory: Directory.Documents,
+          recursive: true,
+        });
+
+        console.log("✅ File saved at:", filePath);
+        resolve(filePath);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  } catch (error) {
+    console.error("❌ Error saving file:", error);
+    throw error;
+  }
+}
 
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({

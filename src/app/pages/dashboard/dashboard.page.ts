@@ -19,7 +19,7 @@ import { ServeNoticeService } from 'src/app/util/service/services/serve-notice.s
 })
 export class DashboardPage implements OnInit {
   isNetworkOnline = new BehaviorSubject<boolean>(false); // Tracks network status
-
+  isDownloading: boolean = false; // Controls spinner visibility
   constructor(private route: Router,private helper: HelperService, private alertService: AlertService,private offlineService: OfflineService, private gisOffline: GisOfflineService, private spinner: NgxSpinnerService ,private offlineSummon:OfflineSummonService,private offlineNotice:ServeNoticeService) { }
 
   private currentIndex: number = 0;
@@ -85,7 +85,7 @@ export class DashboardPage implements OnInit {
   private trySendSummons(){
 
     if (this.isNetworkOnline.getValue()) {
-    this.offlineSummon.trySendsummons();
+    this.offlineSummon.trySendSummons();
   }
 
   }

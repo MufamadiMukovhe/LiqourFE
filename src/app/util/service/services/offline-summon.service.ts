@@ -14,17 +14,17 @@ import { AlertController } from '@ionic/angular';
 })
 export class OfflineSummonService {
   private storageInitialized = false;
-  private isSendingsummons = new BehaviorSubject<boolean>(false);
-  public isSendingsummons$ = this.isSendingsummons.asObservable();
+  private isSendingSummons = new BehaviorSubject<boolean>(false);
+  public isSendingSummons$ = this.isSendingSummons.asObservable();
 
   constructor(
     private storage: Storage,
     private http: HttpClient,
     private alertService: AlertService,
     private router: Router,
-    private spinner: NgxSpinnerService,
-    private alertController:AlertController
+    private spinner: NgxSpinnerService
   ) {
+    
     this.init();
     this.monitorNetworkStatus();
   }
@@ -43,7 +43,7 @@ export class OfflineSummonService {
     Network.addListener('networkStatusChange', async (status) => {
       console.log('Network status changed:', status.connected);
       if (status.connected && this.isUserOnDashboard()) {
-        await this.sendPendingsummons();
+        await this.sendPendingSummons();
       }
     });
 
@@ -60,15 +60,15 @@ export class OfflineSummonService {
     return this.router.url.includes('/dashboard');
   }
 
-  async savesummon(formData: FormData, caseNo: string, summon: any) {
+  async saveSummon(formData: FormData, caseNo: string,summon:string) {
     this.spinner.show();
   
     if (this.storageInitialized) {
       try {
-        // Serialize the summon form data
+        // Serialize the Summon form data
         const serializedSummon = await serializeFormData(formData);
   
-        let storedSummons = (await this.storage.get('summons')) || [];
+        let storedSummons = (await this.storage.get('Summons')) || [];
   
         if (!Array.isArray(storedSummons)) {
           storedSummons = []; // Ensure it's an array
@@ -80,21 +80,20 @@ export class OfflineSummonService {
         await new Promise(resolve => setTimeout(resolve, 7000));
   
         // Save the data after the delay
-        await this.storage.set('summons', storedSummons);
+        await this.storage.set('Summons', storedSummons);
   
-        // Make sure the data is saved by re-fetching and checking
-        const savedData = await this.storage.get('summons');
+        // Validate if the data was saved successfully
+        const savedData = await this.storage.get('Summons');
         if (savedData && savedData.length > 0) {
           this.spinner.hide();
-          await this.showAlert('Complete', 'Summon served offline');
-          this.router.navigate([`/summons/${caseNo}`]);
+          this.router.navigate(['/offline-thank-you']);
           console.log('Summon saved locally:', savedData);
         } else {
           console.error('Data was not saved correctly.');
           this.spinner.hide();
         }
       } catch (error) {
-        console.error('Error saving summon:', error);
+        console.error('Error saving Summon:', error);
         this.spinner.hide();
       }
     } else {
@@ -105,17 +104,17 @@ export class OfflineSummonService {
   
   public async clearStoredGis() {
     try {
-      await this.storage.remove('summons');
+      await this.storage.remove('Summons');
       console.log('Stored GIS data cleared.');
     } catch (error) {
       console.error('Error clearing GIS data:', error);
     }
   }
-  public async trySendsummons() {
+  public async trySendSummons() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
-      this.spinner.show();
-      await this.sendPendingsummons();
-      this.spinner.hide();
+      //this.spinner.show();
+      await this.sendPendingSummons();
+      //this.spinner.hide();
     }
   }
 
@@ -123,42 +122,42 @@ export class OfflineSummonService {
     return navigator.onLine;
   }
 
-  private async sendPendingsummons() {
-    if (this.isSendingsummons.getValue()) return;
+  private async sendPendingSummons() {
+    if (this.isSendingSummons.getValue()) return;
 
-    this.isSendingsummons.next(true);
+    this.isSendingSummons.next(true);
 
     try {
-      let storedsummons = await this.storage.get('summons');
+      let storedSummons = await this.storage.get('Summons');
 
-      if (!Array.isArray(storedsummons)) {
-        console.log('No summons found or data is not an array.');
+      if (!Array.isArray(storedSummons)) {
+        console.log('No Summons found or data is not an array.');
         return;
       }
 
-      for (const summonData of storedsummons) {
-        const { formData, caseNo , summon} = summonData;
-        if (formData && caseNo && summon) {
-          await this.sendsummon(formData, caseNo,summon);
+      for (const SummonData of storedSummons) {
+        const { formData, caseNo, summon } = SummonData;
+        if (formData && caseNo && summon ) {
+          await this.sendSummon(formData, caseNo, summon);
         }
       }
 
-      await this.storage.remove('summons');
-      console.log('All pending summons sent successfully.');
+      await this.storage.remove('Summons');
+      console.log('All pending Summons sent successfully.');
     } catch (error) {
-      console.error('Error sending pending summons:', error);
+      console.error('Error sending pending Summons:', error);
     } finally {
-      this.isSendingsummons.next(false);
+      this.isSendingSummons.next(false);
     }
   }
 
-  private async sendsummon(formData: any, caseId: string, summon: string) {
-    this.spinner.show(); // Show spinner before the process starts
+  private async sendSummon(formData: any, caseId: string,summon: string) {
+    this.spinner.show(); // Show spinner before starting
   
     try {
       const formDataObject = deserializeFormData(formData);
       console.log(formDataObject);
-      console.log(`Sending summon for case ${caseId}`);
+      console.log(`Sending Summon for case ${caseId}`);
   
       await this.http
         .put(`${environment.eclbDomain}api/general/update-summons/${caseId}/${summon}`, formDataObject)
@@ -167,23 +166,13 @@ export class OfflineSummonService {
       this.alertService.showAlert('Success', 'Summon Submitted.');
       console.log(`Summon for case ${caseId} sent.`);
     } catch (error) {
-      console.error(`Error sending summon for case ${caseId}:`, error);
-      this.alertService.showAlert('Error', 'Failed to submit summon. Please try again.');
+      console.error(`Error sending Summon for case ${caseId}:`, error);
+      this.alertService.showAlert('Error', 'Failed to submit Summon. Please try again.');
     } finally {
-      this.spinner.hide(); // Ensure spinner hides only once after success or failure
+      this.spinner.hide(); // Ensure the spinner hides only once after success or failure
     }
   }
   
-
-
-  async showAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
 }
 
 // Utility functions for handling FormData

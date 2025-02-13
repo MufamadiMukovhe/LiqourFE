@@ -101,9 +101,9 @@ export class GisOfflineService {
   
   public async tryUploadGis() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
-      this.spinner.show();
+      //this.spinner.show();
       await this.uploadPendingGis();
-      this.spinner.hide();
+      //this.spinner.hide();
     }
   }
 

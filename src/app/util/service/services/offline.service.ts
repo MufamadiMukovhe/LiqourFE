@@ -101,9 +101,9 @@ export class OfflineService {
 
   public async trySendReports() {
     if (this.isUserOnDashboard() && this.isNetworkOnline()) {
-      this.spinner.show();
+      //this.spinner.show();
       await this.sendPendingReports();
-      this.spinner.hide();
+     // this.spinner.hide();
     }
   }
 

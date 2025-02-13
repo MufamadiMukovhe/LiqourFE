@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment.prod';
 import { AlertController } from '@ionic/angular';
 import { OfflineSummonService } from 'src/app/util/service/services/offline-summon.service';
 import { Storage } from '@ionic/storage-angular';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-page-2',
   templateUrl: './page-2.page.html',
@@ -31,7 +31,8 @@ export class Page2Page implements OnInit {
     private http: HttpClient,
     private aRoute: Router,
     private offlineSummon:OfflineSummonService,
-    private storage:Storage
+    private storage:Storage,
+    private location: Location,
   ) {
     this.page2Form = this.fb.group({
       receivedBy: ['', Validators.required],
@@ -84,7 +85,7 @@ export class Page2Page implements OnInit {
         this.showAlert('failed', 'Something went wrong. Please try again');
        
       } else {
-      this.offlineSummon.savesummon( formData,this.caseNo,this.summon)
+      this.offlineSummon.saveSummon( formData,this.caseNo,this.summon)
       }
        
     });
@@ -148,5 +149,11 @@ export class Page2Page implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  navigatoToBack()
+  {
+    this.location.back();
+
   }
 }

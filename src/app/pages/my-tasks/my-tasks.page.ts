@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment.prod';
+import { Storage, StorageConfig } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-my-tasks',
@@ -20,7 +21,8 @@ export class MyTasksPage implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+     private storage:Storage
   ) {
     this.route.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.urlAfterRedirects.includes('/my-tasks')) {
@@ -35,6 +37,7 @@ export class MyTasksPage implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
+ 
   }
   ionViewWillEnter() {
     this.loadTasks();
@@ -64,7 +67,13 @@ export class MyTasksPage implements OnInit {
         this.spinner.hide();
         this.processTasks(response);
         localStorage.setItem('tasksData', JSON.stringify(this.collect));
-        
+         // Call getSummons for each task (assuming caseId exists in each task)
+      this.collect.forEach(task => {
+        const caseId = task.caseId; // Ensure that caseId is part of your task object
+        if (caseId) {
+          this.getSummons(caseId);
+        }
+      });
       },
       (error) => {
 
@@ -150,4 +159,44 @@ export class MyTasksPage implements OnInit {
       console.warn(`No route found for action: ${action}`);
     }
   }
+  caseNo:any
+  collectSummons:any[]=[]
+
+ 
+ public async getSummons(caseId: any) {
+ 
+  const token = localStorage.getItem('userToken');
+  const newHeader = new HttpHeaders({
+    "Authorization": "Bearer " + token,
+    "Accept": "*/*",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Expires": "0"
+  });
+
+  let urlSummons = `${environment.eclbDomain}api/general/get-summons/${caseId}`;
+ 
+  
+  this.http.get<any>(urlSummons, { headers: newHeader }).subscribe(
+    async (response) => {
+      this.collectSummons = response;
+      // Save the response to local storage for fallback if needed
+      await this.storage.set(`summons_${caseId}`, response);
+     
+    },
+    async (error) => {
+      console.error('Error fetching summons:', error);
+      
+      // Fallback: Retrieve saved summons from local storage
+      const savedSummons = await this.storage.get(`summons_${caseId}`);
+      if (savedSummons) {
+        console.log('Using saved summons data:', savedSummons);
+        this.collectSummons = savedSummons;
+      } else {
+        console.log('No saved summons data available.');
+      }
+    }
+  );
+}
+
 }

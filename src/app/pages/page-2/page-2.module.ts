@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     Page2PageRoutingModule,
-    NgxSpinnerModule.forRoot(),
+    NgxSpinnerModule,
      ReactiveFormsModule
 
   ],
