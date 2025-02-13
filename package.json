@@ -40,6 +40,7 @@
     "@capacitor/network": "^6.0.1",
     "@capacitor/preferences": "^6.0.1",
     "@capacitor/status-bar": "6.0.0",
+    "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-opener": "^5.36.0",
     "@ionic-native/secure-storage": "^5.36.0",
     "@ionic-native/sqlite": "^5.36.0",

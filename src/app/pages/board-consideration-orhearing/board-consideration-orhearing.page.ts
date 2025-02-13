@@ -2,7 +2,8 @@
   import { Component, Input, OnInit } from '@angular/core';
   import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   import { Router, ActivatedRoute } from '@angular/router';
-  import { AlertController } from '@ionic/angular';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+  import { AlertController, LoadingController } from '@ionic/angular';
   import { NgxSpinnerService } from 'ngx-spinner';
   import { Deregistration, FileItem } from 'src/app/model/model';
   import { AppointManagerService } from 'src/app/util/service/appoint-manager';
@@ -40,7 +41,8 @@
       private routes: ActivatedRoute,
       private alertController: AlertController,
       private appointmentService: AppointManagerService,
-      private deregistrationService: DeregistrationService
+      private deregistrationService: DeregistrationService,
+      private loadingCtrl: LoadingController
     ) {
       this.initializeForm();
     }
@@ -123,10 +125,12 @@
         next: () => {
           this.spinner.hide();
           this.showAlert('Success', 'Application captured successfully!');
-          this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
-            this.route.navigate([this.route.url]);
-          });
 
+          setTimeout(() => {
+            this.route.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+              this.route.navigate([this.route.url]);
+            });
+          }, 4000);
         },
         error: () => {
           this.spinner.hide();
@@ -139,27 +143,96 @@
       this.route.navigate(['/my-tasks']);
     }
   
-    viewFile(fileName: string): void {
-      this.spinner.show();
+    async viewFile(fileName: string): Promise<void> {
+      const loading = await this.loadingCtrl.create({ message: 'Downloading...' });
+      //this.spinner.show(); // Show loading spinner
+      await loading.present();
+  
       this.service.getFile1(this.caseId, fileName).subscribe({
-        next: (response: Blob) => {
-          this.spinner.hide();
-          const blob = new Blob([response], { type: 'application/pdf' });
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
+        next: async (response: Blob) => {
+          await loading.dismiss();
+    
+          if (response instanceof Blob) {
+            try {
+              // Ensure the file path does not contain duplicate directories
+              const filePath = `section29/${fileName}.pdf`;
+    
+              console.log("✅ Corrected File URI:", filePath); // Debugging output
+    
+              const fileData = await this.saveFileLocally(response, filePath);
+    
+              this.showAlert('success', `Document downloaded successfully. To view the document, check the Documents folder, you will find it in the Section29 folder.`);
+  
+  
+    
+            } catch (error) {
+              console.error('Error saving or opening file:', error);
+              this.showAlert('Error', 'Failed to open the file.');
+            }
+          } else {
+            console.error('Error: Response is not a Blob');
+            this.showAlert('Error', 'Failed to download file.');
+          }
         },
-        error: () => {
+        error: (error) => {
           this.spinner.hide();
+          console.error('Error downloading file:', error);
           this.showAlert('Error', 'Failed to download file.');
         },
       });
     }
+    
+    
+  
+    // ✅ Function to Convert Blob to Base64
+    async convertBlobToBase64(blob: Blob): Promise<string> {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+  
+    async saveFileLocally(blob: Blob, filePath: string): Promise<string> {
+      
+    try {
+      const dirPath = filePath.substring(0, filePath.lastIndexOf('/')); // Extract directory path
+  
+      // Ensure the directory exists before saving
+      await Filesystem.mkdir({
+        path: dirPath,
+        directory: Directory.Documents,
+        recursive: true, // Create parent directories if needed
+      }).catch(() => {
+        console.log("ℹ️ Directory already exists or could not be created");
+      });
+  
+      // Convert Blob to Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      return new Promise((resolve, reject) => {
+        reader.onloadend = async () => {
+          const base64Data = reader.result as string;
+  
+          // Write the file to storage
+          await Filesystem.writeFile({
+            path: filePath,
+            data: base64Data.split(',')[1], // Remove base64 prefix
+            directory: Directory.Documents,
+            recursive: true,
+          });
+  
+          console.log("✅ File saved at:", filePath);
+          resolve(filePath);
+        };
+        reader.onerror = (error) => reject(error);
+      });
+    } catch (error) {
+      console.error("❌ Error saving file:", error);
+      throw error;
+    }
+  }
   
     private getOutletInformation(caseId: any): void {
       this.spinner.show();
@@ -176,15 +249,15 @@
     }
 
     private getSection29Recommendation(caseId: any): void {
-      this.spinner.show()
+     
       this.deregistrationService.getSection29Recommendation(caseId).subscribe({
         next: (res: any) => {
-          this.spinner.hide();
+         
            this.recommendation = res.recommendation;
           this.changeOfPlanForm.patchValue(res);
         }, error: (err: any) => {
         
-          this.spinner.hide();
+         ;
         }
       });
       

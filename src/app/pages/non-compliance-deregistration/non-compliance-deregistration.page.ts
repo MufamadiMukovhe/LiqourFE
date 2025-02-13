@@ -192,7 +192,7 @@ export class NonComplianceDeregistrationPage implements OnInit {
           this.routes.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
             this.routes.navigate([this.routes.url]);
           });
-        }, 5000);
+        }, 4000);
       }, error: (err: any) => {
         this.showAlert('success', err);
       }

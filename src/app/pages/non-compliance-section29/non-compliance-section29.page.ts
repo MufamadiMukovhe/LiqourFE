@@ -2,14 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ChangeOfName, Deregistration, FileItem, Message } from 'src/app/model/model';
 import { AppointManagerService } from 'src/app/util/service/appoint-manager';
 import { DeregistrationService } from 'src/app/util/service/deregistration-service';
 import { GeneralService } from 'src/app/util/service/general-service';
 import { GeolocationService } from 'src/app/util/service/geolocation.service';
-import { Browser } from '@capacitor/browser'; // For opening files in the browser
+
 @Component({
   selector: 'app-non-compliance-section29',
   templateUrl: './non-compliance-section29.page.html',
@@ -39,7 +39,8 @@ caseNo: any;
     private alertController:AlertController,
     private appointmentService: AppointManagerService, 
     private deregistrationService: DeregistrationService,
-    private platform: Platform
+    private platform: Platform,
+     private loadingCtrl: LoadingController
   ) {
 
     this.changeOfPlanForm = this.fb.group({
@@ -105,23 +106,6 @@ caseNo: any;
 
   submitChangePlan(): void {
 
-    // let message = new Message();
-    // message.success = "Application Captured"
-    // //message.message = res.message;
-    // this.toast.showSuccess(message);
-    // setTimeout(() => {
-    //   this.router.navigateByUrl('/non-compliance-deregistration-board/' + this.outletId);
-    // }, 2000);
-
-    // this.changeOfPlanForm.markAllAsTouched();
-    // if (this.changeOfPlanForm.invalid || Object.keys(this.selectedFiles).length == 0) {
-    //   this.highlightErrors();
-    //   return;
-    // }
-
-    
-   
-
     this.spinner.show();
 
     this.deregistration = Object.assign(this.deregistration, this.changeOfPlanForm.value);
@@ -166,23 +150,26 @@ caseNo: any;
   ]
 
   async viewFile(fileName: string): Promise<void> {
-    this.spinner.show(); // Show loading spinner
-  
+    const loading = await this.loadingCtrl.create({ message: 'Downloading...' });
+    //this.spinner.show(); // Show loading spinner
+    await loading.present();
+
     this.service.getFile1(this.caseId, fileName).subscribe({
       next: async (response: Blob) => {
-        this.spinner.hide(); // Hide spinner once file is received
+        await loading.dismiss();
   
         if (response instanceof Blob) {
           try {
             // Ensure the file path does not contain duplicate directories
-            const filePath = `DOCUMENTS/section29/${fileName}.pdf`;
+            const filePath = `section28/${fileName}.pdf`;
   
             console.log("✅ Corrected File URI:", filePath); // Debugging output
   
             const fileData = await this.saveFileLocally(response, filePath);
   
-            // Open the file immediately
-            await this.openPDF(`${fileName}.pdf`);
+            this.showAlert('success', `Document downloaded successfully. To view the document, check the Documents folder, you will find it in the Section28 folder.`);
+
+
   
           } catch (error) {
             console.error('Error saving or opening file:', error);
@@ -202,52 +189,6 @@ caseNo: any;
   }
   
   
- 
-
- 
-
-  
- 
-
-
-
-  
-  
- 
-async openPDF(fileName: string) {
-  try {
-    await this.platform.ready();  // Ensure the platform is ready
-
-    const filePath = `section29/${fileName}`;  // Set the path
-
-    // Get the file URI
-    const fileUri = await Filesystem.getUri({
-      path: filePath,
-      directory: Directory.Documents,
-    });
-
-    console.log('✅ File Path:', fileUri.uri);
-
-    // Open the PDF in the browser
-    await Browser.open({ url: fileUri.uri });
-    this.spinner.hide();
-    this.showAlert('sucess', 'sucesss');
-    console.log('✅ PDF Opened Successfully');
-  } catch (error) {
-    this.spinner.hide();
-    console.error('❌ Error Opening PDF:', error);
-    this.showAlert('Error', 'Failed to open PDF');
-  }
-}
-  
-  
-  
-  
-
-  
-  
-  
-  
 
   // ✅ Function to Convert Blob to Base64
   async convertBlobToBase64(blob: Blob): Promise<string> {
@@ -260,6 +201,7 @@ async openPDF(fileName: string) {
   }
 
   async saveFileLocally(blob: Blob, filePath: string): Promise<string> {
+    
   try {
     const dirPath = filePath.substring(0, filePath.lastIndexOf('/')); // Extract directory path
 
