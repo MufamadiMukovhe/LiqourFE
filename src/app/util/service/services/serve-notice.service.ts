@@ -119,58 +119,71 @@ export class ServeNoticeService {
   private isNetworkOnline(): boolean {
     return navigator.onLine;
   }
-
   private async sendPendingNotices() {
     if (this.isSendingNotices.getValue()) return;
 
     this.isSendingNotices.next(true);
 
     try {
-      let storedNotices = await this.storage.get('notices');
+        let storedNotices = await this.storage.get('notices');
 
-      if (!Array.isArray(storedNotices)) {
-        console.log('No notices found or data is not an array.');
-        return;
-      }
-
-      for (const noticeData of storedNotices) {
-        const { formData, caseNo } = noticeData;
-        if (formData && caseNo ) {
-          await this.sendNotice(formData, caseNo);
+        if (!Array.isArray(storedNotices)) {
+            console.log('No notices found or data is not an array.');
+            return;
         }
-      }
 
-      await this.storage.remove('notices');
-      console.log('All pending notices sent successfully.');
+        let remainingNotices = [];
+
+        for (const noticeData of storedNotices) {
+            const { formData, caseNo } = noticeData;
+
+            if (formData && caseNo) {
+                try {
+                    await this.sendNotice(formData, caseNo);
+                } catch (error) {
+                    console.error(`Failed to send notice for case ${caseNo}:`, error);
+                    remainingNotices.push(noticeData); // Keep failed ones
+                }
+            }
+        }
+
+        // Update storage with only failed notices
+        if (remainingNotices.length > 0) {
+            await this.storage.set('notices', remainingNotices);
+            console.log(`${remainingNotices.length} notices failed and will be retried.`);
+        } else {
+            await this.storage.remove('notices');
+            console.log('All pending notices sent successfully.');
+        }
     } catch (error) {
-      console.error('Error sending pending notices:', error);
+        console.error('Error processing pending notices:', error);
     } finally {
-      this.isSendingNotices.next(false);
+        this.isSendingNotices.next(false);
     }
-  }
+}
 
-  private async sendNotice(formData: any, caseId: string) {
-    this.spinner.show(); // Show spinner before starting
-  
+private async sendNotice(formData: any, caseId: string) {
+    this.spinner.show();
+
     try {
-      const formDataObject = deserializeFormData(formData);
-      console.log(formDataObject);
-      console.log(`Sending notice for case ${caseId}`);
-  
-      await this.http
-        .put(`${environment.eclbDomain}api/general/update-section-notice/${caseId}`, formDataObject)
-        .toPromise();
-  
-      this.alertService.showAlert('Success', 'Notice Submitted.');
-      console.log(`Notice for case ${caseId} sent.`);
+        const formDataObject = deserializeFormData(formData);
+        console.log(`Sending notice for case ${caseId}`);
+
+        await this.http
+            .put(`${environment.eclbDomain}api/general/update-section-notice/${caseId}`, formDataObject)
+            .toPromise();
+
+        this.alertService.showAlert('Success', 'Notice Submitted.');
+        console.log(`Notice for case ${caseId} sent.`);
     } catch (error) {
-      console.error(`Error sending notice for case ${caseId}:`, error);
-      this.alertService.showAlert('Error', 'Failed to submit notice. Please try again.');
+        console.error(`Error sending notice for case ${caseId}:`, error);
+        this.alertService.showAlert('Error', 'Failed to submit notice. Please try again.');
+        throw error; // Ensures failed notices are stored
     } finally {
-      this.spinner.hide(); // Ensure the spinner hides only once after success or failure
+        this.spinner.hide();
     }
-  }
-  
+}
+
 }
 
 // Utility functions for handling FormData

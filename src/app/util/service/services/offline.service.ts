@@ -113,56 +113,71 @@ export class OfflineService {
 
   private async sendPendingReports() {
     if (this.isSendingReports.getValue()) return;
-  
-    this.isSendingReports.next(true);
-  
-    try {
-      // Retrieve all saved reports from storage
-      let caseReports = await this.storage.get('caseReports');
-  
-      // Ensure caseReports is an array
-      if (!Array.isArray(caseReports)) {
-        console.log('No reports found or data is not an array.');
-        return;
-      }
-  
-      for (const reportData of caseReports) {
-        const { report, caseNo } = reportData;  // Destructure properly
-        if (report && caseNo) {
-          await this.sendReport(report, caseNo);
-        }
-      }
-  
-      // Clear storage after sending all reports
-      await this.storage.remove('caseReports');
-      console.log('All pending reports sent successfully.');
-  
-    } catch (error) {
-      console.error('Error sending pending reports:', error);
-    } finally {
-      this.isSendingReports.next(false);
-    }
-  }
-  
 
-  private async sendReport(report: any, caseId: string) {
-    this.spinner.show(); 
-  
+    this.isSendingReports.next(true);
+
     try {
-      const formData = deserializeFormData(report);
-      console.log(`Sending report for case ${caseId}`);
-  
-      await this.http.post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData).toPromise();
-  
-      this.alertService.showAlert('Success', 'Inspection Complete.');
-      console.log(`Report for case ${caseId} sent.`);
+        // Retrieve all saved reports from storage
+        let caseReports = await this.storage.get('caseReports');
+
+        // Ensure caseReports is an array
+        if (!Array.isArray(caseReports)) {
+            console.log('No reports found or data is not an array.');
+            return;
+        }
+
+        let remainingReports = [];
+
+        for (const reportData of caseReports) {
+            const { report, caseNo } = reportData; // Destructure properly
+
+            if (report && caseNo) {
+                try {
+                    await this.sendReport(report, caseNo);
+                } catch (error) {
+                    console.error(`Failed to send report for case ${caseNo}:`, error);
+                    remainingReports.push(reportData); // Store failed reports
+                }
+            }
+        }
+
+        // Update local storage with only failed reports
+        if (remainingReports.length > 0) {
+            await this.storage.set('caseReports', remainingReports);
+            console.log(`${remainingReports.length} reports failed and will be retried.`);
+        } else {
+            await this.storage.remove('caseReports');
+            console.log('All pending reports sent successfully.');
+        }
     } catch (error) {
-      console.error(`Error sending report for case ${caseId}:`, error);
-      this.alertService.showAlert('Error', 'Failed to send report. Please try again.');
+        console.error('Error processing pending reports:', error);
     } finally {
-      this.spinner.hide(); // Hide spinner after request is done (success or failure)
+        this.isSendingReports.next(false);
     }
-  }
+}
+
+private async sendReport(report: any, caseId: string) {
+    this.spinner.show();
+
+    try {
+        const formData = deserializeFormData(report);
+        console.log(`Sending report for case ${caseId}`);
+
+        await this.http
+            .post(`${environment.eclbDomain}api/general/complete-inspection-report/${caseId}`, formData)
+            .toPromise();
+
+        this.alertService.showAlert('Success', 'Inspection Complete.');
+        console.log(`Report for case ${caseId} sent.`);
+    } catch (error) {
+        console.error(`Error sending report for case ${caseId}:`, error);
+        this.alertService.showAlert('Error', 'Failed to send report. Please try again.');
+        throw error; // Ensure failed reports remain in storage
+    } finally {
+        this.spinner.hide();
+    }
+}
+
   
   
 }

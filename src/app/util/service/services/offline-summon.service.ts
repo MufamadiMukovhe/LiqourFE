@@ -128,50 +128,65 @@ export class OfflineSummonService {
     this.isSendingSummons.next(true);
 
     try {
-      let storedSummons = await this.storage.get('Summons');
+        let storedSummons = await this.storage.get('Summons');
 
-      if (!Array.isArray(storedSummons)) {
-        console.log('No Summons found or data is not an array.');
-        return;
-      }
-
-      for (const SummonData of storedSummons) {
-        const { formData, caseNo, summon } = SummonData;
-        if (formData && caseNo && summon ) {
-          await this.sendSummon(formData, caseNo, summon);
+        if (!Array.isArray(storedSummons)) {
+            console.log('No Summons found or data is not an array.');
+            return;
         }
-      }
 
-      await this.storage.remove('Summons');
-      console.log('All pending Summons sent successfully.');
+        let remainingSummons = [];
+
+        for (const summonData of storedSummons) {
+            const { formData, caseNo, summon } = summonData;
+
+            if (formData && caseNo && summon) {
+                try {
+                    await this.sendSummon(formData, caseNo, summon);
+                } catch (error) {
+                    console.error(`Failed to send Summon for case ${caseNo}:`, error);
+                    remainingSummons.push(summonData); // Store failed summons
+                }
+            }
+        }
+
+        // Update local storage with only failed summons
+        if (remainingSummons.length > 0) {
+            await this.storage.set('Summons', remainingSummons);
+            console.log(`${remainingSummons.length} Summons failed and will be retried.`);
+        } else {
+            await this.storage.remove('Summons');
+            console.log('All pending Summons sent successfully.');
+        }
     } catch (error) {
-      console.error('Error sending pending Summons:', error);
+        console.error('Error processing pending Summons:', error);
     } finally {
-      this.isSendingSummons.next(false);
+        this.isSendingSummons.next(false);
     }
-  }
+}
 
-  private async sendSummon(formData: any, caseId: string,summon: string) {
-    this.spinner.show(); // Show spinner before starting
-  
+private async sendSummon(formData: any, caseId: string, summon: string) {
+    this.spinner.show();
+
     try {
-      const formDataObject = deserializeFormData(formData);
-      console.log(formDataObject);
-      console.log(`Sending Summon for case ${caseId}`);
-  
-      await this.http
-        .put(`${environment.eclbDomain}api/general/update-summons/${caseId}/${summon}`, formDataObject)
-        .toPromise();
-  
-      this.alertService.showAlert('Success', 'Summon Submitted.');
-      console.log(`Summon for case ${caseId} sent.`);
+        const formDataObject = deserializeFormData(formData);
+        console.log(`Sending Summon for case ${caseId}`);
+
+        await this.http
+            .put(`${environment.eclbDomain}api/general/update-summons/${caseId}/${summon}`, formDataObject)
+            .toPromise();
+
+        this.alertService.showAlert('Success', 'Summon Submitted.');
+        console.log(`Summon for case ${caseId} sent.`);
     } catch (error) {
-      console.error(`Error sending Summon for case ${caseId}:`, error);
-      this.alertService.showAlert('Error', 'Failed to submit Summon. Please try again.');
+        console.error(`Error sending Summon for case ${caseId}:`, error);
+        this.alertService.showAlert('Error', 'Failed to submit Summon. Please try again.');
+        throw error; // Ensure failed summons remain in storage
     } finally {
-      this.spinner.hide(); // Ensure the spinner hides only once after success or failure
+        this.spinner.hide();
     }
-  }
+}
+
   
 }
 

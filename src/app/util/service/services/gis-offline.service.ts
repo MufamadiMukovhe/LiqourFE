@@ -113,52 +113,68 @@ export class GisOfflineService {
 
   private async uploadPendingGis() {
     if (this.isUploadingGis.getValue()) return;
-  
+
     this.isUploadingGis.next(true);
-  
+
     try {
-      let storedGis = await this.storage.get('storedGis');
-      console.log(storedGis)
-      if (!Array.isArray(storedGis)) {
-        console.log('No GIS data found or data is not an array.');
-        return;
-      }
-  
-      for (const gisRecord of storedGis) {
-        const { gisData, gisCaseNo } = gisRecord;
-        if (gisData && gisCaseNo) {
-          await this.uploadGis(gisData, gisCaseNo);
+        let storedGis = await this.storage.get('storedGis');
+        console.log(storedGis);
+
+        if (!Array.isArray(storedGis)) {
+            console.log('No GIS data found or data is not an array.');
+            return;
         }
-      }
-  
-      await this.storage.remove('storedGis');
-      console.log('All pending GIS data uploaded successfully.');
-  
+
+        let remainingGis = [];
+
+        for (const gisRecord of storedGis) {
+            const { gisData, gisCaseNo } = gisRecord;
+
+            if (gisData && gisCaseNo) {
+                try {
+                    await this.uploadGis(gisData, gisCaseNo);
+                } catch (error) {
+                    console.error(`Failed to upload GIS data for case ${gisCaseNo}:`, error);
+                    remainingGis.push(gisRecord); // Keep failed uploads for retry
+                }
+            }
+        }
+
+        // Update storage with only failed uploads
+        if (remainingGis.length > 0) {
+            await this.storage.set('storedGis', remainingGis);
+            console.log(`${remainingGis.length} GIS records failed and will be retried.`);
+        } else {
+            await this.storage.remove('storedGis');
+            console.log('All pending GIS data uploaded successfully.');
+        }
     } catch (error) {
-      console.error('Error uploading pending GIS data:', error);
+        console.error('Error uploading pending GIS data:', error);
     } finally {
-      this.isUploadingGis.next(false);
+        this.isUploadingGis.next(false);
     }
-  }
-  
-  private async uploadGis(gisreport: any, gisCaseId: string) {
-    this.spinner.show(); // Show spinner before upload starts
-  
+}
+
+private async uploadGis(gisData: any, gisCaseId: string) {
+    this.spinner.show();
+
     try {
-      const formData = deserializeFormData(gisreport);
-      console.log(`Uploading GIS data for case ${gisCaseId}`);
-  
-      await this.http.post(`${environment.eclbDomain}api/general/save-gis-report/${gisCaseId}`, formData).toPromise();
-  
-      this.alertService.showAlert('Success', 'GIS Upload Complete.');
-      console.log(`GIS data for case ${gisCaseId} uploaded.`);
+        const formData = deserializeFormData(gisData);
+        console.log(`Uploading GIS data for case ${gisCaseId}`);
+
+        await this.http.post(`${environment.eclbDomain}api/general/save-gis-report/${gisCaseId}`, formData).toPromise();
+
+        this.alertService.showAlert('Success', 'GIS Upload Complete.');
+        console.log(`GIS data for case ${gisCaseId} uploaded.`);
     } catch (error) {
-      console.error(`Error uploading GIS data for case ${gisCaseId}:`, error);
-      this.alertService.showAlert('Error', 'GIS upload failed. Please try again.');
+        console.error(`Error uploading GIS data for case ${gisCaseId}:`, error);
+        this.alertService.showAlert('Error', 'GIS upload failed. Please try again.');
+        throw error; // Ensure failed uploads remain in storage
     } finally {
-      this.spinner.hide(); // Ensure spinner hides only once after success or failure
+        this.spinner.hide();
     }
-  }
+}
+
   
 
 
