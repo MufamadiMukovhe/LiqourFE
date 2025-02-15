@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ChangeOfName, Message } from 'src/app/model/model';
+import { GeneralService } from 'src/app/util/service/general-service';
+import { Toast } from 'src/app/util/service/services/toast';
 
 @Component({
   selector: 'app-saps-attach',
@@ -8,15 +13,33 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./saps-attach.page.scss'],
 })
 export class SapsAttachPage implements OnInit {
-
+  outletId: any;
+  action: any;
+  caseId: any;
+  noticeDoc: any;
   noticeFiles: { name: string, size: number }[] = [];
   reportFiles: { name: string, size: number }[] = [];
   inputVisible: boolean = true;
+  changeOfNameForm!: FormGroup;
+  invalidLabels: string[] = [];
+  reportDoc:any;
+  
   constructor(
-    private alertController: AlertController,private route:Router
-  ) { }
+    private alertController: AlertController,private router:Router,
+    private formBuilder: FormBuilder, private service: GeneralService, private route: ActivatedRoute
+    , private spinner: NgxSpinnerService, private toast: Toast,
+  ) {
+    this.changeOfNameForm = this.formBuilder.group({
+      newName: ['', Validators.required],
+    })
+   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.outletId = params['outletid'];
+      this.caseId = params['caseId'];
+    });
+
   }
   notice!: File;
   async onFileSelectedRecommendation(event: any) {
@@ -96,7 +119,52 @@ export class SapsAttachPage implements OnInit {
 
   navigateToBack() {
     setTimeout(() => {
-      this.route.navigate(['/my-tasks']); 
+      this.router.navigate(['/my-tasks']); 
     }, 0);
+  }
+  changeName = new ChangeOfName()
+  submit(): void {
+
+     this.spinner.show()
+
+    this.changeName = Object.assign(this.changeName, this.changeOfNameForm.value);
+
+    const formData = new FormData();
+    formData.append('sapsboardreport', new Blob([JSON.stringify(this.changeName)], { type: 'application/json' }));
+
+    this.noticeDoc = this.noticeFiles[0];
+    formData.append('attachSAPSReport', this.notice);
+
+    this.reportDoc = this.reportFiles[0];
+    formData.append('supportBoardReport', this.report);
+
+  
+      this.service.attachSAPSAndBoardReport(this.caseId, formData).subscribe({
+        next: (res: any) => {
+          this.spinner.hide();
+          this.showAlert('success', 'SAPS and Board Reports Captured');
+        
+          setTimeout(() => {
+            this.router.navigateByUrl('/my-tasks', { skipLocationChange: true }).then(() => {
+              this.router.navigate([this.route.url]);
+            });
+          }, 5000);
+          console.log(res)
+        }, error: (err: any) => {
+          this.spinner.hide()
+          console.log(err)
+         
+        }
+      })
+  
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

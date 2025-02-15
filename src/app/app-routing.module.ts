@@ -286,7 +286,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/compliance-notice/compliance-notice.module').then( m => m.ComplianceNoticePageModule)
   },
   {
-    path: 'saps-attach',
+    path: 'saps-attach/:caseId',
     loadChildren: () => import('./pages/saps-attach/saps-attach.module').then( m => m.SapsAttachPageModule)
   },
   {
@@ -296,7 +296,8 @@ const routes: Routes = [
   {
     path: 'board-consideration-orhearing/:caseId',
     loadChildren: () => import('./pages/board-consideration-orhearing/board-consideration-orhearing.module').then( m => m.BoardConsiderationORHearingPageModule)
-  },  {
+  },
+  {
     path: 'offline-password',
     loadChildren: () => import('./pages/offline-password/offline-password.module').then( m => m.OfflinePasswordPageModule)
   },
@@ -304,6 +305,17 @@ const routes: Routes = [
     path: 'offline-thank-you',
     loadChildren: () => import('./pages/offline-thank-you/offline-thank-you.module').then( m => m.OfflineThankYouPageModule)
   },
+  {
+    path: 'issue-section28-compliance-notice/:caseId',
+    loadChildren: () => import('./pages/issue-section28-compliance-notice/issue-section28-compliance-notice.module').then( m => m.IssueSection28ComplianceNoticePageModule)
+  },
+  {
+    path: 'upload-enforcement-memo/:caseId',
+    loadChildren: () => import('./pages/upload-enforcement-memo/upload-enforcement-memo.module').then( m => m.UploadEnforcementMemoPageModule)
+  },
+
+
+
 
 
 

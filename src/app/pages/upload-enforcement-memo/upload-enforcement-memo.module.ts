@@ -4,22 +4,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SapsAttachPageRoutingModule } from './saps-attach-routing.module';
+import { UploadEnforcementMemoPageRoutingModule } from './upload-enforcement-memo-routing.module';
 
-import { SapsAttachPage } from './saps-attach.page';
-import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-footer.module';
+import { UploadEnforcementMemoPage } from './upload-enforcement-memo.page';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MenuFooterPageModule } from 'src/app/headerFooter/menu-footer/menu-footer.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SapsAttachPageRoutingModule,
+    UploadEnforcementMemoPageRoutingModule,
     ReactiveFormsModule,
     MenuFooterPageModule,
     NgxSpinnerModule,
   ],
-  declarations: [SapsAttachPage]
+  declarations: [UploadEnforcementMemoPage]
 })
-export class SapsAttachPageModule {}
+export class UploadEnforcementMemoPageModule {}

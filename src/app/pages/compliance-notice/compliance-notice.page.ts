@@ -91,7 +91,7 @@ export class ComplianceNoticePage implements OnInit {
       this.caseId = params['caseId'];
       console.log("this.caseId=" + this.caseId);
     });
-
+    this.spinner.show()
     this.form = this.formBuilder.group({
       
       //outletName,registeredOwner,referenceNumber,address,contactDetails
@@ -107,6 +107,7 @@ export class ComplianceNoticePage implements OnInit {
     this.title.setTitle('Section 54 Notice');
 
     this.appointmentService.outletInfomationByCaseId(this.caseId).subscribe({
+      
       next: (res: any) => {
         console.log('res='+ res);
         this.spinner.hide();
