@@ -313,6 +313,11 @@ const routes: Routes = [
     path: 'upload-enforcement-memo/:caseId',
     loadChildren: () => import('./pages/upload-enforcement-memo/upload-enforcement-memo.module').then( m => m.UploadEnforcementMemoPageModule)
   },
+  {
+    path: 'initiate-post-registration/:caseId',
+    loadChildren: () => import('./pages/initiate-post-registration/initiate-post-registration.module').then( m => m.InitiatePostRegistrationPageModule)
+  },
+
 
 
 

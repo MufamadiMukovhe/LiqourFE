@@ -157,7 +157,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
               // Ensure the file path does not contain duplicate directories
               const filePath = `section29/${fileName}.pdf`;
     
-              console.log("✅ Corrected File URI:", filePath); // Debugging output
+              console.log("Corrected File URI:", filePath); // Debugging output
     
               const fileData = await this.saveFileLocally(response, filePath);
     
@@ -184,7 +184,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
     
     
   
-    // ✅ Function to Convert Blob to Base64
+    //  Function to Convert Blob to Base64
     async convertBlobToBase64(blob: Blob): Promise<string> {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -205,7 +205,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
         directory: Directory.Documents,
         recursive: true, // Create parent directories if needed
       }).catch(() => {
-        console.log("ℹ️ Directory already exists or could not be created");
+        console.log("Directory already exists or could not be created");
       });
   
       // Convert Blob to Base64
@@ -223,13 +223,13 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
             recursive: true,
           });
   
-          console.log("✅ File saved at:", filePath);
+          console.log("File saved at:", filePath);
           resolve(filePath);
         };
         reader.onerror = (error) => reject(error);
       });
     } catch (error) {
-      console.error("❌ Error saving file:", error);
+      console.error("Error saving file:", error);
       throw error;
     }
   }

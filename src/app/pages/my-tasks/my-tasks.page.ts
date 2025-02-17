@@ -115,6 +115,7 @@ export class MyTasksPage implements OnInit {
           'Attach SAPS Case and Report to Board',
           'Issue Section 28 Compliance Notice',
           'Upload Enforcement Memo',
+          'Initiate Post Registration Inspection'
         ].includes(item.action)
       );
 
@@ -156,7 +157,8 @@ export class MyTasksPage implements OnInit {
       'Board Consideration OR Hearing': `/board-consideration-orhearing/${caseId}/`,
       'Attach SAPS Case and Report to Board':`/saps-attach/${caseId}/`,
       'Issue Section 28 Compliance Notice':`/issue-section28-compliance-notice/${caseId}/`,
-      'Upload Enforcement Memo':`/upload-enforcement-memo/${caseId}/`
+      'Upload Enforcement Memo':`/upload-enforcement-memo/${caseId}/`,
+      'Initiate Post Registration Inspection':`/initiate-post-registration/${caseId}`
     };
 
     if (routes[action]) {

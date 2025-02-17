@@ -38,6 +38,13 @@ export class DeregistrationService {
         )
     }
 
+    public initiatePostDeregistration(outletId: any, info:FormData): Observable<any> {
+        return this.httpClient.post<any>(`${this.apiUrl}/initiate-PostRegistrationInspection-recommendation/${outletId}`, info).pipe(
+            catchError((error) => {
+                return throwError(() => error);
+            })
+        )
+    }
     public initiateDeregistrationSection28(outletId: any, info:FormData): Observable<any> {
         return this.httpClient.post<any>(`${this.apiUrl}/initiate-deregistration-section28/${outletId}`, info).pipe(
             catchError((error) => {
