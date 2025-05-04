@@ -38,9 +38,9 @@ export class InspectionsPage implements OnInit {
     const url = environment.eclbDomain+"api/general/get-inbox";
 
     this.http.get<any[]>(url, { headers: newHeader }).subscribe(
-      response => {
+      (response:any) => {
         this.spinner.hide();
-        this.collect = response;
+        this.collect = response.content;
         this.filteredOutlets = this.collect; 
 
         console.log(this.collect);
